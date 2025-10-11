@@ -18,10 +18,16 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
+import androidx.navigation.NavDeepLinkBuilder
 import java.io.File
 import kotlin.random.Random
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.receiver.CancelDownloadNotificationReceiver
+import com.ezt.video.downloader.receiver.CancelWorkReceiver
+import com.ezt.video.downloader.receiver.PauseDownloadNotificationReceiver
+import com.ezt.video.downloader.receiver.activities.ResumeActivity
+import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.util.Extensions.toBitmap
 
 

@@ -6,6 +6,7 @@ import com.ezt.video.downloader.database.VideoDownloadDB.SORTING
 import com.ezt.video.downloader.database.dao.HistoryDao
 import com.ezt.video.downloader.database.models.main.HistoryItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest

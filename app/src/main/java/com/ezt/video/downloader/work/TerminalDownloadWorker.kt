@@ -19,6 +19,7 @@ import com.ezt.video.downloader.database.models.expand.table.Format
 import com.ezt.video.downloader.database.models.main.LogItem
 import com.ezt.video.downloader.database.repository.LogRepository
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.ui.more.terminal.TerminalActivity
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL

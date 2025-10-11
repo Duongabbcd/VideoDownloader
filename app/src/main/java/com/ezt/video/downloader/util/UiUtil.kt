@@ -97,6 +97,12 @@ import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
 import com.ezt.video.downloader.database.models.expand.non_table.GithubRelease
+import com.ezt.video.downloader.database.viewmodel.YTDLPViewModel
+import com.ezt.video.downloader.ui.downloadcard.VideoCutListener
+import com.ezt.video.downloader.util.Extensions.createBadge
+import com.ezt.video.downloader.util.Extensions.enableTextHighlight
+import com.ezt.video.downloader.util.Extensions.getMediaDuration
+import com.ezt.video.downloader.util.Extensions.toStringDuration
 
 object UiUtil {
     @SuppressLint("SetTextI18n")

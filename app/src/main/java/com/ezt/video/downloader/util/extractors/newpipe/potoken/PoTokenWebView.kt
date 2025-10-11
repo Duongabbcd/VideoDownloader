@@ -1,5 +1,6 @@
 package com.ezt.video.downloader.util.extractors.newpipe.potoken
 
+import com.ezt.video.downloader.BuildConfig
 import android.content.Context
 import android.os.Build
 import android.os.Handler
@@ -10,6 +11,8 @@ import android.webkit.WebView
 import androidx.annotation.MainThread
 import com.ezt.video.downloader.util.extractors.newpipe.potoken.JavascriptUtil.parseChallengeData
 import com.ezt.video.downloader.util.extractors.newpipe.potoken.JavascriptUtil.parseIntegrityTokenData
+import com.ezt.video.downloader.util.extractors.newpipe.potoken.JavascriptUtil.stringToU8
+import com.ezt.video.downloader.util.extractors.newpipe.potoken.JavascriptUtil.u8ToBase64
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

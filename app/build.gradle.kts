@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kspp)
     alias(libs.plugins.serialization)
     alias(libs.plugins.parcelize)
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
 android {
@@ -37,9 +38,11 @@ android {
         jvmTarget = "11"
     }
 
+
     buildFeatures {
         viewBinding { enable = true }
         buildConfig = true
+        compose = true
     }
 
     bundle {
@@ -50,33 +53,32 @@ android {
 
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.preference)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.gson)
-
     implementation(libs.constraintlayout)
-
-
     implementation(libs.work.runtime.ktx)
-
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-
     implementation(libs.media3.exoplayer)
     implementation(libs.okhttp)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-
     // Kotlin / Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.coroutines.get()}")
 
@@ -91,6 +93,7 @@ dependencies {
     implementation("io.github.junkfood02.youtubedl-android:library:0.18.0")
     implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.18.0")
     implementation("io.github.junkfood02.youtubedl-android:aria2c:0.17.2")
+    implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
@@ -113,9 +116,9 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("com.github.teamnewpipe:newpipeextractor:0.24.8")
 
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.9.5")
-    implementation ("com.devbrackets.android:exomedia:5.1.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation("com.devbrackets.android:exomedia:5.1.0")
 
     // For media playback using ExoPlayer
     implementation("androidx.media3:media3-exoplayer:1.6.0")
@@ -126,4 +129,11 @@ dependencies {
     implementation("androidx.media3:media3-ui:1.6.0")
     // For RTSP playback support with ExoPlayer
     implementation("androidx.media3:media3-exoplayer-rtsp:1.6.0")
+
+    implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
+    implementation("com.google.accompanist:accompanist-webview:0.30.1")
+
+    implementation ("androidx.compose.material3:material3-android:1.3.1")
+    implementation ("androidx.compose.runtime:runtime:1.9.3")
+    implementation ("androidx.compose.ui:ui-android:1.7.8")
 }

@@ -46,7 +46,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.ui.adapter.HomeAdapter
-import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.expand.non_table.SearchSuggestionItem
 import com.ezt.video.downloader.database.models.expand.non_table.SearchSuggestionType
@@ -54,6 +53,8 @@ import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
+import com.ezt.video.downloader.ui.adapter.SearchSuggestionsAdapter
+import com.ezt.video.downloader.ui.more.WebViewActivity
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
 import com.ezt.video.downloader.util.NotificationUtil

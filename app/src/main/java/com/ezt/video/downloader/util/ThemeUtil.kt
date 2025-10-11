@@ -15,6 +15,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import com.google.android.material.color.DynamicColors
 import com.ezt.video.downloader.R
+import com.ezt.video.downloader.ui.home.MainActivity
 
 object ThemeUtil {
 
@@ -68,9 +69,9 @@ object ThemeUtil {
         AppIcon.Dark
     )
 
-//    fun recreateMain() {
-//        activities.firstOrNull { it.javaClass == MainActivity::class.java }?.recreate()
-//    }
+    fun recreateMain() {
+        activities.firstOrNull { it.javaClass == MainActivity::class.java }?.recreate()
+    }
 
     fun recreateAllActivities() {
         activities.forEach {

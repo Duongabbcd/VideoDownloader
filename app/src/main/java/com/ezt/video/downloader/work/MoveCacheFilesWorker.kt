@@ -14,6 +14,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.MyApplication
+import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.NotificationUtil
 import java.io.File

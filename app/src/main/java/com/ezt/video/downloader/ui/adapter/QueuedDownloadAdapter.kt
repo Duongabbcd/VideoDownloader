@@ -20,13 +20,12 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.DownloadItemSimple
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.util.Extensions.loadThumbnail
-import com.deniscerri.ytdl.util.Extensions.popup
-import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.UiUtil
+import com.ezt.video.downloader.R
+import com.ezt.video.downloader.database.models.expand.table.DownloadItemSimple
+import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.util.Extensions.loadThumbnail
+import com.ezt.video.downloader.util.FileUtil
+import com.ezt.video.downloader.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 
 class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity, private var itemTouchHelper: ItemTouchHelper) : PagingDataAdapter<DownloadItemSimple, QueuedDownloadAdapter.ViewHolder>(

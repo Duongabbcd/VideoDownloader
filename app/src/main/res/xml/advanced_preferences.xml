@@ -18,7 +18,7 @@
             android:title="@string/generate_potokens" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             android:icon="@drawable/ic_language"
             android:defaultValue="true"
             android:key="use_app_language_for_metadata"
@@ -41,7 +41,7 @@
 
     <PreferenceCategory android:title="@string/command_templates">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             android:icon="@drawable/ic_terminal"
             android:key="enable_data_fetching_extra_commands"
             android:summary="@string/data_fetching_extra_command_summary"
@@ -50,7 +50,7 @@
 
     <PreferenceCategory android:title="@string/format">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_arrow_upward_24"
             app:key="use_format_sorting"
@@ -72,7 +72,7 @@
 
     <PreferenceCategory android:title="@string/downloading" android:enabled="false" app:isPreferenceVisible="false">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             android:icon="@drawable/if_file_rename"
             android:key="disable_write_info_json"
             android:summary="@string/disable_write_info_json_summary"
@@ -81,7 +81,7 @@
 
     <PreferenceCategory android:title="@string/misc">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             android:icon="@drawable/ic_search"
             android:key="no_flat_playlist"
             android:summary="@string/disable_flat_playlist_summary"

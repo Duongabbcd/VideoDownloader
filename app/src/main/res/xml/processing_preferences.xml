@@ -4,7 +4,7 @@
 
     <PreferenceCategory android:title="@string/general">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_money"
             app:key="use_sponsorblock"
@@ -30,7 +30,7 @@
 
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_clock"
             app:key="mtime"
@@ -38,7 +38,7 @@
             app:title="@string/enable_mtime" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_description_24"
             app:key="write_description"
@@ -46,7 +46,7 @@
             app:title="@string/write_description" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_terminal"
             app:key="use_extra_commands"
@@ -54,7 +54,7 @@
             app:title="@string/use_extra_commands" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_cut"
             app:key="force_keyframes"
@@ -65,7 +65,7 @@
 
     <PreferenceCategory android:title="@string/audio">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/baseline_video_metadata"
             app:key="embed_metadata"
@@ -80,7 +80,7 @@
             app:title="@string/bitrate" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_image"
             app:key="embed_thumbnail"
@@ -88,7 +88,7 @@
             app:title="@string/embed_thumb" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             android:dependency="embed_thumbnail"
             app:icon="@drawable/ic_cut"
@@ -97,7 +97,7 @@
             app:title="@string/crop_thumb" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/baseline_album_24"
             app:key="playlist_as_album"
@@ -123,7 +123,7 @@
             app:title="@string/preferred_audio_codec" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_format"
             app:key="prefer_container_over_codec_audio"
@@ -147,7 +147,7 @@
             app:title="@string/preferred_format_id" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_audio_file_24"
             app:key="no_prefer_drc_audio"
@@ -158,7 +158,7 @@
 
     <PreferenceCategory android:title="@string/video">
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_subtitles"
             app:key="embed_subtitles"
@@ -166,7 +166,7 @@
             app:title="@string/embed_subtitles" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_subtitles_alternative"
             app:key="write_subtitles"
@@ -174,7 +174,7 @@
             app:title="@string/save_subs" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_subtitles_alternative"
             app:key="write_auto_subtitles"
@@ -182,7 +182,7 @@
             app:title="@string/save_auto_subs" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_subtitles"
             app:key="no_keep_subs"
@@ -207,7 +207,7 @@
             app:title="@string/subtitle_format" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_image"
             app:key="write_thumbnail"
@@ -215,7 +215,7 @@
             app:title="@string/save_thumb" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_image"
             app:key="video_embed_thumbnail"
@@ -232,7 +232,7 @@
             app:title="@string/thumbnail_format" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_chapters"
             app:key="add_chapters"
@@ -251,7 +251,7 @@
             app:title="@string/video_format" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_video_metadata"
             app:key="recode_video"
@@ -259,7 +259,7 @@
             app:title="@string/recode_video" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_video_metadata"
             app:key="compatible_video"

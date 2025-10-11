@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
+import com.ezt.video.downloader.BuildConfig
 
 class SettingsViewModel(private val application: Application) : AndroidViewModel(application) {
     private val workManager : WorkManager = WorkManager.getInstance(application)
@@ -52,7 +53,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         }
 
         val json = JsonObject()
-        json.addProperty("app", "YTDLnis_backup")
+        json.addProperty("app", "VideoDownloader_Backup")
         list.forEach {
             runCatching {
                 when(it){
@@ -78,7 +79,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         val dir = File(FileUtil.getCachePath(application) + "/Backups")
         dir.mkdirs()
 
-        val saveFile = File("${dir.absolutePath}/YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
+        val saveFile = File("${dir.absolutePath}/VideoDownloader_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
             Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
             Calendar.DAY_OF_MONTH)}.json")
 

@@ -26,14 +26,29 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.ezt.video.downloader.R
+import com.ezt.video.downloader.database.VideoDownloadDB
+import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.viewmodel.CookieViewModel
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.downloads.DownloadQueueMainFragment
+import com.ezt.video.downloader.ui.downloads.HistoryFragment
+import com.ezt.video.downloader.ui.more.settings.SettingsActivity
+import com.ezt.video.downloader.util.CrashListener
+import com.ezt.video.downloader.util.NavbarUtil
+import com.ezt.video.downloader.util.NavbarUtil.applyNavBarStyle
+import com.ezt.video.downloader.util.ThemeUtil
+import com.ezt.video.downloader.util.UiUtil
+import com.ezt.video.downloader.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
@@ -96,9 +111,9 @@ class MainActivity : BaseActivity() {
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
-        kotlin.runCatching {
-            navigationView = findViewById(R.id.navigationView)
-        }
+//        kotlin.runCatching {
+//            navigationView = findViewById(R.id.navigationView)
+//        }
         kotlin.runCatching {
             navigationBarView = findViewById(R.id.bottomNavigationView)
         }
@@ -253,7 +268,7 @@ class MainActivity : BaseActivity() {
         if (preferences.getBoolean("auto_update_ytdlp", false)){
             CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                 kotlin.runCatching {
-                    if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
+                    if(VideoDownloadDB.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
                         if (UpdateUtil(this@MainActivity).updateYoutubeDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
                             val version = YoutubeDL.getInstance().version(context)
                             val snack = Snackbar.make(findViewById(R.id.frame_layout),

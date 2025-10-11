@@ -5,7 +5,7 @@ import androidx.room.DeleteTable
 import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.ezt.video.downloader.database.models.expand.Format
+import com.ezt.video.downloader.database.models.expand.table.Format
 import com.google.gson.Gson
 
 object Migrations {

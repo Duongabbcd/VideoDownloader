@@ -22,6 +22,7 @@ import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.repository.HistoryRepository
 import com.ezt.video.downloader.database.repository.ObserveSourcesRepository
 import com.ezt.video.downloader.database.repository.ResultRepository
+import com.ezt.video.downloader.util.Extensions.calculateNextTimeForObserving
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.NotificationUtil
 import com.ezt.video.downloader.util.extractors.ytdlp.YTDLPUtil

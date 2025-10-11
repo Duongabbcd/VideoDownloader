@@ -32,6 +32,7 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel.Type
 import com.ezt.video.downloader.database.viewmodel.FormatViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
+import com.ezt.video.downloader.util.Extensions.applyFilenameTemplateForCuts
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.FormatUtil
 import com.ezt.video.downloader.util.UiUtil

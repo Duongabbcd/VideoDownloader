@@ -139,6 +139,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
         try {
             val item = repository.getFirstResult()
+            println("item: $item")
             if (
                 item.playlistTitle == getApplication<MyApplication>().getString(R.string.trendingPlaylist)
                 && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
@@ -154,6 +155,8 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         val homeRecommendations = sharedPreferences.getString("recommendations_home", "")
         val customHomeRecommendations = sharedPreferences.getString("custom_home_recommendation_url", "")
         val emptyCustomRecommendations = customHomeRecommendations.isNullOrBlank() && homeRecommendations == "custom"
+
+        println("getHomeRecommendations: $homeRecommendations and $customHomeRecommendations")
 
         if (!homeRecommendations.isNullOrBlank() && !emptyCustomRecommendations){
             kotlin.runCatching {

@@ -4,8 +4,6 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ezt.video.downloader.database.models.expand.ChapterItem
-import com.ezt.video.downloader.database.models.expand.Format
 import com.ezt.video.downloader.database.models.expand.table.ChapterItem
 import com.ezt.video.downloader.database.models.expand.table.Format
 import kotlinx.parcelize.Parcelize

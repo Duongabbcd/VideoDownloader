@@ -12,9 +12,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.ezt.video.downloader.BuildConfig
 import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.models.main.CookieItem
 import com.ezt.video.downloader.database.repository.CookieRepository
+import com.ezt.video.downloader.ui.more.WebViewActivity
+import com.ezt.video.downloader.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

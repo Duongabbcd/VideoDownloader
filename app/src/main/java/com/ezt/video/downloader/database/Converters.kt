@@ -1,10 +1,10 @@
 package com.ezt.video.downloader.database
 
 import androidx.room.TypeConverter
-import com.ezt.video.downloader.database.models.expand.AudioPreferences
-import com.ezt.video.downloader.database.models.expand.ChapterItem
-import com.ezt.video.downloader.database.models.expand.Format
-import com.ezt.video.downloader.database.models.expand.VideoPreferences
+import com.ezt.video.downloader.database.models.expand.table.AudioPreferences
+import com.ezt.video.downloader.database.models.expand.table.ChapterItem
+import com.ezt.video.downloader.database.models.expand.table.Format
+import com.ezt.video.downloader.database.models.expand.table.VideoPreferences
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.models.observeSources.ObserveSourcesMonthlyConfig
 import com.ezt.video.downloader.database.models.observeSources.ObserveSourcesWeeklyConfig

@@ -24,7 +24,6 @@ import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.dao.CommandTemplateDao
 import com.ezt.video.downloader.database.dao.DownloadDao
 import com.ezt.video.downloader.database.models.expand.table.AudioPreferences
-import com.ezt.video.downloader.database.models.expand.table.ChapterItem
 import com.ezt.video.downloader.database.models.expand.table.DownloadItemConfigureMultiple
 import com.ezt.video.downloader.database.models.expand.table.DownloadItemSimple
 import com.ezt.video.downloader.database.models.expand.table.Format
@@ -42,7 +41,7 @@ import com.ezt.video.downloader.util.Extensions.toListString
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.FormatUtil
 import com.ezt.video.downloader.util.NotificationUtil
-import com.ezt.video.downloader.util.extractors.YTDLPUtil
+import com.ezt.video.downloader.util.extractors.ytdlp.YTDLPUtil
 import com.ezt.video.downloader.work.AlarmScheduler
 import com.ezt.video.downloader.work.UpdateMultipleDownloadsDataWorker
 import com.ezt.video.downloader.work.UpdateMultipleDownloadsFormatsWorker
@@ -338,7 +337,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             resultItem.formats,
             downloadPath!!, resultItem.website,
             "",
-            if (resultItem.playlistTitle == resultRepository.YTDLNIS_SEARCH) "" else resultItem.playlistTitle,
+            if (resultItem.playlistTitle == resultRepository.VIDEO_DOWNLOADER_SEARCH) "" else resultItem.playlistTitle,
             audioPreferences,
             videoPreferences,
             extraCommands,

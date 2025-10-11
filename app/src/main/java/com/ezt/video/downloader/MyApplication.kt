@@ -2,7 +2,7 @@ package com.ezt.video.downloader
 
 import android.app.Application
 import android.os.Looper
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.widget.Toast
 import androidx.core.content.edit
 import com.ezt.video.downloader.util.NotificationUtil

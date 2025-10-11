@@ -15,12 +15,16 @@ import com.ezt.video.downloader.util.Extensions.isYoutubeChannelURL
 import com.ezt.video.downloader.util.Extensions.isYoutubeURL
 import com.ezt.video.downloader.util.Extensions.isYoutubeWatchVideosURL
 import com.ezt.video.downloader.util.Extensions.needsDataUpdating
+import com.ezt.video.downloader.util.extractors.GoogleApiUtil
+import com.ezt.video.downloader.util.extractors.YoutubeApiUtil
+import com.ezt.video.downloader.util.extractors.newpipe.NewPipeUtil
+import com.ezt.video.downloader.util.extractors.ytdlp.YTDLPUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 
 class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
-    val YTDLNIS_SEARCH = "YTDLNIS_SEARCH"
+    val VIDEO_DOWNLOADER_SEARCH = "VIDEO_DOWNLOADER_SEARCH"
     val allResults : Flow<List<ResultItem>> = resultDao.getResults()
     var itemCount = MutableStateFlow(-1)
 
@@ -174,7 +178,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             deleteAll()
             itemCount.value = res.size
         }else{
-            res.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
+            res.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = VIDEO_DOWNLOADER_SEARCH }
         }
         if (addToResults){
             val ids = resultDao.insertMultiple(res)
@@ -290,7 +294,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
                 itemsCount += results.size
                 itemCount.value = itemsCount
             }
-            results.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
+            results.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = VIDEO_DOWNLOADER_SEARCH }
             if (addToResults) {
                 runBlocking {
                     val ids = resultDao.insertMultiple(results)
@@ -457,7 +461,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
                 val info = getResultsFromSource(downloadItem.url, resetResults = false, addToResults = false, singleItem = true).first()
                 if (downloadItem.title.isEmpty()) downloadItem.title = info.title
                 if (downloadItem.author.isEmpty()) downloadItem.author = info.author
-                if (downloadItem.playlistTitle.isNotBlank() && downloadItem.playlistTitle != YTDLNIS_SEARCH) downloadItem.playlistTitle = info.playlistTitle
+                if (downloadItem.playlistTitle.isNotBlank() && downloadItem.playlistTitle != VIDEO_DOWNLOADER_SEARCH) downloadItem.playlistTitle = info.playlistTitle
                 downloadItem.duration = info.duration
                 downloadItem.website = info.website
                 if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info.thumb

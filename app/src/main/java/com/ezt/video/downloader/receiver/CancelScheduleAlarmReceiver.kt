@@ -7,6 +7,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.ezt.video.downloader.work.CancelScheduledDownloadWorker
 import java.util.concurrent.TimeUnit
 
 class CancelScheduleAlarmReceiver : BroadcastReceiver() {

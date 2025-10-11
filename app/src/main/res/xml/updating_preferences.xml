@@ -28,7 +28,7 @@
 
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_update"
             android:key="auto_update_ytdlp"
@@ -39,7 +39,7 @@
     <PreferenceCategory android:title="@string/app">
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/ic_update_app"
             android:key="update_app"
@@ -52,7 +52,7 @@
             app:defaultValue="" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/ic_experiment"
             android:key="update_beta"
@@ -86,7 +86,7 @@
             app:title="@string/format_filter" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/ic_format"
             android:key="update_formats"

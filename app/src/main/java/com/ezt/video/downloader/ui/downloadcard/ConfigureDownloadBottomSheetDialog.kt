@@ -31,6 +31,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.ezt.video.downloader.database.viewmodel.DownloadViewModel.Type
+import com.ezt.video.downloader.util.UiUtil
 
 class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: DownloadItem, private val listener: OnDownloadItemUpdateListener) :
     BottomSheetDialogFragment()

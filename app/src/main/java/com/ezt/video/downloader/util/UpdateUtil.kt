@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.ezt.video.downloader.BuildConfig
 import com.ezt.video.downloader.database.models.expand.non_table.GithubRelease
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

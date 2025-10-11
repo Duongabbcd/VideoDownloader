@@ -31,7 +31,7 @@
             app:title="@string/accents" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/baseline_invert_colors_24"
             android:key="high_contrast"
@@ -57,7 +57,7 @@
             app:title="@string/modify_download_card" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/baseline_layers_24"
             android:key="display_over_apps"
@@ -109,7 +109,7 @@
 
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_format_quote_24"
             app:key="use_itemurl_instead_playlisturl"
@@ -162,7 +162,7 @@
             app:title="@string/preferred_search_engine" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/ic_search_accent"
             android:key="search_suggestions"
@@ -179,28 +179,28 @@
             app:title="@string/swipe_gestures" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/baseline_swipe_24"
             android:key="swipe_gestures_download_card"
             app:title="@string/swipe_gestures_download_card" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/baseline_color_lens_24"
             android:key="use_code_color_highlighter"
             app:title="@string/use_code_highlighter" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/baseline_share2_24"
             android:key="show_terminal"
             app:title="@string/show_terminal" />
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/baseline_numbers_24"
             android:key="show_count_downloads"

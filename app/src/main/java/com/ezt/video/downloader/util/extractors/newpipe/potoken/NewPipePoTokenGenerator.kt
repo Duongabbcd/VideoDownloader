@@ -4,12 +4,14 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.webkit.CookieManager
+import com.ezt.video.downloader.MyApplication
 import kotlinx.coroutines.runBlocking
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.services.youtube.InnertubeClientRequestInfo
 import org.schabi.newpipe.extractor.services.youtube.PoTokenProvider
 import org.schabi.newpipe.extractor.services.youtube.PoTokenResult
 import org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper
+import com.ezt.video.downloader.BuildConfig
 
 class NewPipePoTokenGenerator : PoTokenProvider {
     val TAG = NewPipePoTokenGenerator::class.simpleName
@@ -65,7 +67,7 @@ class NewPipePoTokenGenerator : PoTokenProvider {
                         webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }
 
                         // create a new webPoTokenGenerator
-                        webPoTokenGenerator = PoTokenWebView.getNewPoTokenGenerator(App.instance)
+                        webPoTokenGenerator = PoTokenWebView.getNewPoTokenGenerator(MyApplication.instance)
 
                         // The streaming poToken needs to be generated exactly once before generating
                         // any other (player) tokens.

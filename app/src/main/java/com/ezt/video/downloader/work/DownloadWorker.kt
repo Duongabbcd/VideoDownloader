@@ -27,6 +27,7 @@ import com.ezt.video.downloader.database.models.main.LogItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.repository.LogRepository
 import com.ezt.video.downloader.database.repository.ResultRepository
+import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.util.Extensions.getMediaDuration
 import com.ezt.video.downloader.util.Extensions.toStringDuration
 import com.ezt.video.downloader.util.FileUtil

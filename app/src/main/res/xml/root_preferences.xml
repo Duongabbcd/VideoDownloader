@@ -43,7 +43,7 @@
             app:title="@string/restore"/>
 
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
+            android:widgetLayout="@layout/preference_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_clock"
             app:key="automatic_backup"
@@ -96,7 +96,7 @@
         <Preference
             app:icon="@drawable/baseline_security_24"
             app:key="security"
-            app:summary="🔐 YTDLnis - Privacy Policy"
+            app:summary="🔐 VideoDownloader - Privacy Policy"
             app:title="@string/security">
             <intent
                 android:action="android.intent.action.VIEW"

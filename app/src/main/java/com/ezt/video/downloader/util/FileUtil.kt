@@ -26,6 +26,7 @@ import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
+import okhttp3.internal.lowercase
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -111,7 +112,9 @@ object FileUtil {
                 formattedPath.append(it).append("/")
             }
         }
-        return formattedPath.toString()
+        val result =  formattedPath.toString()
+        println("FileUtils: $result")
+        return result
     }
 
 
@@ -265,6 +268,7 @@ object FileUtil {
             return@withContext scanMedia(fileList, context)
         }
     }
+
 
     private fun moveFileInputStream(it: File, context: Context, dst: DocumentFile) : Uri? {
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"

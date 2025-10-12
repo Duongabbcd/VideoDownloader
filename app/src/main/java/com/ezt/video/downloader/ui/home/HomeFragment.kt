@@ -26,6 +26,7 @@ import android.view.View.OnTouchListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +36,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.forEach
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -55,6 +57,7 @@ import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.ui.adapter.SearchSuggestionsAdapter
 import com.ezt.video.downloader.ui.more.WebViewActivity
+import com.ezt.video.downloader.ui.more.settings.SettingsActivity
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
 import com.ezt.video.downloader.util.NotificationUtil
@@ -122,6 +125,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var actionMode: ActionMode? = null
     private var appBarLayout: AppBarLayout? = null
     private var materialToolbar: MaterialToolbar? = null
+    private var settingIcon: ImageView? = null
     private var loadingItems: Boolean = false
     private var queryList = mutableListOf<String>()
 
@@ -171,6 +175,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         clipboardFab = homeFabs!!.findViewById(R.id.copied_url_fab)
         playlistNameFilterScrollView = view.findViewById(R.id.playlist_selection_chips_scrollview)
         playlistNameFilterChipGroup = view.findViewById(R.id.playlist_selection_chips)
+        settingIcon = view.findViewById(R.id.setting_icon)
 
         runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
 
@@ -276,6 +281,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             launch{
                 resultViewModel.uiState.collectLatest { res ->
                     if (res.errorMessage != null){
+                        return@collectLatest
+                        println("resultViewModel: ${res.errorMessage}")
                         val isSingleQueryAndURL = queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()
 
                         kotlin.runCatching {
@@ -346,6 +353,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 }
             }
         }
+
+        settingIcon?.setOnClickListener {
+            val intent = Intent(context, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
@@ -450,7 +463,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
             }
 
-            providersChipGroup?.addView(tmp)
+//            providersChipGroup?.addView(tmp)
         }
 
         chipGroupDivider = requireView().findViewById(R.id.chipGroupDivider)
@@ -470,8 +483,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     providersChipGroup?.visibility = GONE
                     chipGroupDivider?.visibility = GONE
                 }else{
-                    providersChipGroup?.visibility = VISIBLE
-                    chipGroupDivider?.visibility = VISIBLE
+                    providersChipGroup?.visibility = GONE
+                    chipGroupDivider?.visibility = GONE
                 }
 
                 updateSearchViewItems(searchView!!.editText.text.toString())
@@ -529,7 +542,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                             resultViewModel.cancelParsingQueries()
                         }
                     }
-                    resultViewModel.getHomeRecommendations()
+//                    resultViewModel.getHomeRecommendations()
                     selectedObjects = ArrayList()
                     searchBar!!.setText("")
                     showDownloadAllFab = false

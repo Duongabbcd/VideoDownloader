@@ -2,6 +2,7 @@ package com.ezt.video.downloader.util.extractors.newpipe
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
 import androidx.preference.PreferenceManager
 import com.ezt.video.downloader.database.models.expand.table.ChapterItem
@@ -262,22 +263,28 @@ class NewPipeUtil(context: Context) {
 
 
     fun getTrending(): ArrayList<ResultItem> {
-        println("getTrending is here")
-        return try {
-            val items = arrayListOf<ResultItem>()
 
-            // Wrap KioskInfo.getInfo in its own try/catch to catch internal exceptions separately
-            val info = try {
-                KioskInfo.getInfo(
-                    NewPipe.getService(ServiceList.YouTube.serviceId),
-                    "https://www.youtube.com/feed/trending"
-                )
-            } catch (kioskEx: Exception) {
-                // Log full stack trace for KioskInfo exceptions
-                Log.e("getTrending", "KioskInfo.getInfo failed", kioskEx)
-                kioskEx.printStackTrace()
-                return arrayListOf() // early return if fetching failed
+        return try {
+
+            val items = arrayListOf<ResultItem>()
+            val uriString = "https://www.youtube.com/feed/trending"
+
+// Parse the string as a URI
+            val uri = Uri.parse(uriString)
+            println("getTrending is here: $uri")
+// Check if it has a valid scheme and host
+            if (uri.scheme == null || uri.scheme !in listOf("http", "https")) {
+                Log.e("getTrending", "Invalid URI scheme: $uriString")
+                return arrayListOf()
             }
+            if (uri.host.isNullOrEmpty()) {
+                Log.e("getTrending", "Invalid URI host: $uriString")
+                return arrayListOf()
+            }
+            val info =    KioskInfo.getInfo(
+                NewPipe.getService(ServiceList.YouTube.serviceId),
+                "https://www.youtube.com/feed/trending"
+            )
 
             println("getTrending here: $info")
 

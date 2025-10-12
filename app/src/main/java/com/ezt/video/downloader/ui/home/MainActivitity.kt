@@ -107,7 +107,7 @@ class MainActivity : BaseActivity() {
 
 
         askPermissions()
-        checkUpdate()
+//        checkUpdate()
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
@@ -150,13 +150,14 @@ class MainActivity : BaseActivity() {
                         }
                     }
                     R.id.historyFragment -> {
-                        if(!showingDownloadQueue) {
-                            navController.navigate(R.id.downloadQueueMainFragment)
-                        }else{
-                            kotlin.runCatching {
-                                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
-                            }
-                        }
+//                        if(!showingDownloadQueue) {
+//                            navController.navigate(R.id.downloadQueueMainFragment)
+//                        }else{
+//                            kotlin.runCatching {
+//                                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
+//                            }
+//                        }
+                        (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
                     }
                     R.id.downloadQueueMainFragment -> {
                         kotlin.runCatching {

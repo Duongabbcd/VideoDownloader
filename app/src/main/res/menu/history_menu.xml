@@ -19,6 +19,7 @@
     <item
         android:id="@+id/download_queue"
         android:title="@string/download_queue"
+        android:visible="false"
         android:icon="@drawable/baseline_downloading_24"
         app:showAsAction="always"/>
 

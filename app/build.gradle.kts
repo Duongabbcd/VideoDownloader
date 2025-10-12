@@ -51,6 +51,12 @@ android {
         }
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
 }
 
 ksp {
@@ -78,7 +84,6 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.media3.exoplayer)
-    implementation(libs.okhttp)
     // Kotlin / Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.coroutines.get()}")
 
@@ -92,7 +97,7 @@ dependencies {
     //important libs
     implementation("io.github.junkfood02.youtubedl-android:library:0.18.0")
     implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.18.0")
-    implementation("io.github.junkfood02.youtubedl-android:aria2c:0.17.2")
+    implementation("io.github.junkfood02.youtubedl-android:aria2c:0.17.3")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 
@@ -104,12 +109,13 @@ dependencies {
     implementation("com.neoutils.highlight:highlight-view:2.2.0")
     implementation("me.zhanghai.android.fastscroll:library:1.3.0")
 
-    implementation("com.squareup.picasso:picasso:2.71828")
     implementation("jp.wasabeef:picasso-transformations:2.4.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("com.anggrayudi:storage:1.5.5")
+
+    implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
 
     implementation("io.noties.markwon:core:4.6.2")

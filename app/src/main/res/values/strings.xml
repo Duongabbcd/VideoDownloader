@@ -519,5 +519,6 @@
     <string name="message_grant_Permission">Please grant all permissions to access additional functionality.</string>
     <string name="goto_setting">Go to setting</string>
     <string name="permission_denied">Permission denied</string>
+    <string name="youtube_desc">It is not allowed to download Youtube videos, please copy URLs from other websites.</string>
 
 </resources>

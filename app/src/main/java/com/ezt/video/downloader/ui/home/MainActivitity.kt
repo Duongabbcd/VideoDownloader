@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -97,6 +98,7 @@ class MainActivity : BaseActivity() {
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
 
         if (preferences.getBoolean("incognito", false)) {
             lifecycleScope.launch(Dispatchers.IO){

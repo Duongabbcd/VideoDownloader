@@ -29,6 +29,7 @@ import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -425,6 +426,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         requireView().post {
             checkClipboard().apply {
                 this?.apply {
+                    if(this.isEmpty()) {
+                        return@apply
+                    }
                     this.onEach {
                         println("checkClipboard: $it")
                     }
@@ -554,6 +558,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         })
 
         searchView!!.editText.setOnEditorActionListener { _, _, _ ->
+            println("searchView 1")
+            val text = searchView?.editText?.text.toString() ?: ""
+            if(text.contains("youtube",true ) || text.contains("youtu.be", true)) {
+                searchBar!!.setText("")
+                Toast.makeText(requireContext(), resources.getString(R.string.youtube_desc), Toast.LENGTH_SHORT).show()
+                return@setOnEditorActionListener false // Exit early: prevent further execution
+            }
             initSearch(searchView!!)
             true
         }
@@ -587,6 +598,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         queriesInitStartBtn.setOnClickListener {
+            println("searchView 2")
             initSearch(searchView!!)
         }
     }
@@ -627,8 +639,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     combinedList.add(0, SearchSuggestionItem(this.joinToString("\n"), SearchSuggestionType.CLIPBOARD))
                 }
             }
-
-            searchSuggestionsAdapter?.submitList(combinedList)
+            val input = combinedList.filter { !it.text.contains("youtube", true) && !it.text.contains("youtu.be", true) }
+            input.onEach {
+                println("input 2: $it")
+            }
+            searchSuggestionsAdapter?.submitList(input)
 
 //            history.forEach { s ->
 //                val v = LayoutInflater.from(fragmentContext).inflate(R.layout.search_suggestion_item, null)
@@ -702,7 +717,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     private fun initSearch(searchView: SearchView){
-
+        loading?.visibility = VISIBLE
         queryList = mutableListOf()
         if (queriesChipGroup!!.childCount > 0){
             queriesChipGroup!!.children.forEach {
@@ -732,17 +747,22 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     private fun startSearch() {
-        println("startSearch: $queryList")
         lifecycleScope.launch(Dispatchers.IO){
             resultViewModel.deleteAll()
-            if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
+
+            val check1 = sharedPreferences!!.getBoolean("quick_download", false)
+            val check2 = sharedPreferences!!.getString("preferred_download_type", "video") == "command"
+            println("startSearch: $check1 and $check2")
+            if(check1|| check2){
                 if (queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()){
-                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                    val check = sharedPreferences!!.getBoolean("download_card", true)
+                    if (check) {
                         withContext(Dispatchers.Main){
                             showSingleDownloadSheet(
                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
                                 type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
+                            loading?.gone()
                         }
                     } else {
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
@@ -750,13 +770,29 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                             givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                         )
                         downloadViewModel.queueDownloads(listOf(downloadItem))
+                        withContext(Dispatchers.Main) {
+                            loading?.gone()
+                        }
                     }
 
                 }else{
-                    resultViewModel.parseQueries(queryList){}
+                    resultViewModel.parseQueries(queryList){
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.Main) {
+                                loading?.gone()
+                            }
+                        }
+                    }
+
                 }
             }else{
-                resultViewModel.parseQueries(queryList){}
+                resultViewModel.parseQueries(queryList){
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            loading?.gone()
+                        }
+                    }
+                }
             }
         }
     }
@@ -983,11 +1019,29 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
 
-    private fun checkClipboard(): List<String>?{
-        return kotlin.runCatching {
+    private fun checkClipboard(): List<String>? {
+        return runCatching {
             val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = clipboard.primaryClip!!.getItemAt(0).text
-            return clip.split("\r","\n").map { it.trim() }.filter { Patterns.WEB_URL.matcher(it).matches() }
+            val clipText = clipboard.primaryClip?.getItemAt(0)?.coerceToText(requireContext())?.toString()
+                ?: return null
+
+            val urls = clipText
+                .split("\r", "\n")
+                .map { it.trim() }
+                .filter { Patterns.WEB_URL.matcher(it).matches() }
+
+            val containsYouTube = urls.any {
+                it.contains("youtube.com", ignoreCase = true) || it.contains("youtu.be", ignoreCase = true)
+            }
+
+            if (containsYouTube) {
+                // Show toast
+                searchBar!!.setText("")
+                Toast.makeText(requireContext(), resources.getString(R.string.youtube_desc), Toast.LENGTH_SHORT).show()
+                return null
+            }
+
+            return urls
         }.getOrNull()
     }
 
@@ -1020,6 +1074,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             showClipboardFab = false
             clipboardFab?.isVisible = false
             searchView!!.setText(text)
+            println("searchView 3")
             initSearch(searchView!!)
         }else{
             res.forEach {
@@ -1054,7 +1109,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             if (this.isNotEmpty()) {
                 if (this.first().type == SearchSuggestionType.CLIPBOARD){
                     val newList = this.toMutableList().drop(1)
-                    searchSuggestionsAdapter?.submitList(newList)
+                    val input = newList.filter { !it.text.contains("youtube", true) || !it.text.contains("youtu.be", true) }
+                    input.onEach {
+                        println("input 1: $it")
+                    }
+                    searchSuggestionsAdapter?.submitList(input)
                 }
             }
 
@@ -1109,6 +1168,25 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         playlistNameFilterScrollView.isVisible = true
     }
+
+//    private var listener: OnSearchCompleteListener? = null
+    interface OnSearchCompleteListener {
+        fun onSearchComplete(isShowed: Boolean)
+    }
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        if (context is OnSearchCompleteListener) {
+//            listener = context
+//        } else {
+//            throw RuntimeException("$context must implement OnSearchCompleteListener")
+//        }
+//    }
+//
+//    override fun onDetach() {
+//        super.onDetach()
+//        listener = null
+//    }
+
 }
 
 data class Bookmark(val name: String, val url: String,val packageName: String? = null, var imagePath: Int? = null)

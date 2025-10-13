@@ -14,12 +14,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="@dimen/_20sdp">
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/download_button_type"
@@ -40,7 +40,7 @@
                     android:id="@+id/bottom_sheet_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
+                    android:paddingTop="@dimen/_5sdp"
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:textSize="15sp" />
@@ -51,11 +51,11 @@
                 android:id="@+id/download_button_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:clickable="false"
                 android:elevation="0dp"
                 app:borderWidth="0dp"
-                app:cornerRadius="10dp"
+                app:cornerRadius="@dimen/_10sdp"
                 app:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +66,7 @@
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:scrollbars="none"
-            android:paddingHorizontal="20dp"
+            android:paddingHorizontal="@dimen/_20sdp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.chip.ChipGroup
@@ -83,8 +83,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
-                    android:minWidth="30dp"
-                    app:cornerRadius="10dp"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:chipIcon="@drawable/ic_clock"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,9 +97,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
+                    android:minWidth="@dimen/_30sdp"
                     app:chipIcon="@drawable/ic_image"
-                    app:cornerRadius="10dp"
+                    app:cornerRadius="@dimen/_10sdp"
                     android:text="@string/thumbnail"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -111,9 +111,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
+                    android:minWidth="@dimen/_30sdp"
                     app:chipIcon="@drawable/ic_format"
-                    app:cornerRadius="10dp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -124,8 +124,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
-                    app:cornerRadius="10dp"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -136,8 +136,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
-                    app:cornerRadius="10dp"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:chipIcon="@drawable/ic_code"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -149,8 +149,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
-                    app:cornerRadius="10dp"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -161,8 +161,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
-                    app:cornerRadius="10dp"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     android:text="@string/command"
                     app:chipIcon="@drawable/ic_baseline_keyboard_arrow_right_24"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -176,8 +176,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:minWidth="30dp"
-                    app:cornerRadius="10dp"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     android:text="@string/location"
                     app:chipIcon="@drawable/baseline_folder_24"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -194,7 +194,7 @@
             style="@style/Widget.Material3.Button.TextButton.Icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:text="@string/app_name"
             android:textAlignment="textStart"
             android:textSize="15sp"
@@ -205,7 +205,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="end"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/_10sdp"
             android:orientation="horizontal">
 
             <Button
@@ -213,7 +213,7 @@
                 android:id="@+id/bottomsheet_remove_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:icon="@drawable/ic_baseline_delete_outline_24"
                 android:text="@string/Remove" />
 
@@ -223,7 +223,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Open_File"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:icon="@drawable/ic_open_file"
                 />
 
@@ -233,7 +233,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/redownload"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:icon="@drawable/ic_refresh"
                 />
 

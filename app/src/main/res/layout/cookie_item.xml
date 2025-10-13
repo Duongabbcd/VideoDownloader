@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="15dp">
+        android:padding="@dimen/_15sdp">
 
         <TextView
             android:id="@+id/title"
@@ -44,7 +44,7 @@
             android:id="@+id/cookieEnabled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
+            android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

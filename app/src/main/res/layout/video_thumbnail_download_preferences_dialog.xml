@@ -9,14 +9,14 @@
         android:id="@+id/embed_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/embed_thumb" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/save_thumbnail"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:text="@string/save_thumb"
         android:layout_height="wrap_content" />
 

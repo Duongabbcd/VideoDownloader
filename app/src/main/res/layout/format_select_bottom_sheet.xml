@@ -11,16 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
+        android:paddingBottom="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxLines="2"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:singleLine="false"
                 android:text="@string/format"
                 android:textSize="20sp"
@@ -42,7 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:singleLine="false"
                 android:text="@string/select_format"
                 android:textSize="12sp"
@@ -80,7 +80,7 @@
                     android:stateListAnimator="@null"
                     android:text="@string/update"
                     android:contentDescription="@string/update_formats"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     app:icon="@drawable/ic_refresh"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:autoLink="all"
                     android:text="@string/ok"
                     app:icon="@drawable/ic_check"
@@ -109,7 +109,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
+            android:paddingTop="@dimen/_10sdp"
             android:layout_height="wrap_content"
             tools:listitem="@layout/format_item" />
 
@@ -119,8 +119,8 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingTop="10dp">
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingTop="@dimen/_10sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"

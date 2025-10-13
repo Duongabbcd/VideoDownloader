@@ -7,7 +7,7 @@
     android:descendantFocusability="blocksDescendants"
     android:focusable="true"
     android:orientation="horizontal"
-    android:paddingStart="16dp"
+    android:paddingStart="@dimen/_16sdp"
     android:paddingEnd="0dp"
     tools:gravity="start|center_vertical">
 
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="@dimen/_10sdp"
         android:contentDescription="@string/home"
         android:src="@drawable/ic_home_outlined"
         tools:ignore="ContentDescription" />
@@ -38,7 +38,7 @@
         android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="@dimen/_16sdp"
         android:singleLine="true"
         android:textDirection="locale"
         android:textColor="?android:attr/textColorPrimary"
@@ -52,7 +52,7 @@
         android:layout_gravity="end|center_vertical"
         android:clickable="false"
         android:focusable="false"
-        android:padding="16dp"
+        android:padding="@dimen/_16sdp"
         android:tintMode="src_in"
         app:srcCompat="@drawable/ic_drag_handle"
         app:tint="?attr/colorControlNormal"

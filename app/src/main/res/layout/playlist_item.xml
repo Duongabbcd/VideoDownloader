@@ -14,8 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp">
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_10sdp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/downloads_image_view"
@@ -43,10 +43,10 @@
             android:textStyle="bold"
             android:maxLength="17"
             android:maxLines="1"
-            android:minWidth="10dp"
-            android:paddingHorizontal="5dp"
+            android:minWidth="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
             android:textSize="12sp"
-            app:cornerRadius="10dp"
+            app:cornerRadius="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="@+id/downloads_image_view"
             app:layout_constraintStart_toStartOf="@+id/downloads_image_view" />
 
@@ -57,17 +57,17 @@
             android:layout_height="wrap_content"
             android:background="#80000000"
             android:clickable="false"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/_5sdp"
             android:ellipsize="end"
             android:gravity="center"
             android:textStyle="bold"
             android:maxLength="17"
             android:maxLines="1"
-            android:minWidth="30dp"
-            android:paddingHorizontal="5dp"
+            android:minWidth="@dimen/_30sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:cornerRadius="10dp"
+            app:cornerRadius="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="@+id/downloads_image_view"
             app:layout_constraintEnd_toEndOf="@+id/downloads_image_view" />
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:scrollbars="none"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -100,7 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:scrollbars="none"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"

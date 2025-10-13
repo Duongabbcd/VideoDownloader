@@ -16,9 +16,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
@@ -46,7 +46,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:padding="15dp"
+            android:padding="@dimen/_15sdp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.chip.ChipGroup

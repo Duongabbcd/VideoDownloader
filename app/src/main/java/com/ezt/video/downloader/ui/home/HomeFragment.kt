@@ -1040,6 +1040,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
 
     private fun updateMultiplePlaylistResults(playlistTitles: List<String>) {
+        if(playlistTitles.isNotEmpty()) {
+
+        }
         playlistNameFilterChipGroup.children.filter { it.tag != "all" }.forEach {
             playlistNameFilterChipGroup.removeView(it)
         }

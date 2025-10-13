@@ -19,9 +19,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
+            android:paddingHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
@@ -66,9 +66,9 @@
             android:id="@+id/title_textinput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingHorizontal="10dp"
-            android:paddingBottom="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
             android:hint="@string/title"
             style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -84,8 +84,8 @@
             android:id="@+id/url_textinput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="10dp"
-            android:paddingBottom="10dp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
             android:hint="@string/url"
             app:endIconContentDescription="@string/import_from_clipboard"
             app:endIconMode="custom"
@@ -106,8 +106,8 @@
             android:id="@+id/download_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:backgroundTint="@android:color/transparent"
             app:tabGravity="start"
             app:tabMinWidth="0dp"
@@ -139,13 +139,13 @@
         <LinearLayout android:layout_width="match_parent"
             android:id="@+id/adjust"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="@dimen/_10sdp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingHorizontal="20dp"
+                android:paddingBottom="@dimen/_15sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content"
                 android:text="@string/every" />
@@ -153,7 +153,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -182,7 +182,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:hint="@string/every"
-                    android:paddingStart="10dp"
+                    android:paddingStart="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/everyMonthDay_textInput"
                     app:layout_constraintStart_toEndOf="@+id/every_textinput"
@@ -202,7 +202,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:hint="@string/day"
-                    android:paddingStart="10dp"
+                    android:paddingStart="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -222,8 +222,8 @@
                 android:id="@+id/weekdays"
                 android:layout_width="match_parent"
                 app:chipSpacingVertical="0dp"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 app:selectionRequired="true"
                 android:layout_height="wrap_content">
 
@@ -283,8 +283,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:paddingHorizontal="10dp"
-                android:paddingTop="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -294,14 +294,14 @@
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingEnd="10dp"
+                    android:paddingEnd="@dimen/_10sdp"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:inputType="number"
                         android:textAlignment="center"
-                        android:padding="15dp"
+                        android:padding="@dimen/_15sdp"
                         android:text="1"
                         android:layout_height="wrap_content"
                         />
@@ -313,7 +313,7 @@
                     android:id="@+id/every_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:hint="@string/set_time"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -334,18 +334,18 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingHorizontal="20dp"
+                android:paddingBottom="@dimen/_15sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content"
                 android:text="@string/starts" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/start_time"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
+                android:paddingBottom="@dimen/_10sdp"
                 android:hint="@string/starts"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -362,15 +362,15 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_weight="45"
-                android:paddingHorizontal="10dp"
-                android:paddingBottom="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
                 android:layout_height="0dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/startsMonth"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="15dp"
+                    android:padding="@dimen/_15sdp"
                     android:inputType="none"
                     />
 
@@ -378,7 +378,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:paddingHorizontal="20dp"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content"
                 android:text="@string/ends" />
@@ -388,22 +388,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="10dp"
-                android:paddingBottom="20dp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_20sdp"
                 android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/never"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:checked="true"
                     android:text="@string/never" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:weightSum="5"
                     android:orientation="horizontal">
 
@@ -412,7 +412,7 @@
                         android:layout_width="0dp"
                         app:layout_constraintWidth_percent="0.4"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
+                        android:paddingHorizontal="@dimen/_10sdp"
                         android:text="@string/on_time"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -434,7 +434,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
-                            android:padding="15dp" />
+                            android:padding="@dimen/_15sdp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -451,7 +451,7 @@
                         android:layout_width="0dp"
                         app:layout_constraintWidth_percent="0.4"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
+                        android:paddingHorizontal="@dimen/_10sdp"
                         android:text="@string/after"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -468,7 +468,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
-                            android:padding="15dp"
+                            android:padding="@dimen/_15sdp"
                             android:text="1"
                             android:textAlignment="center" />
 
@@ -478,7 +478,7 @@
                         android:id="@+id/textView8"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
+                        android:paddingHorizontal="@dimen/_10sdp"
                         android:maxLines="2"
                         app:layout_constraintHorizontal_bias="0.0"
                         android:text="@string/occurrences"
@@ -491,7 +491,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -518,7 +518,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -554,7 +554,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -592,7 +592,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/resetProcessedLinksConstraint"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="wrap_content">
 
                     <TextView

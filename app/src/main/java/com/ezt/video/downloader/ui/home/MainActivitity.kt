@@ -267,6 +267,7 @@ class MainActivity : BaseActivity() {
         handleIntents(intent)
 
         if (preferences.getBoolean("auto_update_ytdlp", false)){
+            return
             CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                 kotlin.runCatching {
                     if(VideoDownloadDB.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){

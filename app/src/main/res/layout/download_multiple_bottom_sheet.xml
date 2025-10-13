@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:elevation="10dp"
+        android:elevation="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -38,15 +38,15 @@
             android:id="@+id/downloadHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_bias="0.0"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shimmer_loading_title"
@@ -115,7 +115,7 @@
                 style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:contentDescription="@string/schedule"
                 app:icon="@drawable/ic_clock"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -144,9 +144,9 @@
             android:layout_width="match_parent"
             android:visibility="gone"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/bottom_sheet_edit_title"
@@ -206,7 +206,7 @@
                     android:id="@+id/count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="@dimen/_20sdp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -218,8 +218,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="0dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="20dp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_20sdp"
                     android:text="@string/file_size"
                     android:textStyle="bold"
                     android:visibility="gone"
@@ -234,7 +234,7 @@
                 android:id="@+id/selectActionButtons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -296,7 +296,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="85dp"
+            android:paddingBottom="8@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

@@ -13,9 +13,9 @@
         android:id="@+id/title_textinput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="10dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
         android:hint="@string/title"
         style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -31,8 +31,8 @@
         android:id="@+id/repo_textinput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="10dp"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
         app:expandedHintEnabled="true"
         app:hintEnabled="true"
         android:hint="@string/source"

@@ -20,14 +20,14 @@
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:scrollbars="none">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/providers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     app:chipSpacingVertical="-10dp"
                     app:singleLine="true"
                     app:singleSelection="true" />
@@ -49,7 +49,7 @@
                     android:id="@+id/queries"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/_10sdp"
                     app:chipSpacingVertical="-10dp"
                     app:layout_constraintEnd_toStartOf="@+id/init_search_query"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -62,10 +62,10 @@
                     style="?attr/materialIconButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:cornerRadius="10dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:icon="@drawable/ic_search"
-                    app:iconSize="20dp"
+                    app:iconSize="@dimen/_20sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,14 +84,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        
+        <TextView
+            android:text="Recently search"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingStart="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHome"
+            android:layout_marginTop="@dimen/_16sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingBottom="200dp"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -105,7 +113,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/_10sdp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -155,14 +163,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="15dp"
+            android:layout_marginVertical="@dimen/_15sdp"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/progress"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:translationZ="250dp"
+                android:translationZ="@dimen/_250sdp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/search_bar"
                 app:layout_constraintEnd_toEndOf="@+id/search_bar"
@@ -173,7 +181,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:cardCornerRadius="30dp">
+                    app:cardCornerRadius="@dimen/_30sdp">
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -203,7 +211,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="@dimen/_20sdp">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/playlist_selection_chips"
@@ -219,10 +227,10 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:gravity="center"
-                        android:minWidth="30dp"
+                        android:minWidth="@dimen/_30sdp"
                         android:tag="all"
                         android:text="@string/all"
-                        app:cornerRadius="10dp"
+                        app:cornerRadius="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -248,8 +256,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:contentDescription="@string/link_you_copied"
             android:text="@string/link_you_copied"
             android:visibility="gone"
@@ -261,8 +269,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/download_all"
             android:visibility="gone"
             app:icon="@drawable/ic_down" />
@@ -272,8 +280,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/download"
             android:visibility="gone"
             app:elevation="0dp"

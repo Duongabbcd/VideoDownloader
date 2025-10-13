@@ -15,12 +15,12 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="@dimen/_20sdp"
             app:cardElevation="0dp"
-            app:cardMaxElevation="12dp"
+            app:cardMaxElevation="@dimen/_12sdp"
             app:cardBackgroundColor="@color/grey"
             app:cardPreventCornerOverlap="true"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/_10sdp"
             >
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -29,12 +29,12 @@
 
             <TextView
                 android:layout_width="300dp"
-                android:layout_height="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_20sdp"
                 android:textSize="15sp"
                 android:textColor="@color/white"
                 android:background="@color/light_grey"
@@ -46,12 +46,12 @@
 
             <TextView
                 android:layout_width="200dp"
-                android:layout_height="10dp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_marginTop="40dp"
-                android:layout_marginLeft="10dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_20sdp"
                 android:textSize="15sp"
                 android:textColor="@color/white"
                 android:background="@color/light_grey"
@@ -62,17 +62,17 @@
                 android:shadowColor="@color/black" />
 
             <TextView
-                android:layout_width="50dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:background="@color/light_grey"
                 android:gravity="bottom"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_20sdp"
                 android:textSize="15sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -86,18 +86,18 @@
                 android:layout_height="match_parent"
                 android:gravity="bottom|right"
                 android:orientation="horizontal"
-                android:paddingBottom="16dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingBottom="@dimen/_16sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp">
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
                     android:id="@+id/download_music"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    app:cornerRadius="10dp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:backgroundTint="@color/light_grey"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     />
 
                 <com.google.android.material.button.MaterialButton
@@ -105,9 +105,9 @@
                     android:id="@+id/download_video"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    app:cornerRadius="10dp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:backgroundTint="@color/light_grey"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     />
 
             </LinearLayout>

@@ -16,9 +16,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
@@ -46,9 +46,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/title"
-            android:padding="15dp"
+            android:padding="@dimen/_15sdp"
             android:layout_width="match_parent"
-            android:paddingBottom="10dp"
+            android:paddingBottom="@dimen/_10sdp"
             android:layout_height="wrap_content"
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/ic_plus"
@@ -65,8 +65,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:paddingHorizontal="15dp"
-            android:paddingBottom="15dp"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_15sdp"
             android:scrollbars="none"
             android:layout_height="wrap_content">
 

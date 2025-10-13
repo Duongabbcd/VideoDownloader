@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingBottom="20dp"
+        android:paddingBottom="@dimen/_20sdp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_image"
             android:contentDescription="@string/save_thumb"
-            app:iconSize="30dp"
+            app:iconSize="@dimen/_30sdp"
             app:iconTint="?android:colorAccent"
             app:layout_constraintTop_toTopOf="@+id/frame_layout"
             app:layout_constraintEnd_toEndOf="@+id/frame_layout" />
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/save_thumb"
             app:icon="@drawable/ic_image"
-            app:iconSize="30dp"
+            app:iconSize="@dimen/_30sdp"
             android:indeterminate="true"
             app:iconTint="?android:colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
@@ -77,13 +77,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="10dp">
+                android:layout_margin="@dimen/_10sdp">
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:textStyle="bold"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
@@ -99,7 +99,7 @@
                     android:id="@+id/bottom_info"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:ellipsize="end"
                     app:layout_constraintVertical_bias="0.0"
                     android:singleLine="false"
@@ -115,13 +115,13 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/download_music"
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                    android:layout_width="55dp"
+                    android:layout_width="5@dimen/_5sdp"
                     app:elevation="0dp"
                     android:elevation="0dp"
                     app:borderWidth="0dp"
                     android:contentDescription="@string/audio"
-                    android:layout_height="55dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_height="5@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     app:icon="@drawable/ic_music"
                     app:layout_constraintEnd_toStartOf="@+id/download_video"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -129,11 +129,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/download_video"
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="5@dimen/_5sdp"
+                    android:layout_height="5@dimen/_5sdp"
                     app:elevation="0dp"
                     android:contentDescription="@string/video"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     app:icon="@drawable/ic_video"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -165,8 +165,8 @@
                             android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
                             android:text="@string/running"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -186,8 +186,8 @@
                             android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="10dp"
-                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
                             android:text="@string/download_queue"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -208,7 +208,7 @@
                             style="@style/Widget.Material3.Button.TextButton.Icon"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/_10sdp"
                             android:singleLine="true"
                             android:text="@string/app_name"
                             android:textAlignment="textStart"

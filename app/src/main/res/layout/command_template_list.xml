@@ -9,16 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
+        android:paddingBottom="@dimen/_20sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
@@ -28,7 +28,7 @@
                 android:text="@string/command_templates"
                 android:textSize="20sp"
                 android:maxLines="2"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintEnd_toStartOf="@+id/command_ok"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,8 +62,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:scrollbars="none"
-            android:paddingTop="10dp"
-            android:paddingHorizontal="10dp"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:layout_height="wrap_content">
 
             <LinearLayout

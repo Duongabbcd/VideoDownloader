@@ -7,15 +7,15 @@
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/remove_audio"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:text="@string/remove_audio"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/also_download_audio"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:text="@string/also_download_audio"
         android:layout_height="wrap_content" />
 

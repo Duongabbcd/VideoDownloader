@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:id="@+id/linear"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_5sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -22,13 +22,13 @@
             android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:drawablePadding="20dp"
+            android:drawablePadding="@dimen/_20sdp"
             android:maxLength="100"
             android:ellipsize="end"
             android:focusable="true"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:paddingEnd="20dp"
+            android:paddingEnd="@dimen/_20sdp"
             android:textSize="16sp"
             android:textStyle="bold"
             app:drawableStartCompat="@drawable/ic_search" />

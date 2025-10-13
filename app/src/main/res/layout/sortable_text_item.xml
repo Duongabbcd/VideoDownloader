@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingVertical="10dp"
-    android:paddingHorizontal="20dp"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_20sdp"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -14,8 +14,8 @@
         android:layout_gravity="end|center_vertical"
         android:clickable="false"
         android:focusable="false"
-        android:paddingTop="5dp"
-        android:paddingEnd="20dp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_20sdp"
         android:paddingStart="0dp"
         android:tintMode="src_in"
         app:layout_constraintBottom_toBottomOf="parent"

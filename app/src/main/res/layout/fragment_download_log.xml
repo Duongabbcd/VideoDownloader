@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
                         android:gravity="bottom"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:scrollbars="none"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />

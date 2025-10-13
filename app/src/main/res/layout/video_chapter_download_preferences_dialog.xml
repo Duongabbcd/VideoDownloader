@@ -9,14 +9,14 @@
         android:id="@+id/add_chapters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/add_chapters" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/split_by_chapters"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:text="@string/split_by_chapters"
         android:layout_height="wrap_content" />
 

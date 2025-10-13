@@ -17,7 +17,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drag_handle">
@@ -44,7 +44,7 @@
             <NumberPicker
                 android:id="@+id/hours"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp" />
+                android:layout_height="@dimen/_100sdp" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,7 +69,7 @@
             <NumberPicker
                 android:id="@+id/minutes"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp" />
+                android:layout_height="@dimen/_100sdp" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +94,7 @@
             <NumberPicker
                 android:id="@+id/seconds"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp" />
+                android:layout_height="@dimen/_100sdp" />
         </LinearLayout>
 
         <LinearLayout
@@ -119,7 +119,7 @@
             <NumberPicker
                 android:id="@+id/milliseconds"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
 

@@ -17,9 +17,9 @@
                 android:id="@+id/title_textinput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="10dp"
-                android:paddingBottom="10dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
                 android:hint="@string/title"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -34,8 +34,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="10dp"
-                android:divider="@drawable/divider_10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:divider="@drawable/divider_@dimen/_10sdp"
                 android:showDividers="middle"
                 android:orientation="horizontal">
 
@@ -80,17 +80,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingHorizontal="10dp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:text="@string/audio_quality" />
             <include layout="@layout/format_item" />
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outputPath"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingBottom="0dp"
-                android:paddingTop="10dp"
+                android:paddingTop="@dimen/_10sdp"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
 
             <TextView
                 android:id="@+id/freespace"
-                android:paddingHorizontal="20dp"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:textSize="13sp"
                 android:textColor="@android:color/tab_indicator_text"
                 android:layout_width="wrap_content"

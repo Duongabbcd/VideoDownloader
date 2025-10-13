@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="15dp">
+        android:padding="@dimen/_15sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/drag_view"
@@ -26,9 +26,9 @@
             android:layout_gravity="end|center_vertical"
             android:clickable="false"
             android:focusable="false"
-            android:paddingVertical="16dp"
+            android:paddingVertical="@dimen/_16sdp"
             android:paddingStart="0dp"
-            android:paddingEnd="20dp"
+            android:paddingEnd="@dimen/_20sdp"
             android:visibility="gone"
             android:tintMode="src_in"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -44,14 +44,14 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:textStyle="bold"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/_20sdp"
             app:layout_constraintEnd_toStartOf="@+id/materialSwitch"
             app:layout_constraintStart_toEndOf="@id/drag_view"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.ChipGroup
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toStartOf="@+id/materialSwitch"
             app:layout_constraintStart_toEndOf="@id/drag_view"
             app:layout_constraintTop_toBottomOf="@+id/title"

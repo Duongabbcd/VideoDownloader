@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="20dp"
+    android:padding="@dimen/_20sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
-            android:paddingVertical="15dp"
+            android:paddingVertical="@dimen/_15sdp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +44,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            app:layout_constraintHeight_max="50dp"
+            android:layout_height="1@dimen/_70sdp"
+            app:layout_constraintHeight_max="@dimen/_50sdp"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:chipSpacingVertical="-7dp"
-                app:chipSpacingHorizontal="5dp"
+                app:chipSpacingHorizontal="@dimen/_5sdp"
                 app:selectionRequired="false"
                 app:singleSelection="false">
 
@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
-        android:paddingVertical="15dp"
+        android:paddingVertical="@dimen/_15sdp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacingVertical="-7dp"
-            app:chipSpacingHorizontal="5dp"
+            app:chipSpacingHorizontal="@dimen/_5sdp"
             app:selectionRequired="false"
             app:singleSelection="false">
 

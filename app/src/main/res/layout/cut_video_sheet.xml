@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingBottom="20dp"
+        android:paddingBottom="@dimen/_20sdp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
@@ -46,7 +46,7 @@
                     android:id="@+id/progress"
                     android:layout_width="wrap_content"
                     android:indeterminate="true"
-                    android:translationZ="10dp"
+                    android:translationZ="@dimen/_10sdp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
                     android:id="@+id/pause"
                     android:visibility="gone"
                     android:clickable="false"
-                    app:iconSize="50dp"
+                    app:iconSize="@dimen/_50sdp"
                     style="@style/Widget.Material3.Button.IconButton"
                     app:iconTint="?android:colorAccent"
                     app:icon="@drawable/exomedia_ic_play_arrow_white"
@@ -72,11 +72,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/rewind"
                     android:clickable="false"
-                    app:iconSize="50dp"
+                    app:iconSize="@dimen/_50sdp"
                     style="@style/Widget.Material3.Button.IconButton"
                     app:iconTint="?android:colorAccent"
                     app:icon="@drawable/exomedia_ic_rewind_white"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_width="wrap_content"
                     android:contentDescription="@string/restart"
                     android:indeterminate="true"
@@ -94,7 +94,7 @@
                     android:contentDescription="@string/remove_audio"
                     android:layout_height="wrap_content"
                     app:icon="@drawable/ic_music"
-                    app:iconSize="30dp"
+                    app:iconSize="@dimen/_30sdp"
                     app:iconTint="?android:colorAccent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -102,11 +102,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/forward"
                     android:clickable="false"
-                    app:iconSize="50dp"
+                    app:iconSize="@dimen/_50sdp"
                     style="@style/Widget.Material3.Button.IconButton"
                     app:iconTint="?android:colorAccent"
                     app:icon="@drawable/exomedia_ic_fast_forward_white"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_width="wrap_content"
                     android:contentDescription="@string/end"
                     android:indeterminate="true"
@@ -121,19 +121,19 @@
                     android:id="@+id/durationText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/_10sdp"
                     android:background="#80000000"
                     android:clickable="false"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLength="17"
                     android:maxLines="1"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="5dp"
+                    android:minWidth="@dimen/_30sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    app:cornerRadius="10dp"
+                    app:cornerRadius="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -154,7 +154,7 @@
                 android:id="@+id/rangeSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:valueFrom="00.0"
                 android:valueTo="100.0"
                 app:labelBehavior="gone"
@@ -162,7 +162,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:thumbRadius="0dp"
-                app:trackHeight="20dp"
+                app:trackHeight="@dimen/_20sdp"
                 app:values="@array/initial_slider_values" />
 
 
@@ -170,7 +170,7 @@
                 android:id="@+id/linearLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@id/suggested_cuts"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +183,7 @@
                     style="@style/Widget.Material3.TextInputLayout.FilledBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="70dp"
+                    android:minWidth="@dimen/_70sdp"
                     android:hint="@string/start">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -198,7 +198,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:paddingHorizontal="10dp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:text="-"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -211,7 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/end"
-                    android:minWidth="70dp"
+                    android:minWidth="@dimen/_70sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/colon">
 
@@ -228,8 +228,8 @@
                 android:id="@+id/suggested_cuts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="10dp"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingTop="@dimen/_10sdp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.533"
@@ -266,10 +266,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
+                android:paddingTop="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 app:layout_constraintTop_toBottomOf="@+id/suggested_cuts"
                 app:layout_constraintVertical_bias="1.0"
                 >
@@ -278,7 +278,7 @@
                     android:id="@+id/cancelButton"
                     style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_height="wrap_content"
                     android:text="@string/cancel"
                     android:outlineProvider="none"
@@ -302,8 +302,8 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@+id/frame_layout"
             android:orientation="vertical">
 
@@ -330,7 +330,7 @@
                     style="?attr/materialIconButtonFilledTonalStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     app:icon="@drawable/ic_baseline_delete_outline_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/new_cut"
@@ -361,9 +361,9 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cut_list_chip_group"
-                        android:paddingTop="10dp"
+                        android:paddingTop="@dimen/_10sdp"
                         app:chipSpacingVertical="-7dp"
-                        app:chipSpacingHorizontal="5dp"
+                        app:chipSpacingHorizontal="@dimen/_5sdp"
                         app:singleSelection="true"
                         app:selectionRequired="false"
                         android:layout_width="match_parent"

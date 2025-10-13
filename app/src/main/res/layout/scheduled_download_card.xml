@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@+id/scheduled_time"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="10dp"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingTop="@dimen/_10sdp"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

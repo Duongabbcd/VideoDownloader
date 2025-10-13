@@ -296,7 +296,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="8@dimen/_5sdp"
+            android:paddingBottom="@dimen/_85sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

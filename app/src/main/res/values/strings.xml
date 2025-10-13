@@ -2,6 +2,13 @@
     <string name="app_name" translatable="false">VideoDownloader</string>
     <string name="imageView" translatable="false">Image View</string>
 
+    <string name="contact_email" translatable="false"></string>
+    <string name="admob_id" translatable="false"></string>
+    <string name="adjust_token_key" translatable="false"></string>
+    <string name="facebook_id" translatable="false"></string>
+    <string name="facebook_client_token" translatable="false"></string>
+
+
     <string name="worst_quality">Worst quality</string>
     <string name="best_quality">Best quality</string>
     <string name="search">Search</string>
@@ -502,4 +509,15 @@
     <string name="disable_flat_playlist">Disable flat playlist</string>
     <string name="disable_flat_playlist_summary">Don\'t use --flat-playlist. Slower data fetching, but more data rich</string>
     <string name="chapters">Chapters</string>
+    <string name="recently_search">Recently search</string>
+
+    <string name="go_btn">Go Button</string>
+    <string name="refresh_btn">Refresh</string>
+
+    //download files
+    <string name="title_grant_Permission">Grant Permission</string>
+    <string name="message_grant_Permission">Please grant all permissions to access additional functionality.</string>
+    <string name="goto_setting">Go to setting</string>
+    <string name="permission_denied">Permission denied</string>
+
 </resources>

@@ -104,15 +104,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:contentDescription="@string/schedule"
                 android:outlineProvider="none"
                 app:icon="@drawable/ic_clock"
-                android:contentDescription="@string/schedule"
                 app:layout_constraintBottom_toBottomOf="@id/bottomsheet_download_button"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_download_button"
-                app:layout_constraintTop_toTopOf="@id/bottomsheet_download_button" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/bottomsheet_download_button"
+                android:backgroundTint="@color/blue_md_theme_light_inversePrimary"
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

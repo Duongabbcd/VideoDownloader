@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.parcelize) apply false
     alias(libs.plugins.kspp) apply false
     alias(libs.plugins.secrets) apply false
+    id("com.google.dagger.hilt.android") version "2.55" apply false
 }

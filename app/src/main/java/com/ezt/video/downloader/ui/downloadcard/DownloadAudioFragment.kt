@@ -304,7 +304,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
 
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
-                    visibility = if (shownFields.contains("adjust_audio")) View.VISIBLE else View.GONE
+                    visibility = if (shownFields.contains("adjust_audio")) View.GONE else View.GONE
                     if (isVisible){
                         UiUtil.configureAudio(
                             view,

@@ -44,6 +44,8 @@
         <profileable
             android:shell="true"
             tools:targetApi="29" />
+        <activity android:name=".ui.browse.BrowseActivity"
+            android:exported="true"/>
         <activity
             android:name=".ui.home.MainActivity"
             android:configChanges="locale"

@@ -13,7 +13,7 @@
         android:background="@color/light_grey"
         android:textColor="@color/white"
         android:clickable="false"
-        android:layout_height="5@dimen/_5sdp"
+        android:layout_height="@dimen/_55sdp"
         android:gravity="center"
         android:minWidth="@dimen/_30sdp"
         app:cornerRadius="@dimen/_10sdp"

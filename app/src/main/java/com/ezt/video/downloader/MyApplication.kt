@@ -1,10 +1,14 @@
 package com.ezt.video.downloader
 
+import android.app.Activity
 import android.app.Application
+import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import androidx.preference.PreferenceManager
 import android.widget.Toast
 import androidx.core.content.edit
+import com.ezt.video.downloader.util.Common
 import com.ezt.video.downloader.util.NotificationUtil
 import com.ezt.video.downloader.util.ThemeUtil
 import com.yausername.aria2c.Aria2c
@@ -16,7 +20,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class MyApplication : Application() {
+class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
+    var currentActivity: Activity? = null
+        private set
+
+    private var isActivityChangingConfigurations = false
+    private var activityReferences = 0
+    private var isInBackground = true
+    private var foregroundHandled = false // ✅ NEW
+    private val activityStartTimes = mutableMapOf<String, Long>()
 
     override fun onCreate() {
         super.onCreate()
@@ -70,14 +82,111 @@ class MyApplication : Application() {
 
     }
 
+    private val appStateListeners = mutableListOf<AppStateListener>()
+
     private fun createNotificationChannels() {
         val notificationUtil = NotificationUtil(this)
         notificationUtil.createNotificationChannel()
     }
 
+    fun registerAppStateListener(listener: AppStateListener) {
+        if (!appStateListeners.contains(listener)) {
+            appStateListeners.add(listener)
+        }
+    }
+
+    fun unregisterAppStateListener(listener:AppStateListener) {
+        appStateListeners.remove(listener)
+    }
+
+    fun onAppForegrounded() {
+        if (foregroundHandled) return // ✅ Prevent duplicate triggers
+        foregroundHandled = true
+
+        for (listener in appStateListeners) {
+            listener.onAppReturnedToForeground()
+        }
+    }
+
+    fun onAppBackgrounded() {
+        foregroundHandled = false // ✅ Reset on background
+        for (listener in appStateListeners) {
+            listener.onAppWentToBackground()
+        }
+    }
+
+
+    override fun onActivityCreated(
+        activity: Activity,
+        savedInstanceState: Bundle?
+    ) {
+        val lang = Common.getPreLanguage(this)
+        println("onActivityCreated: $lang")
+        Common.setLocale(this, lang)
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+        activityReferences++
+        if (activityReferences == 1 && !isActivityChangingConfigurations) {
+            // App enters foreground
+            onAppForegrounded()
+        }
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        val name = activity::class.java.simpleName
+        activityStartTimes[name] = System.currentTimeMillis()
+
+        currentActivity = activity
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+        if (currentActivity == activity) {
+            currentActivity = null
+        }
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+        isActivityChangingConfigurations = activity.isChangingConfigurations
+        activityReferences--
+        if (activityReferences == 0 && !isActivityChangingConfigurations) {
+            // App enters background
+            onAppBackgrounded()
+        }
+    }
+
+    override fun onActivitySaveInstanceState(
+        activity: Activity,
+        outState: Bundle
+    ) {
+        //do nothing
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+        val startTime = activityStartTimes.remove(screenName)
+
+//        if (startTime != null) {
+//            val mode = analyticsLogger.getCurrentModeByScreen(screenName)
+//            analyticsLogger.updateUserProperties(this, screenName, mode)
+//
+//            val durationMs = System.currentTimeMillis() - startTime
+//            Log.d("onActivityDestroyed", "$screenName was active for ${durationMs}ms")
+//            // Optionally, send to Firebase:
+//            analyticsLogger.logScreenExit(screenName, durationMs)
+//        }
+    }
+
     companion object {
-        private const val TAG = "App"
+        var screenName = ""
+        private const val TAG = "MyApplication"
+
         private lateinit var applicationScope: CoroutineScope
         lateinit var instance: MyApplication
     }
+}
+
+
+interface AppStateListener {
+    fun onAppReturnedToForeground()
+    fun onAppWentToBackground()
 }

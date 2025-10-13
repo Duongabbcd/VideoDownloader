@@ -407,4 +407,27 @@
     <color name="monochrome_theme_dark_inverseSurface">#C3C3C3</color>
     <color name="monochrome_theme_dark_inversePrimary">#707070</color>
 
+    <!--    custom colors-->
+    <color name="dark_blue">#0A7CC3</color>
+    <color name="cool_blue">#0091EA</color>
+    <color name="cool_green">#64DD17</color>
+    <color name="black_green">#0B9B11</color>
+    <color name="cool_pink">#F50057</color>
+    <color name="yellow">#FFD600</color>
+    <color name="purple_500">#FF6200EE</color>
+
+    <color name="transparent">#00FFFFFF</color>
+    <color name="customBlack">#323232</color>
+    <color name="textColorHint">#939393</color>
+    <color name="high_light">#347BFA</color>
+    <color name="unselected">#BCBCBC</color>
+
+
+    <integer-array name="myColors">
+        <item>@color/cool_green</item>
+        <item>@color/cool_pink</item>
+        <item>@color/black</item>
+        <item>@color/cool_blue</item>
+        <item>@color/purple_500</item>
+    </integer-array>
 </resources>

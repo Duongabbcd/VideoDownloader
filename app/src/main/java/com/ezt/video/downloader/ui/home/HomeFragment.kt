@@ -28,6 +28,7 @@ import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -56,8 +57,11 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.ui.adapter.SearchSuggestionsAdapter
+import com.ezt.video.downloader.ui.home.adapter.BookmarkAdapter
 import com.ezt.video.downloader.ui.more.WebViewActivity
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
+import com.ezt.video.downloader.util.Common.gone
+import com.ezt.video.downloader.util.Common.visible
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
 import com.ezt.video.downloader.util.NotificationUtil
@@ -116,6 +120,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var chipGroupDivider: View? = null
     private var queriesChipGroup: ChipGroup? = null
     private var recyclerView: RecyclerView? = null
+    private var bookmarkRecyclerView: RecyclerView? = null
     private var searchSuggestionsRecyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
@@ -126,11 +131,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var appBarLayout: AppBarLayout? = null
     private var materialToolbar: MaterialToolbar? = null
     private var settingIcon: ImageView? = null
+    private var recentlySearch: TextView? = null
     private var loadingItems: Boolean = false
+    private var loading: LinearLayout? = null
     private var queryList = mutableListOf<String>()
 
     private var showDownloadAllFab: Boolean = false
     private var showClipboardFab: Boolean = false
+
+    private lateinit var bookmarkAdapter: BookmarkAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -176,6 +185,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         playlistNameFilterScrollView = view.findViewById(R.id.playlist_selection_chips_scrollview)
         playlistNameFilterChipGroup = view.findViewById(R.id.playlist_selection_chips)
         settingIcon = view.findViewById(R.id.setting_icon)
+        recentlySearch = view.findViewById(R.id.recentlySearch)
+        loading = view.findViewById(R.id.loading)
 
         runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
 
@@ -184,13 +195,19 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 this,
                 requireActivity()
             )
+        bookmarkAdapter = BookmarkAdapter()
         recyclerView = view.findViewById(R.id.recyclerViewHome)
+        bookmarkRecyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
+        bookmarkRecyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.multiple_grid_size))
         recyclerView?.adapter = homeAdapter
+        bookmarkRecyclerView?.adapter = bookmarkAdapter
         recyclerView?.enableFastScroll()
+        bookmarkRecyclerView?.enableFastScroll()
 
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
 
+        bookmarkAdapter.submitList(defaultList)
 
 
         searchSuggestionsAdapter = SearchSuggestionsAdapter(
@@ -207,6 +224,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         resultViewModel.getFilteredList().observe(requireActivity()) {
             kotlin.runCatching {
+//                recentlySearch?.isVisible = it.isNotEmpty()
                 homeAdapter!!.submitList(it)
                 resultsList = it
                 progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
@@ -407,6 +425,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         requireView().post {
             checkClipboard().apply {
                 this?.apply {
+                    this.onEach {
+                        println("checkClipboard: $it")
+                    }
+
+                    val latestURL = this.last()
+                    searchBar?.setText(latestURL)
+
                     showClipboardFab = this.isNotEmpty()
                     clipboardFab?.isVisible = showClipboardFab
                     clipboardFab?.setOnClickListener {
@@ -707,6 +732,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     private fun startSearch() {
+        println("startSearch: $queryList")
         lifecycleScope.launch(Dispatchers.IO){
             resultViewModel.deleteAll()
             if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
@@ -973,6 +999,19 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     companion object {
         private const val TAG = "HomeFragment"
+
+        private val defaultList = listOf<Bookmark>(
+//            Bookmark("Google", "https://www.google.com", null, R.drawable.icon_google),
+//            Bookmark("Youtube", "https://youtube.com", null, R.drawable.icon_youtube),
+            Bookmark("Imdb", "https://www.imdb.com", "com.imdb.mobile", R.drawable.icon_imdb),
+            Bookmark("Facebook", "https://www.facebook.com/", "com.facebook.katana", R.drawable.icon_facebook),
+            Bookmark("Instagram", "https://www.instagram.com/", "com.instagram.android", R.drawable.icon_instagram),
+            Bookmark("TikTok", "https://www.tiktok.com", "com.zhiliaoapp.musically", R.drawable.icon_tiktok),
+            Bookmark("WhatsApp", "https://www.whatsapp.com", "com.whatsapp", R.drawable.icon_whatsapp),
+            Bookmark("Twitter (X)", "https://x.com",  "com.twitter.android", R.drawable.icon_twitter),
+            Bookmark("Dailymotion", "https://www.dailymotion.com",  "com.dailymotion.dailymotion",  R.drawable.icon_dailymotion),
+            Bookmark("Pinterest", "https://www.pinterest.com", "com.pinterest", R.drawable.icon_pinterest)
+        )
     }
 
     override fun onSearchSuggestionClick(text: String) {
@@ -1040,9 +1079,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
 
     private fun updateMultiplePlaylistResults(playlistTitles: List<String>) {
-        if(playlistTitles.isNotEmpty()) {
-
-        }
         playlistNameFilterChipGroup.children.filter { it.tag != "all" }.forEach {
             playlistNameFilterChipGroup.removeView(it)
         }
@@ -1074,3 +1110,5 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         playlistNameFilterScrollView.isVisible = true
     }
 }
+
+data class Bookmark(val name: String, val url: String,val packageName: String? = null, var imagePath: Int? = null)

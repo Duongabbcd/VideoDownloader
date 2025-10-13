@@ -347,7 +347,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     }
 
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
-                    visibility = if (shownFields.contains("adjust_video")) View.VISIBLE else View.GONE
+                    visibility = if (shownFields.contains("adjust_video")) View.GONE else View.GONE
                     if (isVisible){
                         UiUtil.configureVideo(
                             view,

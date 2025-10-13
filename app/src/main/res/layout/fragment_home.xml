@@ -80,22 +80,38 @@
 
     </com.google.android.material.search.SearchView>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allBookmarks"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:scrollbars="none" />
         
         <TextView
-            android:text="Recently search"
+            android:id="@+id/recentlySearch"
+            android:visibility="gone"
+            android:text="@string/recently_search"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:paddingStart="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/allBookmarks"
+            android:layout_below="@id/allBookmarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHome"
-            android:layout_marginTop="@dimen/_16sdp"
+            app:layout_constraintTop_toBottomOf="@id/recentlySearch"
+            android:layout_below="@+id/recentlySearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
@@ -132,7 +148,7 @@
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/home_appbarlayout"
@@ -288,6 +304,21 @@
             app:icon="@drawable/ic_down"
             app:srcCompat="@drawable/ic_music" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/loading"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:indeterminateTint="@color/dark_blue"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

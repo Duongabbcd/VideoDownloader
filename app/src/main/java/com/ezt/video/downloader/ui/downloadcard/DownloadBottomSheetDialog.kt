@@ -306,7 +306,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         scheduleBtn.visibility = if(shownFields.contains("schedule")){
-            View.VISIBLE
+            View.GONE
         }else{
             View.GONE
         }

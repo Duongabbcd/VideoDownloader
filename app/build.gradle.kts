@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.parcelize)
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -84,6 +85,10 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.media3.exoplayer)
+
+    implementation("com.google.dagger:hilt-android:2.55")
+    ksp("com.google.dagger:hilt-compiler:2.55")
+
     // Kotlin / Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.coroutines.get()}")
 
@@ -142,4 +147,12 @@ dependencies {
     implementation ("androidx.compose.material3:material3-android:1.3.1")
     implementation ("androidx.compose.runtime:runtime:1.9.3")
     implementation ("androidx.compose.ui:ui-android:1.7.8")
+
+    //glide
+    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1") // or your Glide version
+    ksp("com.github.bumptech.glide:compiler:4.15.1")        // if using kapt
+    implementation("androidx.browser:browser:1.6.0")
+
+
 }

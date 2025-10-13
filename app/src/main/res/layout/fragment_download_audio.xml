@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:divider="@drawable/divider_@dimen/_10sdp"
+                android:divider="@drawable/divider_10dp"
                 android:showDividers="middle"
                 android:orientation="horizontal">
 

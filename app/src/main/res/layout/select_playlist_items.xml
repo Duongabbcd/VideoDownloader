@@ -76,12 +76,12 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/check_all"
-            android:layout_width="5@dimen/_5sdp"
+            android:layout_width="@dimen/_55sdp"
             app:elevation="0dp"
             android:elevation="0dp"
             app:borderWidth="0dp"
             android:contentDescription="@string/select_all"
-            android:layout_height="5@dimen/_5sdp"
+            android:layout_height="@dimen/_55sdp"
             app:layout_anchor="@id/bottomAppBar"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:src="@drawable/ic_select_all"
@@ -159,7 +159,7 @@
             android:paddingTop="@dimen/_10sdp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="8@dimen/_5sdp"
+            android:paddingBottom="@dimen/_85sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

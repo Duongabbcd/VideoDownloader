@@ -2,6 +2,7 @@ package com.ezt.video.downloader.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
@@ -223,20 +224,24 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         val progressBar = view.findViewById<View>(R.id.progress)
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        resultViewModel.getFilteredList().observe(requireActivity()) {
+        resultViewModel.getFilteredList().observe(requireActivity()) { items ->
             kotlin.runCatching {
 //                recentlySearch?.isVisible = it.isNotEmpty()
-                homeAdapter!!.submitList(it)
-                resultsList = it
+                items.onEach {
+                    println("showSingleDownloadSheet 4: $it")
+                }
+                homeAdapter!!.submitList(items)
+                resultsList = items
                 progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                 if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                    showDownloadAllFab = it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems
+                    showDownloadAllFab = items.size > 1 && items[0].playlistTitle.isNotEmpty() && !loadingItems
                     downloadAllFab!!.isVisible = showDownloadAllFab
                 }else if (resultViewModel.repository.itemCount.value == 1){
                     if (sharedPreferences!!.getBoolean("download_card", true)){
-                        if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+                        if(items.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+
                             showSingleDownloadSheet(
-                                it[0],
+                                items[0],
                                 DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
                         }
@@ -312,6 +317,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                                     lifecycleScope.launch {
                                         if (sharedPreferences!!.getBoolean("download_card", true)) {
                                             withContext(Dispatchers.Main){
+                                                println("showSingleDownloadSheet 5")
                                                 showSingleDownloadSheet(
                                                     resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
                                                     type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
@@ -394,7 +400,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         super.onResume()
         if(arguments?.getString("url") == null){
             if (!resultViewModel.uiState.value.processing){
-                resultViewModel.checkTrending()
+//                resultViewModel.checkTrending()
+                Log.d(TAG, "onResume: ${resultViewModel.uiState.value.processing}")
             }
         }else{
             arguments?.remove("url")
@@ -433,7 +440,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         println("checkClipboard: $it")
                     }
 
-                    val latestURL = this.last()
+                    latestURL = this.last()
                     searchBar?.setText(latestURL)
 
                     showClipboardFab = this.isNotEmpty()
@@ -758,6 +765,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     val check = sharedPreferences!!.getBoolean("download_card", true)
                     if (check) {
                         withContext(Dispatchers.Main){
+                            println("showSingleDownloadSheet 6")
                             showSingleDownloadSheet(
                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
                                 type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
@@ -809,6 +817,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
         recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
         if (sharedPreferences!!.getBoolean("download_card", true)) {
+            println("showSingleDownloadSheet 3")
             showSingleDownloadSheet(item!!, type!!)
         } else {
             lifecycleScope.launch{
@@ -825,6 +834,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     override fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
+        println("showSingleDownloadSheet 1")
         showSingleDownloadSheet(item!!, type!!)
     }
 
@@ -958,6 +968,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     lifecycleScope.launch {
                         val showDownloadCard = sharedPreferences!!.getBoolean("download_card", true)
                         if (showDownloadCard && selectedObjects.size == 1) {
+                            println("showSingleDownloadSheet 2")
                             showSingleDownloadSheet(
                                 selectedObjects[0],
                                 downloadViewModel.getDownloadType(url = selectedObjects[0].url)
@@ -1035,6 +1046,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
 
             if (containsYouTube) {
+                // Clear clipboard
+                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
                 // Show toast
                 searchBar!!.setText("")
                 Toast.makeText(requireContext(), resources.getString(R.string.youtube_desc), Toast.LENGTH_SHORT).show()
@@ -1053,6 +1066,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     companion object {
         private const val TAG = "HomeFragment"
+
+        var latestURL = ""
 
         private val defaultList = listOf<Bookmark>(
 //            Bookmark("Google", "https://www.google.com", null, R.drawable.icon_google),

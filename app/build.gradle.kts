@@ -154,5 +154,5 @@ dependencies {
     ksp("com.github.bumptech.glide:compiler:4.15.1")        // if using kapt
     implementation("androidx.browser:browser:1.6.0")
 
-
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }

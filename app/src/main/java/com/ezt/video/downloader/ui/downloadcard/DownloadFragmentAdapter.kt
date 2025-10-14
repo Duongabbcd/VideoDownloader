@@ -23,7 +23,7 @@ class DownloadFragmentAdapter (
             when(idx) {
                 0 -> kotlin.runCatching { (it as DownloadAudioFragment).updateUI(res) }
                 1 -> kotlin.runCatching { (it as DownloadVideoFragment).updateUI(res) }
-                2 -> kotlin.runCatching { (it as DownloadCommandFragment).updateUI(res) }
+//                2 -> kotlin.runCatching { (it as DownloadCommandFragment).updateUI(res) }
             }
         }
     }
@@ -39,7 +39,7 @@ class DownloadFragmentAdapter (
     val fragments = listOf<Fragment>(
         DownloadAudioFragment(result, downloadItem,"", nonSpecific),
         DownloadVideoFragment(result, downloadItem,"", nonSpecific),
-        DownloadCommandFragment(result, downloadItem)
+//        DownloadCommandFragment(result, downloadItem)
     )
 
     override fun getItemCount(): Int {
@@ -74,13 +74,13 @@ class DownloadFragmentAdapter (
                     }
                 }
             }
-            2 -> {
-                kotlin.runCatching {
-                    (fragments[2] as DownloadCommandFragment).apply {
-                        updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
-                    }
-                }
-            }
+//            2 -> {
+//                kotlin.runCatching {
+//                    (fragments[2] as DownloadCommandFragment).apply {
+//                        updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+//                    }
+//                }
+//            }
             else -> {}
         }
     }
@@ -89,7 +89,7 @@ class DownloadFragmentAdapter (
         return when(position) {
             0 -> (fragments[0] as DownloadAudioFragment).downloadItem
             1 -> (fragments[1] as DownloadVideoFragment).downloadItem
-            else -> (fragments[2] as DownloadCommandFragment).downloadItem
+            else -> (fragments[0] as DownloadAudioFragment).downloadItem
         }.apply {
             incognito = isIncognito
         }

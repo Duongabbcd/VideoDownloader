@@ -22,6 +22,7 @@ import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.MyApplication
+import com.ezt.video.downloader.work.CryptoConstants.encryptFile
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

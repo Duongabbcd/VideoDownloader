@@ -149,10 +149,10 @@
                 android:layout_height="match_parent"
                 android:text="@string/video" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/command" />
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="@string/command" />-->
 
 
         </com.google.android.material.tabs.TabLayout>
@@ -192,6 +192,7 @@
                 android:contentDescription="@string/incognito"
                 app:icon="@drawable/ic_nightly"
                 android:alpha="0.3"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

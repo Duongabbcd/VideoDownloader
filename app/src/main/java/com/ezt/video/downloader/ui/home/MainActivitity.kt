@@ -44,12 +44,14 @@ import com.ezt.video.downloader.ui.BaseActivity
 import com.ezt.video.downloader.ui.downloads.DownloadQueueMainFragment
 import com.ezt.video.downloader.ui.downloads.HistoryFragment
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
+import com.ezt.video.downloader.util.Common
 import com.ezt.video.downloader.util.CrashListener
 import com.ezt.video.downloader.util.NavbarUtil
 import com.ezt.video.downloader.util.NavbarUtil.applyNavBarStyle
 import com.ezt.video.downloader.util.ThemeUtil
 import com.ezt.video.downloader.util.UiUtil
 import com.ezt.video.downloader.util.UpdateUtil
+import com.ezt.video.downloader.work.CryptoConstants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
@@ -88,6 +90,12 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(Common.getCountOpenApp(this@MainActivity) == 0) {
+            Common.setCountOpenApp(this@MainActivity, 1)
+            CryptoConstants.createAESKey(this@MainActivity)
+        }
+
         CrashListener(this).registerExceptionHandler()
         ThemeUtil.updateTheme(this)
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)

@@ -306,7 +306,8 @@ class FormatSelectionBottomSheetDialog(
 
             //format filter
             val isMissingFormats = formatViewModel.isMissingFormats.value
-            filterSheet.findViewById<LinearLayout>(R.id.format_filter_linear)?.isVisible = !isMissingFormats
+//            filterSheet.findViewById<LinearLayout>(R.id.format_filter_linear)?.isVisible = !isMissingFormats
+            filterSheet.findViewById<LinearLayout>(R.id.format_filter_linear)?.isVisible = false
             if (!isMissingFormats) {
                 val all = filterSheet.findViewById<TextView>(R.id.all)
                 val suggested = filterSheet.findViewById<TextView>(R.id.suggested)

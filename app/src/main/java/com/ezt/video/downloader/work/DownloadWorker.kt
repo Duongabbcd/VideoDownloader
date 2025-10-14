@@ -167,7 +167,9 @@ class DownloadWorker(
                 CoroutineScope(Dispatchers.IO).launch {
                     val writtenPath = downloadItem.format.format_note.contains("-P ")
                     val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
-
+                    println("DownloadWorker 1: ${downloadItem.format.format_note}")
+                    println("DownloadWorker 2: ${sharedPreferences.getBoolean("cache_downloads", true)}")
+                    println("DownloadWorker 3: ${File(FileUtil.formatPath(downloadItem.downloadPath))} and ${File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()}")
                     val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {

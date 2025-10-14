@@ -10,6 +10,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -62,6 +63,8 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel.Type
 import com.ezt.video.downloader.receiver.activities.ShareActivity
+import com.ezt.video.downloader.ui.home.HomeFragment
+import org.schabi.newpipe.extractor.timeago.patterns.fa
 
 class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
@@ -96,27 +99,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val res: ResultItem?
-        val dwl: DownloadItem?
-
-        if (Build.VERSION.SDK_INT >= 33){
-            res = arguments?.getParcelable("result", ResultItem::class.java)
-            dwl = arguments?.getParcelable("downloadItem", DownloadItem::class.java)
-        }else{
-            res = arguments?.getParcelable<ResultItem>("result")
-            dwl = arguments?.getParcelable<DownloadItem>("downloadItem")
-        }
-        type = arguments?.getSerializable("type") as DownloadViewModel.Type
-        disableUpdateData = arguments?.getBoolean("disableUpdateData") == true
-        ignoreDuplicates = arguments?.getBoolean("ignore_duplicates") == true
-
-        if (res == null){
-            dismiss()
-            return
-        }
-        result = res
-        currentDownloadItem = dwl
-        incognito = currentDownloadItem?.incognito ?: sharedPreferences.getBoolean("incognito", false)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,6 +112,32 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     @SuppressLint("RestrictedApi", "InflateParams")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
+        val res: ResultItem?
+        val dwl: DownloadItem?
+
+        if (Build.VERSION.SDK_INT >= 33){
+            res = arguments?.getParcelable("result", ResultItem::class.java)
+            dwl = arguments?.getParcelable("downloadItem", DownloadItem::class.java)
+        }else{
+            res = arguments?.getParcelable<ResultItem>("result")
+            dwl = arguments?.getParcelable<DownloadItem>("downloadItem")
+        }
+        type = arguments?.getSerializable("type") as Type
+        disableUpdateData = arguments?.getBoolean("disableUpdateData") == true
+        ignoreDuplicates = arguments?.getBoolean("ignore_duplicates") == true
+
+        println("DownloadBottomSheetDialog 1: $res")
+        println("DownloadBottomSheetDialog 2: $dwl")
+        println("DownloadBottomSheetDialog 3: ${HomeFragment.latestURL}")
+        if (res == null){
+            dismiss()
+            return
+        }
+
+        result = res
+        currentDownloadItem = dwl
+        incognito = currentDownloadItem?.incognito ?: sharedPreferences.getBoolean("incognito", false)
+
         view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
         dialog.setContentView(view)
         dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
@@ -672,6 +680,12 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        dismissedByUser = true
+    }
+
+
     private var cookiesFetchedResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -742,6 +756,15 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         lifecycleScope.launch {
+            if (dismissedByUser) {
+                // ✅ Dismissed by user
+                Log.d("DownloadBottomSheet", "Dismissed by user")
+                dismissedByUser = false
+                resultViewModel.deleteAll(false)
+            } else {
+                // ❌ Dismissed programmatically (e.g. dismiss(), navigate(), etc.)
+                Log.d("DownloadBottomSheet", "Dismissed programmatically")
+            }
             resultViewModel.cancelUpdateItemData()
             resultViewModel.cancelUpdateFormatsItemData()
             super.onDismiss(dialog)
@@ -754,5 +777,9 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }else{
             dismiss()
         }
+    }
+
+    companion object {
+        var dismissedByUser: Boolean = false
     }
 }

@@ -136,6 +136,10 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         return _items
     }
 
+    fun clearItems() {
+        _items.value = emptyList()
+    }
+
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
         try {
             val item = repository.getFirstResult()
@@ -247,9 +251,11 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
-    suspend fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun deleteAll(isReset: Boolean  = true) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
-        resetPlaylistFilter()
+        if(isReset) {
+            resetPlaylistFilter()
+        }
     }
 
     fun update(item: ResultItem) = viewModelScope.launch(

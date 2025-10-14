@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +23,7 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.ui.adapter.AlreadyExistsAdapter
+import com.ezt.video.downloader.ui.downloadcard.DownloadBottomSheetDialog.Companion.dismissedByUser
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -122,7 +124,17 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+
         CoroutineScope(Dispatchers.IO).launch {
+            if (existenceDismissedByUser) {
+                // ✅ Dismissed by user
+                Log.d("DownloadBottomSheet", "Dismissed by user")
+                existenceDismissedByUser = false
+                resultViewModel.deleteAll(false)
+            } else {
+                // ❌ Dismissed programmatically (e.g. dismiss(), navigate(), etc.)
+                Log.d("DownloadBottomSheet", "Dismissed programmatically")
+            }
             downloadViewModel.deleteWithDuplicateStatus()
         }
     }
@@ -173,5 +185,15 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
                 redownloadShowDownloadCard = {}
             )
         }
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        existenceDismissedByUser = true
+    }
+
+
+    companion object {
+        var existenceDismissedByUser: Boolean = false
     }
 }

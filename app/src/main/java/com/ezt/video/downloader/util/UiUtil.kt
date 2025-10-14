@@ -99,6 +99,7 @@ import io.noties.markwon.MarkwonConfiguration
 import com.ezt.video.downloader.database.models.expand.non_table.GithubRelease
 import com.ezt.video.downloader.database.viewmodel.YTDLPViewModel
 import com.ezt.video.downloader.ui.downloadcard.VideoCutListener
+import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Extensions.createBadge
 import com.ezt.video.downloader.util.Extensions.enableTextHighlight
 import com.ezt.video.downloader.util.Extensions.getMediaDuration
@@ -582,6 +583,7 @@ object UiUtil {
 
         // BUTTON ----------------------------------
         val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
+        btn?.gone()
         val typeImageResource: Int =
             when (item.type) {
                 DownloadViewModel.Type.audio -> {
@@ -927,6 +929,7 @@ object UiUtil {
 
         val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
         redownload!!.tag = item.id
+        redownload.gone()
         redownload.setOnClickListener{
             redownloadItem(item)
             bottomSheet.cancel()

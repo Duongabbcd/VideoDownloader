@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.HistoryItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
@@ -147,6 +148,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
         btn.isClickable = filesPresent
+        btn.gone()
 
         if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
             card.isChecked = true

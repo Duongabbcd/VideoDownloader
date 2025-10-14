@@ -46,6 +46,9 @@
             tools:targetApi="29" />
         <activity android:name=".ui.browse.BrowseActivity"
             android:exported="true"/>
+
+        <activity android:name=".ui.player.PlayerActivity"
+            android:exported="true"/>
         <activity
             android:name=".ui.home.MainActivity"
             android:configChanges="locale"

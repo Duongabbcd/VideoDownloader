@@ -99,6 +99,7 @@ import io.noties.markwon.MarkwonConfiguration
 import com.ezt.video.downloader.database.models.expand.non_table.GithubRelease
 import com.ezt.video.downloader.database.viewmodel.YTDLPViewModel
 import com.ezt.video.downloader.ui.downloadcard.VideoCutListener
+import com.ezt.video.downloader.ui.player.PlayerActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Extensions.createBadge
 import com.ezt.video.downloader.util.Extensions.enableTextHighlight
@@ -921,7 +922,9 @@ object UiUtil {
         openFile!!.tag = item.id
         openFile.setOnClickListener{
             if (item.downloadPath.size == 1) {
-                FileUtil.openFileIntent(context, item.downloadPath.first())
+                context.startActivity(Intent(context, PlayerActivity::class.java).apply {
+                    putExtra("playerURL", item.downloadPath.first())
+                })
             }else{
                 openMultipleFilesIntent(context, item.downloadPath)
             }

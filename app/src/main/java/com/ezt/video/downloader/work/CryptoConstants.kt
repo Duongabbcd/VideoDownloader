@@ -49,8 +49,10 @@ object CryptoConstants {
     fun decryptFile(
         inputFile: File,
         outputFile: File,
-        secretKey: SecretKey
+        context: Context
     ) {
+        val secretKey = getAESKey(context) ?: return
+
         inputFile.inputStream().use { input ->
             // 1. Read and validate header
             val header = ByteArray(4)

@@ -12,11 +12,13 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.viewmodel.CommandTemplateViewModel
+import com.ezt.video.downloader.databinding.ActivityShareBinding
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.util.ThemeUtil
 import com.ezt.video.downloader.util.UiUtil
 
-class TransparentActivity : BaseActivity() {
+class TransparentActivity : BaseActivity2<ActivityShareBinding>(ActivityShareBinding::inflate) {
 
     lateinit var context: Context
     override fun onCreate(savedInstanceState: Bundle?) {

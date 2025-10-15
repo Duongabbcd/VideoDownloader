@@ -9,16 +9,16 @@ import androidx.navigation.fragment.findNavController
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.databinding.ActivitySettingsBinding
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.BaseActivity2
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseActivity2<ActivitySettingsBinding>(ActivitySettingsBinding::inflate) {
     var context: Context? = null
-    lateinit var binding: ActivitySettingsBinding
+    private  var isViewCreated = false
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context = baseContext
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        isViewCreated = true
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         val navController = navHostFragment.findNavController()
 
@@ -46,6 +46,8 @@ class SettingsActivity : BaseActivity() {
     }
 
     fun changeTopAppbarTitle(text: String) {
-        if (this::binding.isInitialized) binding.collapsingToolbar.title = text
+        if (isViewCreated) {
+            binding.collapsingToolbar.title = text
+        }
     }
 }

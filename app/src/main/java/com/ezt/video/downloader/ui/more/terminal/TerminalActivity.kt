@@ -14,14 +14,16 @@ import androidx.navigation.NavType
 import androidx.navigation.fragment.NavHostFragment
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.viewmodel.TerminalViewModel
+import com.ezt.video.downloader.databinding.ActivityTerminalBinding
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
-class TerminalActivity : BaseActivity() {
+class TerminalActivity : BaseActivity2<ActivityTerminalBinding>(ActivityTerminalBinding::inflate) {
     private lateinit var terminalViewModel: TerminalViewModel
     private lateinit var navHostFragment: NavHostFragment
     private var downloadID by Delegates.notNull<Long>()
@@ -30,7 +32,6 @@ class TerminalActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_terminal)
         terminalViewModel = ViewModelProvider(this)[TerminalViewModel::class.java]
         downloadID = savedInstanceState?.getLong("downloadID") ?: 0L
         handleIntent(intent)

@@ -924,6 +924,7 @@ object UiUtil {
             if (item.downloadPath.size == 1) {
                 context.startActivity(Intent(context, PlayerActivity::class.java).apply {
                     putExtra("playerURL", item.downloadPath.first())
+                    putExtra("playerName", item.title)
                 })
             }else{
                 openMultipleFilesIntent(context, item.downloadPath)

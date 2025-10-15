@@ -24,25 +24,21 @@ import androidx.preference.PreferenceManager
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.CookieItem
 import com.ezt.video.downloader.database.viewmodel.CookieViewModel
+import com.ezt.video.downloader.databinding.WebviewActivityBinding
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.util.Extensions.isYoutubeURL
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class WebViewActivity : BaseActivity() {
+class WebViewActivity : BaseActivity2<WebviewActivityBinding>(WebviewActivityBinding::inflate) {
     private lateinit var cookiesViewModel: CookieViewModel
     private var webView: WebView? = null
-    private lateinit var webViewCompose: ComposeView
-    private lateinit var toolbar: MaterialToolbar
-    private lateinit var generateBtn: MaterialButton
     private lateinit var cookieManager: CookieManager
     private lateinit var url: String
     private lateinit var description: String
@@ -53,49 +49,49 @@ class WebViewActivity : BaseActivity() {
     private var incognito: Boolean = false
 
     @SuppressLint("SetJavaScriptEnabled")
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.webview_activity)
         url = intent.extras!!.getString("url")!!
         description = intent.extras!!.getString("description", "")
         incognito = intent.extras!!.getBoolean("incognito", false)
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
-            val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
-            toolbar = appbar.findViewById(R.id.webviewToolbar)
-            generateBtn = toolbar.findViewById(R.id.generate)
-            webViewCompose = findViewById(R.id.webview_compose)
-
-            if (!url.isYoutubeURL()) {
-                toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
-            }
-
-            toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isChecked = incognito
-            toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
-
-            toolbar.setOnMenuItemClickListener { m : MenuItem ->
-                when(m.itemId) {
-                    R.id.incognito -> {
-                        intent.putExtra("incognito", !incognito)
-                        recreate()
-                    }
-                    R.id.desktop -> {
-                        m.isChecked = !m.isChecked
-                        webView.apply {
-                            if (this == null) {
-                                m.isChecked = false
-                                return@apply
-                            }
-
-                            configureDesktopMode(this, m.isChecked)
-                            this.reload()
-                        }
-                    }
-                    else -> {}
+            val appbar = binding.webviewAppbarlayout
+            binding.apply {
+                if (!url.isYoutubeURL()) {
+                    webviewToolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
                 }
-                true
+
+                webviewToolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isChecked = incognito
+                webviewToolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
+
+                webviewToolbar.setOnMenuItemClickListener { m : MenuItem ->
+                    when(m.itemId) {
+                        R.id.incognito -> {
+                            intent.putExtra("incognito", !incognito)
+                            recreate()
+                        }
+                        R.id.desktop -> {
+                            m.isChecked = !m.isChecked
+                            webView.apply {
+                                if (this == null) {
+                                    m.isChecked = false
+                                    return@apply
+                                }
+
+                                configureDesktopMode(this, m.isChecked)
+                                this.reload()
+                            }
+                        }
+                        else -> {}
+                    }
+                    true
+                }
             }
+   
+
+ 
 
             cookieManager = CookieManager.getInstance()
             cookieManager.removeAllCookies(null)
@@ -108,21 +104,21 @@ class WebViewActivity : BaseActivity() {
                     webView = view
                     super.onPageFinished(view, url)
                     kotlin.runCatching {
-                        toolbar.title = view?.title ?: ""
+                        binding.webviewToolbar.title = view?.title ?: ""
                         cookies = cookieManager.getCookie(view?.url)
                     }
                 }
             }
 
-            toolbar.setNavigationOnClickListener {
+            binding.webviewToolbar.setNavigationOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
 
-            generateBtn.setOnClickListener {
+            binding.generate.setOnClickListener {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
-                            kotlin.runCatching {
+                            runCatching {
                                 cookiesViewModel.insert(
                                     CookieItem(
                                         0,
@@ -151,7 +147,7 @@ class WebViewActivity : BaseActivity() {
                 }
             }
 
-            webViewCompose.apply {
+            binding.webviewCompose.apply {
                 setContent { WebViewView() }
             }
         }

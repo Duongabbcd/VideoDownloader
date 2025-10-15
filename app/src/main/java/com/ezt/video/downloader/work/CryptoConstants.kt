@@ -5,6 +5,7 @@ import android.util.Base64
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import java.io.File
+import java.io.IOException
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
@@ -48,40 +49,47 @@ object CryptoConstants {
 
     fun decryptFile(
         inputFile: File,
-        outputFile: File,
         context: Context
-    ) {
-        val secretKey = getAESKey(context) ?: return
+    ) : File {
+        val secretKey = getAESKey(context)
+            ?: throw IllegalStateException("AES key not found")
+
+        val tempFile = File.createTempFile("decrypted_", ".tmp", context.cacheDir)
+        tempFile.deleteOnExit()
 
         inputFile.inputStream().use { input ->
-            // 1. Read and validate header
             val header = ByteArray(4)
-            input.read(header)
+            if (input.read(header) != header.size) {
+                throw IOException("Failed to read header")
+            }
+
             val magic = String(header)
-            if (magic != CryptoConstants.HEADER_MAGIC) {
+            if (magic != HEADER_MAGIC) {
                 throw IllegalArgumentException("Invalid file format")
             }
 
             val version = input.read().toByte()
-            if (version != CryptoConstants.HEADER_VERSION) {
+            if (version != HEADER_VERSION) {
                 throw IllegalArgumentException("Unsupported version")
             }
 
-            val iv = ByteArray(CryptoConstants.IV_SIZE)
-            input.read(iv)
+            val iv = ByteArray(IV_SIZE)
+            if (input.read(iv) != iv.size) {
+                throw IOException("Failed to read IV")
+            }
 
-            // 2. Setup cipher for decryption
             val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-            val gcmSpec = GCMParameterSpec(CryptoConstants.TAG_SIZE_BITS, iv)
+            val gcmSpec = GCMParameterSpec(TAG_SIZE_BITS, iv)
             cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec)
 
-            // 3. Decrypt and write to output
             CipherInputStream(input, cipher).use { cipherIn ->
-                outputFile.outputStream().use { out ->
+                tempFile.outputStream().use { out ->
                     cipherIn.copyTo(out)
                 }
             }
         }
+
+        return tempFile
     }
 
     fun createAESKey(context: Context) {
@@ -130,5 +138,28 @@ object CryptoConstants {
         return SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
     }
 
+    fun isFileEncryptedByUs(file: File): Boolean {
+        if (!file.exists() || file.length() < 17) return false
+
+        val expectedMagic = HEADER_MAGIC.toByteArray()
+        val expectedVersion = HEADER_VERSION
+
+        file.inputStream().use { input ->
+            val header = ByteArray(4)
+            if (input.read(header) != header.size) return false
+
+            val magic = String(header)
+            if (magic != HEADER_MAGIC) return false
+
+            val version = input.read()
+            if (version != expectedVersion.toInt()) return false
+
+            // Optionally check IV size too:
+            val iv = ByteArray(IV_SIZE)
+            if (input.read(iv) != IV_SIZE) return false
+
+            return true
+        }
+    }
 
 }

@@ -21,6 +21,7 @@ import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.ActiveDownloadCardBinding
 import com.ezt.video.downloader.util.Extensions.loadBlurryThumbnail
 import com.ezt.video.downloader.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -42,112 +43,108 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
+    class ViewHolder(private val binding: ActiveDownloadCardBinding,
+                     private val activity: Activity,
+                     private val sharedPreferences: SharedPreferences,
+                     private val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
+        val cardView: MaterialCardView = binding.activeDownloadCardView
+        fun bind(item: DownloadItem?) {
+            binding.apply {
+                activeDownloadCardView.tag = "${item!!.id}##card"
+                val uiHandler = Handler(Looper.getMainLooper())
 
-        init {
-            cardView = itemView.findViewById(R.id.active_download_card_view)
+                // THUMBNAIL ----------------------------------
+                val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
+                uiHandler.post { imageView.loadBlurryThumbnail(activity, hideThumb, item.thumb) }
+
+                // PROGRESS BAR ----------------------------------------------------
+                progress.tag = "${item.id}##progress"
+
+                // TITLE  ----------------------------------
+                var titleStr = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
+                if (titleStr.length > 100) {
+                    titleStr = titleStr.substring(0, 40) + "..."
+                }
+                title.text = titleStr
+
+                // Author ----------------------------------
+                var info = item.author
+                if (item.duration.isNotEmpty() && item.duration != "-1") {
+                    if (item.author.isNotEmpty()) info += " • "
+                    info += item.duration
+                }
+                author.text = info
+
+                when(item.type){
+                    DownloadViewModel.Type.audio -> downloadType.setIconResource(R.drawable.ic_music)
+                    DownloadViewModel.Type.video -> downloadType.setIconResource(R.drawable.ic_video)
+                    DownloadViewModel.Type.command -> downloadType.setIconResource(R.drawable.ic_terminal)
+                    else -> {}
+                }
+
+                val sideDetails = mutableListOf<String>()
+                sideDetails.add(item.format.format_note.uppercase().replace("\n", " "))
+                sideDetails.add(item.container.uppercase().ifEmpty { item.format.container.uppercase() })
+
+                val fileSize = FileUtil.convertFileSize(item.format.filesize)
+                if (fileSize != "?" && item.downloadSections.isBlank()) sideDetails.add(fileSize)
+                formatNote.text = sideDetails.filter { it.isNotBlank() }.joinToString("  ·  ")
+
+                //OUTPUT
+
+                output.tag = "${item.id}##output"
+                output.text = ""
+
+                output.setOnClickListener {
+                    onItemClickListener.onOutputClick(item)
+                }
+
+                // CANCEL BUTTON ----------------------------------
+                if (activeDownloadDelete.hasOnClickListeners()) activeDownloadDelete.setOnClickListener(null)
+                activeDownloadDelete.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
+
+                activeDownloadResume.isEnabled = true
+                if (activeDownloadResume.hasOnClickListeners()) activeDownloadResume.setOnClickListener(null)
+                val isPaused = item.status == DownloadRepository.Status.Paused.toString()
+                if (isPaused) {
+                    activeDownloadResume.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
+                    activeDownloadResume.setOnClickListener {
+                        activeDownloadResume.isEnabled = false
+                        onItemClickListener.onResumeClick(item.id)
+                    }
+                }else {
+                    activeDownloadResume.setIconResource(R.drawable.exomedia_ic_pause_white)
+                    activeDownloadResume.setOnClickListener {
+                        activeDownloadResume.isEnabled = false
+                        onItemClickListener.onPauseClick(item.id)
+                    }
+                }
+
+                if (isPaused) {
+                    progress.isIndeterminate = false
+                    progress.progress = 0
+                    activeDownloadDelete.isEnabled = true
+                    output.text = activity.getString(R.string.exo_download_paused)
+                }else{
+                    progress.isIndeterminate = progress.progress <= 0
+                    activeDownloadDelete.isEnabled = true
+                }
+            }
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.active_download_card, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+        val binding =
+            ActiveDownloadCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding, activity, sharedPreferences, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val card = holder.cardView
-        card.tag = "${item!!.id}##card"
-        val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.image_view)
-
-        // THUMBNAIL ----------------------------------
-        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
-        uiHandler.post { thumbnail.loadBlurryThumbnail(activity, hideThumb, item.thumb) }
-
-        // PROGRESS BAR ----------------------------------------------------
-        val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-        progressBar.tag = "${item.id}##progress"
-
-        // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
-        if (title.length > 100) {
-            title = title.substring(0, 40) + "..."
-        }
-        itemTitle.text = title
-
-        // Author ----------------------------------
-        val author = card.findViewById<TextView>(R.id.author)
-        var info = item.author
-        if (item.duration.isNotEmpty() && item.duration != "-1") {
-            if (item.author.isNotEmpty()) info += " • "
-            info += item.duration
-        }
-        author.text = info
-
-        val type = card.findViewById<MaterialButton>(R.id.download_type)
-        when(item.type){
-            DownloadViewModel.Type.audio -> type.setIconResource(R.drawable.ic_music)
-            DownloadViewModel.Type.video -> type.setIconResource(R.drawable.ic_video)
-            DownloadViewModel.Type.command -> type.setIconResource(R.drawable.ic_terminal)
-            else -> {}
-        }
-
-        val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
-
-        val sideDetails = mutableListOf<String>()
-        sideDetails.add(item.format.format_note.uppercase().replace("\n", " "))
-        sideDetails.add(item.container.uppercase().ifEmpty { item.format.container.uppercase() })
-
-        val fileSize = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSize != "?" && item.downloadSections.isBlank()) sideDetails.add(fileSize)
-        formatDetailsChip.text = sideDetails.filter { it.isNotBlank() }.joinToString("  ·  ")
-
-        //OUTPUT
-        val output = card.findViewById<TextView>(R.id.output)
-        output.tag = "${item.id}##output"
-        output.text = ""
-
-        output.setOnClickListener {
-            onItemClickListener.onOutputClick(item)
-        }
-
-        // CANCEL BUTTON ----------------------------------
-        val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_delete)
-        if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
-        cancelButton.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
-
-        val resumeButton = card.findViewById<MaterialButton>(R.id.active_download_resume)
-        resumeButton.isEnabled = true
-        if (resumeButton.hasOnClickListeners()) resumeButton.setOnClickListener(null)
-        val isPaused = item.status == DownloadRepository.Status.Paused.toString()
-        if (isPaused) {
-            resumeButton.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
-            resumeButton.setOnClickListener {
-                resumeButton.isEnabled = false
-                onItemClickListener.onResumeClick(item.id)
-            }
-        }else {
-            resumeButton.setIconResource(R.drawable.exomedia_ic_pause_white)
-            resumeButton.setOnClickListener {
-                resumeButton.isEnabled = false
-                onItemClickListener.onPauseClick(item.id)
-            }
-        }
-
-        if (isPaused) {
-            progressBar.isIndeterminate = false
-            progressBar.progress = 0
-            cancelButton.isEnabled = true
-            output.text = activity.getString(R.string.exo_download_paused)
-        }else{
-            progressBar.isIndeterminate = progressBar.progress <= 0
-            cancelButton.isEnabled = true
-        }
+        holder.bind(item)
     }
+
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
         fun onOutputClick(item: DownloadItem)

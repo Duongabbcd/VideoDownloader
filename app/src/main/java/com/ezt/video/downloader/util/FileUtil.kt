@@ -153,13 +153,29 @@ object FileUtil {
                                         counter++
                                     }
 
-                                    fileList.add(Files.move(
+                                    // Move the file
+                                    val movedFilePath = Files.move(
                                         ff.toPath(),
                                         File(newFileName).toPath(),
                                         StandardCopyOption.REPLACE_EXISTING
-                                    ).absolutePathString())
+                                    ).absolutePathString()
+
                                     ff.delete()
-                                    fileList.add(newFileName)
+
+                                    // 🔐 Encrypt the moved file
+                                    val originalFile = File(movedFilePath)
+                                    val tempEncryptedFile = File("$movedFilePath.tmp")
+                                    encryptFile(originalFile, tempEncryptedFile, context)
+
+                                    if (originalFile.delete()) {
+                                        if (tempEncryptedFile.renameTo(originalFile)) {
+                                            fileList.add(originalFile.absolutePath)
+                                        } else {
+                                            fileList.add(tempEncryptedFile.absolutePath)
+                                        }
+                                    } else {
+                                        fileList.add(tempEncryptedFile.absolutePath)
+                                    }
                                 }else{
                                     var newFileName = newFile.absolutePath
                                     var counter = 1
@@ -169,9 +185,24 @@ object FileUtil {
                                         counter++
                                     }
 
-                                    ff.copyTo(File(newFileName),false)
+                                    // Copy the file
+                                    ff.copyTo(File(newFileName), false)
                                     ff.delete()
-                                    fileList.add(newFileName)
+
+                                    // 🔐 Encrypt the copied file
+                                    val originalFile = File(newFileName)
+                                    val tempEncryptedFile = File("$newFileName.tmp")
+                                    encryptFile(originalFile, tempEncryptedFile, context)
+
+                                    if (originalFile.delete()) {
+                                        if (tempEncryptedFile.renameTo(originalFile)) {
+                                            fileList.add(originalFile.absolutePath)
+                                        } else {
+                                            fileList.add(tempEncryptedFile.absolutePath)
+                                        }
+                                    } else {
+                                        fileList.add(tempEncryptedFile.absolutePath)
+                                    }
                                 }
                             }
                             return@forEach
@@ -201,7 +232,18 @@ object FileUtil {
                                 }
 
                                 override fun onCompleted(result: Result) {
-                                    fileList.addAll(result.folder.listFiles().map { f -> f.getAbsolutePath(context) })
+                                    result.folder.listFiles().forEach { f ->
+                                        val path = f.getAbsolutePath(context)
+                                        val file = File(path)
+                                        if (file.isFile && file.exists()) {
+                                            val temp = File(path + ".tmp")
+                                            encryptFile(file, temp, context)
+                                            if (file.delete()) {
+                                                temp.renameTo(file)
+                                            }
+                                            fileList.add(file.absolutePath)
+                                        }
+                                    }
                                     it.deleteRecursively()
                                 }
 
@@ -250,8 +292,17 @@ object FileUtil {
                                 }
 
                                 override fun onCompleted(result: Any) {
-                                    destFile = (result as DocumentFile)
-                                    fileList.add(destFile.getAbsolutePath(context))
+                                    destFile = result as DocumentFile
+                                    val path = destFile.getAbsolutePath(context)
+                                    val file = File(path)
+                                    if (file.exists()) {
+                                        val temp = File(path + ".tmp")
+                                        encryptFile(file, temp, context)
+                                        if (file.delete()) {
+                                            temp.renameTo(file)
+                                        }
+                                        fileList.add(file.absolutePath)
+                                    }
                                     it.delete()
                                     super.onCompleted(result)
                                 }

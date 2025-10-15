@@ -422,7 +422,7 @@
     <color name="textColorHint">#939393</color>
     <color name="high_light">#347BFA</color>
     <color name="unselected">#BCBCBC</color>
-
+    <color name="progressBar">#502CA4</color>
 
     <integer-array name="myColors">
         <item>@color/cool_green</item>

@@ -30,7 +30,9 @@ import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.CookieViewModel
+import com.ezt.video.downloader.databinding.ActivityShareBinding
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.util.Extensions.extractURL
 import com.ezt.video.downloader.util.ThemeUtil
@@ -43,7 +45,7 @@ import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 
-class ShareActivity : BaseActivity() {
+class ShareActivity : BaseActivity2<ActivityShareBinding>(ActivityShareBinding::inflate) {
 
     lateinit var context: Context
     private lateinit var resultViewModel: ResultViewModel
@@ -90,7 +92,6 @@ class ShareActivity : BaseActivity() {
 //            val params = window.attributes
 //            params.alpha = 0f
 //            window.attributes = params
-            setContentView(R.layout.activity_share)
 
         }else{
             window.run {
@@ -106,7 +107,6 @@ class ShareActivity : BaseActivity() {
                 }
             }
 
-            setContentView(R.layout.activity_share)
         }
 
         context = baseContext

@@ -40,7 +40,9 @@ import com.ezt.video.downloader.database.viewmodel.CookieViewModel
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
+import com.ezt.video.downloader.databinding.ActivityMainBinding
 import com.ezt.video.downloader.ui.BaseActivity
+import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.downloads.DownloadQueueMainFragment
 import com.ezt.video.downloader.ui.downloads.HistoryFragment
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
@@ -75,7 +77,7 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.system.exitProcess
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     lateinit var context: Context
     private lateinit var preferences: SharedPreferences
@@ -512,5 +514,6 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+        var isChangeTheme = false
     }
 }

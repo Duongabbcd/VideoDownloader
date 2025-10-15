@@ -11,10 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.core.view.isVisible
-import androidx.media3.exoplayer.offline.Download
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -24,11 +21,10 @@ import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.ActiveDownloadCardMinifiedBinding
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.Extensions.popup
 import com.ezt.video.downloader.util.FileUtil
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
 class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadMinifiedAdapter.ViewHolder>(AsyncDifferConfig.Builder(
@@ -44,137 +40,129 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
+    inner class ViewHolder(private val binding: ActiveDownloadCardMinifiedBinding, private val activity: Activity,
+                     private val sharedPreferences: SharedPreferences, private val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
+      fun bind(item: DownloadItem?) {
+          binding.apply {
+              downloadCardView.popup()
 
-        init {
-            cardView = itemView.findViewById(R.id.download_card_view)
-        }
+              val uiHandler = Handler(Looper.getMainLooper())
+
+              // THUMBNAIL ----------------------------------
+              val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
+              uiHandler.post { downloadsImageView.loadThumbnail(hideThumb, item!!.thumb) }
+
+              // PROGRESS BAR ----------------------------------------------------
+              progress.tag = "${item!!.id}##progress"
+              progress.progress = 0
+              progress.isIndeterminate = true
+
+              //OUTPUT ------------------------------------------------------------
+              output.tag = "${item.id}##output"
+
+              // TITLE  ----------------------------------
+              var titleStr = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
+              if (titleStr.length > 100) {
+                  titleStr = titleStr.substring(0, 40) + "..."
+              }
+              title.text = titleStr
+
+              //DOWNLOAD TYPE -----------------------------
+              when(item.type){
+                  DownloadViewModel.Type.audio -> downloadType.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                      R.drawable.ic_music_formatcard, 0, 0, 0
+                  )
+                  DownloadViewModel.Type.video -> downloadType.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                      R.drawable.ic_video_formatcard, 0, 0, 0
+                  )
+                  else -> downloadType.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                      R.drawable.ic_terminal_formatcard, 0, 0, 0
+                  )
+              }
+
+              if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+                  View.GONE
+              else formatNote!!.text = item.format.format_note.uppercase()
+
+              val codecText =
+                  if (item.format.encoding != "") {
+                      item.format.encoding.uppercase()
+                  }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                      item.format.vcodec.uppercase()
+                  } else {
+                      item.format.acodec.uppercase()
+                  }
+              if (codecText == "" || codecText == "none"){
+                  codec.visibility = View.GONE
+              }else{
+                  codec.visibility = View.VISIBLE
+                  codec.text = codecText
+              }
+              val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
+              if (fileSizeReadable == "?" && item.downloadSections.isNotBlank()) fileSize.visibility = View.GONE
+              else fileSize.text = fileSizeReadable
+
+              val paused = item.status == DownloadRepository.Status.Paused.toString()
+              options.setOnClickListener {
+                  val popup = PopupMenu(activity, it)
+                  popup.menuInflater.inflate(R.menu.active_downloads_minified, popup.menu)
+                  if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
+
+                  val pause = popup.menu[0]
+                  val resume = popup.menu[1]
+
+                  if (paused){
+                      pause.isVisible = false
+                      resume.isVisible = true
+                  }else{
+                      pause.isVisible = true
+                      resume.isVisible = false
+                  }
+
+                  popup.setOnMenuItemClickListener { m ->
+                      when(m.itemId){
+                          R.id.pause -> {
+                              onItemClickListener.onPauseClick(item.id, position)
+                              if (binding.progress.progress == 0) binding.progress.isIndeterminate = false
+                              popup.dismiss()
+                          }
+                          R.id.resume -> {
+                              onItemClickListener.onResumeClick(item.id, position)
+                              binding.progress.isIndeterminate = true
+                              popup.dismiss()
+                          }
+                          R.id.cancel -> {
+                              onItemClickListener.onCancelClick(item.id)
+                              popup.dismiss()
+                          }
+                      }
+                      true
+                  }
+
+                  popup.show()
+
+              }
+
+              binding.progress.isIndeterminate = !paused
+
+              downloadCardView.setOnClickListener {
+                  onItemClickListener.onCardClick()
+              }
+
+          }
+
+      }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.active_download_card_minified, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+        val binding =
+            ActiveDownloadCardMinifiedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding, activity, sharedPreferences,onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val card = holder.cardView
-        card.popup()
-
-        val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-
-        // THUMBNAIL ----------------------------------
-        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item!!.thumb) }
-
-        // PROGRESS BAR ----------------------------------------------------
-        val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-        progressBar.tag = "${item!!.id}##progress"
-        progressBar.progress = 0
-        progressBar.isIndeterminate = true
-
-        //OUTPUT ------------------------------------------------------------
-        val output = card.findViewById<TextView>(R.id.output)
-        output.tag = "${item.id}##output"
-
-        // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
-        if (title.length > 100) {
-            title = title.substring(0, 40) + "..."
-        }
-        itemTitle.text = title
-
-        //DOWNLOAD TYPE -----------------------------
-        val type = card.findViewById<TextView>(R.id.download_type)
-        when(item.type){
-            DownloadViewModel.Type.audio -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_music_formatcard, 0, 0, 0
-            )
-            DownloadViewModel.Type.video -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_video_formatcard, 0, 0, 0
-            )
-            else -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_terminal_formatcard, 0, 0, 0
-            )
-        }
-
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
-            View.GONE
-        else formatNote!!.text = item.format.format_note.uppercase()
-
-        val codec = card.findViewById<TextView>(R.id.codec)
-        val codecText =
-            if (item.format.encoding != "") {
-                item.format.encoding.uppercase()
-            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                item.format.vcodec.uppercase()
-            } else {
-                item.format.acodec.uppercase()
-            }
-        if (codecText == "" || codecText == "none"){
-            codec.visibility = View.GONE
-        }else{
-            codec.visibility = View.VISIBLE
-            codec.text = codecText
-        }
-
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSizeReadable == "?" && item.downloadSections.isNotBlank()) fileSize.visibility = View.GONE
-        else fileSize.text = fileSizeReadable
-
-        val menu = card.findViewById<View>(R.id.options)
-        val paused = item.status == DownloadRepository.Status.Paused.toString()
-        menu.setOnClickListener {
-            val popup = PopupMenu(activity, it)
-            popup.menuInflater.inflate(R.menu.active_downloads_minified, popup.menu)
-            if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
-
-            val pause = popup.menu[0]
-            val resume = popup.menu[1]
-
-            if (paused){
-                pause.isVisible = false
-                resume.isVisible = true
-            }else{
-                pause.isVisible = true
-                resume.isVisible = false
-            }
-
-            popup.setOnMenuItemClickListener { m ->
-                when(m.itemId){
-                    R.id.pause -> {
-                        onItemClickListener.onPauseClick(item.id, position)
-                        if (progressBar.progress == 0) progressBar.isIndeterminate = false
-                        popup.dismiss()
-                    }
-                    R.id.resume -> {
-                        onItemClickListener.onResumeClick(item.id, position)
-                        progressBar.isIndeterminate = true
-                        popup.dismiss()
-                    }
-                    R.id.cancel -> {
-                        onItemClickListener.onCancelClick(item.id)
-                        popup.dismiss()
-                    }
-                }
-                true
-            }
-
-            popup.show()
-
-        }
-
-        progressBar.isIndeterminate = !paused
-
-        card.setOnClickListener {
-            onItemClickListener.onCardClick()
-        }
+        holder.bind(item)
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)

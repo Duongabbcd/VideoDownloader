@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.expand.table.DownloadItemSimple
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.QueuedDownloadCardBinding
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.UiUtil
@@ -46,149 +46,149 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(private val binding: QueuedDownloadCardBinding,
+                           private val startDrag: (RecyclerView.ViewHolder) -> Unit) : RecyclerView.ViewHolder(binding.root) {
         val cardView: MaterialCardView
         init {
             cardView = itemView.findViewById(R.id.download_card_view)
         }
+
+        fun bind(item: DownloadItemSimple?, showDragHandle: Boolean) {
+            binding.apply {
+                if (item == null) return
+                downloadCardView.tag = item.id.toString()
+
+                val uiHandler = Handler(Looper.getMainLooper())
+
+                //DRAG HANDLE
+                dragView.isVisible = showDragHandle
+               dragView.setOnTouchListener { view, motionEvent ->
+                    view.performClick()
+                    if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN){
+                        startDrag(this@ViewHolder)
+                    }
+                    true
+                }
+
+                // THUMBNAIL ----------------------------------
+                val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
+                uiHandler.post { downloadsImageView.loadThumbnail(hideThumb, item.thumb) }
+
+                duration.text = item.duration
+                duration.isVisible = item.duration != "-1"
+
+
+                // TITLE  ----------------------------------
+                var titleStr = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
+                if (titleStr.length > 100) {
+                    titleStr = titleStr.substring(0, 40) + "..."
+                }
+                title.text = titleStr
+
+                //DOWNLOAD TYPE -----------------------------
+                when(item.type){
+                    DownloadViewModel.Type.audio -> downloadType.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        R.drawable.ic_music_formatcard, 0,0,0
+                    )
+                    DownloadViewModel.Type.video -> downloadType.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        R.drawable.ic_video_formatcard, 0,0,0
+                    )
+                    else -> downloadType.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        R.drawable.ic_terminal_formatcard, 0,0,0
+                    )
+                }
+
+
+                if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+                    View.GONE
+                else formatNote!!.text = item.format.format_note.uppercase()
+
+                val codecText =
+                    if (item.format.encoding != "") {
+                        item.format.encoding.uppercase()
+                    }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                        item.format.vcodec.uppercase()
+                    } else {
+                        item.format.acodec.uppercase()
+                    }
+                if (codecText == "" || codecText == "none"){
+                    codec.visibility = View.GONE
+                }else{
+                    codec.visibility = View.VISIBLE
+                    codec.text = codecText
+                }
+
+                val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
+                if (fileSizeReadable == "?") fileSize.visibility = View.GONE
+                else fileSize.text = fileSizeReadable
+
+                options.setOnClickListener {
+                    val popup = PopupMenu(activity, it)
+                    popup.menuInflater.inflate(R.menu.queued_download_menu, popup.menu)
+                    if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
+
+                    popup.setOnMenuItemClickListener { m ->
+                        when(m.itemId){
+                            R.id.cancel -> {
+                                onItemClickListener.onQueuedCancelClick(item.id)
+                                popup.dismiss()
+                            }
+                            R.id.move_top -> {
+                                onItemClickListener.onMoveQueuedItemToTop(item.id)
+                                popup.dismiss()
+                            }
+                            R.id.move_bottom -> {
+                                onItemClickListener.onMoveQueuedItemToBottom(item.id)
+                                popup.dismiss()
+                            }
+                            R.id.copy_url -> {
+                                UiUtil.copyLinkToClipBoard(activity, item.url)
+                                popup.dismiss()
+                            }
+                        }
+                        true
+                    }
+
+                    popup.show()
+
+                }
+
+                if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
+                    downloadCardView.isChecked = true
+                    downloadCardView.strokeWidth = 5
+                } else {
+                    downloadCardView.isChecked = false
+                    downloadCardView.strokeWidth = 0
+                }
+                downloadCardView.findViewById<View>(R.id.card_content).setOnClickListener {
+                    if (checkedItems.size > 0 || inverted) {
+                        checkCard(downloadCardView, item.id, position)
+                    } else {
+                        onItemClickListener.onQueuedCardClick(item.id)
+                    }
+                }
+
+                downloadCardView.findViewById<View>(R.id.card_content).setOnLongClickListener {
+                    checkCard(downloadCardView, item.id, position)
+                    true
+                }
+
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.queued_download_card, parent, false)
-        return ViewHolder(cardView)
+        val binding = QueuedDownloadCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding, startDrag)
+    }
+
+    private val startDrag: (RecyclerView.ViewHolder) -> Unit = {
+        itemTouchHelper.startDrag(it)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val card = holder.cardView
-
-        if (item == null) return
-        card.tag = item.id.toString()
-
-        val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-
-        //DRAG HANDLE
-        val dragView = card.findViewById<View>(R.id.drag_view)
-        dragView.isVisible = showDragHandle
-        card.findViewById<View>(R.id.drag_view).setOnTouchListener { view, motionEvent ->
-            view.performClick()
-            if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN){
-                itemTouchHelper.startDrag(holder)
-            }
-            true
-        }
-
-        // THUMBNAIL ----------------------------------
-        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item.thumb) }
-
-        val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item.duration
-        duration.isVisible = item.duration != "-1"
-
-
-        // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
-        if (title.length > 100) {
-            title = title.substring(0, 40) + "..."
-        }
-        itemTitle.text = title
-
-        //DOWNLOAD TYPE -----------------------------
-        val type = card.findViewById<TextView>(R.id.download_type)
-        when(item.type){
-            DownloadViewModel.Type.audio -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_music_formatcard, 0,0,0
-            )
-            DownloadViewModel.Type.video -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_video_formatcard, 0,0,0
-            )
-            else -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_terminal_formatcard, 0,0,0
-            )
-        }
-
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
-            View.GONE
-        else formatNote!!.text = item.format.format_note.uppercase()
-
-        val codec = card.findViewById<TextView>(R.id.codec)
-        val codecText =
-            if (item.format.encoding != "") {
-                item.format.encoding.uppercase()
-            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                item.format.vcodec.uppercase()
-            } else {
-                item.format.acodec.uppercase()
-            }
-        if (codecText == "" || codecText == "none"){
-            codec.visibility = View.GONE
-        }else{
-            codec.visibility = View.VISIBLE
-            codec.text = codecText
-        }
-
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSizeReadable == "?") fileSize.visibility = View.GONE
-        else fileSize.text = fileSizeReadable
-
-        val menu = card.findViewById<View>(R.id.options)
-        menu.setOnClickListener {
-            val popup = PopupMenu(activity, it)
-            popup.menuInflater.inflate(R.menu.queued_download_menu, popup.menu)
-            if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
-
-            popup.setOnMenuItemClickListener { m ->
-                when(m.itemId){
-                    R.id.cancel -> {
-                        onItemClickListener.onQueuedCancelClick(item.id)
-                        popup.dismiss()
-                    }
-                    R.id.move_top -> {
-                        onItemClickListener.onMoveQueuedItemToTop(item.id)
-                        popup.dismiss()
-                    }
-                    R.id.move_bottom -> {
-                        onItemClickListener.onMoveQueuedItemToBottom(item.id)
-                        popup.dismiss()
-                    }
-                    R.id.copy_url -> {
-                        UiUtil.copyLinkToClipBoard(activity, item.url)
-                        popup.dismiss()
-                    }
-                }
-                true
-            }
-
-            popup.show()
-
-        }
-
-        if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
-            card.isChecked = true
-            card.strokeWidth = 5
-        } else {
-            card.isChecked = false
-            card.strokeWidth = 0
-        }
-        card.findViewById<View>(R.id.card_content).setOnClickListener {
-            if (checkedItems.size > 0 || inverted) {
-                checkCard(card, item.id, position)
-            } else {
-                onItemClickListener.onQueuedCardClick(item.id)
-            }
-        }
-
-        card.findViewById<View>(R.id.card_content).setOnLongClickListener {
-            checkCard(card, item.id, position)
-            true
-        }
-
+        holder.bind(item, showDragHandle)
     }
 
     @SuppressLint("NotifyDataSetChanged")

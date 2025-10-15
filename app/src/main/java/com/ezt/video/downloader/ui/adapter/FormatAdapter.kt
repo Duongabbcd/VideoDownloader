@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.expand.non_table.FormatRecyclerView
 import com.ezt.video.downloader.database.models.expand.table.Format
+import com.ezt.video.downloader.databinding.FormatItemBinding
+import com.ezt.video.downloader.databinding.FormatTypeLabelBinding
 import com.ezt.video.downloader.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 
@@ -32,16 +34,62 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         this.activity = activity
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val item: MaterialCardView? = itemView.findViewById(R.id.format_card_constraintLayout)
-        val label: Button? = itemView.findViewById(R.id.title)
+    sealed class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        class LabelViewHolder(val binding: FormatTypeLabelBinding) : ViewHolder(binding.root)
+
+        class FormatViewHolder(
+            val binding: FormatItemBinding,
+            val activity: Activity,
+            val onItemClickListener: FormatAdapter.OnItemClickListener,
+            val adapter: FormatAdapter
+        ) : ViewHolder(binding.root) {
+
+            fun bind(item: FormatRecyclerView) {
+                val format = item.format ?: return
+                val card = binding.formatCardConstraintLayout
+
+                UiUtil.populateFormatCard(activity, card, format)
+
+                // Handle selection
+                val isSelected = adapter.selectedVideoFormat == format ||
+                        adapter.selectedAudioFormats.any { it == format }
+                card.isChecked = isSelected
+
+                card.setOnClickListener {
+                    if (!adapter.canMultiSelectAudio) {
+                        onItemClickListener.onItemSelect(format, null)
+                    } else {
+                        if (format.isVideo()) {
+                            if (card.isChecked) {
+                                onItemClickListener.onItemSelect(format, adapter.selectedAudioFormats)
+                            } else {
+                                adapter.selectedVideoFormat = format
+                                adapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            if (card.isChecked) {
+                                adapter.selectedAudioFormats.remove(format)
+                            } else {
+                                adapter.selectedAudioFormats.add(format)
+                            }
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                card.setOnLongClickListener {
+                    UiUtil.showFormatDetails(format, activity)
+                    true
+                }
+            }
+        }
     }
 
+
     override fun submitList(list: MutableList<FormatRecyclerView?>?) {
-        if (list != null) {
-            formats = list
-        }
-        super.submitList(list ?: listOf<FormatRecyclerView>())
+        formats = list ?: mutableListOf()
+        super.submitList(list)
     }
 
     fun setCanMultiSelectAudio(it: Boolean) {
@@ -58,79 +106,42 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == 0){
-            val button = LayoutInflater.from(parent.context)
-                .inflate(R.layout.format_type_label, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
 
-            ViewHolder(
-                button,
-                onItemClickListener
-            )
-        }else{
-            val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.format_item, parent, false)
-
-            ViewHolder(
-                cardView,
-                onItemClickListener
-            )
+        return if (viewType == 0) {
+            val binding = FormatTypeLabelBinding.inflate(inflater, parent, false)
+            ViewHolder.LabelViewHolder(binding)
+        } else {
+            val binding = FormatItemBinding.inflate(inflater, parent, false)
+            ViewHolder.FormatViewHolder(binding, activity, onItemClickListener, this)
         }
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itm = getItem(position) ?: return
-        val viewType = getItemViewType(position)
-        if (viewType == 0) {
-            val button = holder.label
-            button?.text = itm.label
-            return
-        }
+        val item = getItem(position) ?: return
 
-        val item = itm.format!!
-        val card = holder.item!!
-        //card.popup()
-        UiUtil.populateFormatCard(activity, card, item)
-        card.isChecked = selectedVideoFormat == item || selectedAudioFormats.any { it == item }
-
-        card.setOnClickListener {
-            if (!canMultiSelectAudio) {
-                onItemClickListener.onItemSelect(item, null)
-            }else {
-                if (item.isVideo()) {
-                    if (card.isChecked) {
-                        onItemClickListener.onItemSelect(item, selectedAudioFormats)
-                    }else {
-                        selectedVideoFormat = item
-                        notifyDataSetChanged()
-                    }
-                }else {
-                    if (card.isChecked) {
-                        selectedAudioFormats.remove(item)
-                    }else {
-                        selectedAudioFormats.add(item)
-                    }
-                    notifyDataSetChanged()
-                }
+        when (holder) {
+            is ViewHolder.LabelViewHolder -> {
+                holder.binding.title.text = item.label
+            }
+            is ViewHolder.FormatViewHolder -> {
+                holder.bind(item)
             }
         }
-
-        card.setOnLongClickListener {
-            UiUtil.showFormatDetails(item, activity)
-            true
-        }
-
     }
 
-    private fun Format.isVideo() : Boolean {
-        return this.vcodec.isNotBlank() && this.vcodec != "none"
-    }
+
 
     interface OnItemClickListener {
         fun onItemSelect(item: Format, audioFormats: List<Format>?)
     }
 
     companion object {
+        fun Format.isVideo(): Boolean {
+            return this.vcodec.isNotBlank() && this.vcodec != "none"
+        }
+
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<FormatRecyclerView> = object : DiffUtil.ItemCallback<FormatRecyclerView>() {
             override fun areItemsTheSame(oldItem: FormatRecyclerView, newItem: FormatRecyclerView): Boolean {
                 return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id && oldItem.format?.format_note == newItem.format?.format_note

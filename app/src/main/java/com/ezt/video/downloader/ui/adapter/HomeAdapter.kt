@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.ResultCardBinding
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
@@ -40,68 +41,47 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
+    inner class ViewHolder(private val binding: ResultCardBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(video: ResultItem?) {
+            binding.apply {
+                resultCardView.popup()
 
-        init {
-            cardView = itemView.findViewById(R.id.result_card_view)
-        }
-    }
+                val uiHandler = Handler(Looper.getMainLooper())
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.result_card, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
-    }
+                // THUMBNAIL ----------------------------------
+                val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
+                uiHandler.post { resultImageView.loadThumbnail(hideThumb, video!!.thumb) }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val video = getItem(position)
-        val card = holder.cardView
-        card.popup()
+                // TITLE  ----------------------------------
+                var title = video!!.title.ifBlank { video.url }
+                if (title.length > 100) {
+                    title = title.substring(0, 40) + "..."
+                }
+                resultTitle.text = title
 
-        val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.result_image_view)
+                // Bottom Info ----------------------------------
+                author.text = video.author
+                if (video.duration.isNotEmpty() && video.duration != "-1") {
+                    duration.text = video.duration
+                }
 
-        // THUMBNAIL ----------------------------------
-        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, video!!.thumb) }
-
-        // TITLE  ----------------------------------
-        val videoTitle = card.findViewById<TextView>(R.id.result_title)
-        var title = video!!.title.ifBlank { video.url }
-        if (title.length > 100) {
-            title = title.substring(0, 40) + "..."
-        }
-        videoTitle.text = title
-
-        // Bottom Info ----------------------------------
-        val author = card.findViewById<TextView>(R.id.author)
-        author.text = video.author
-        val duration = card.findViewById<TextView>(R.id.duration)
-        if (video.duration.isNotEmpty() && video.duration != "-1") {
-            duration.text = video.duration
-        }
-
-        // BUTTONS ----------------------------------
-        val videoURL = video.url
-        val musicBtn = card.findViewById<MaterialButton>(R.id.download_music)
-        musicBtn.tag = "$videoURL##audio"
-        musicBtn.setTag(R.id.cancelDownload, "false")
-        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.audio) }
-        musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.audio); true}
-        val videoBtn = card.findViewById<MaterialButton>(R.id.download_video)
-        videoBtn.tag = "$videoURL##video"
-        videoBtn.setTag(R.id.cancelDownload, "false")
-        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.video) }
-        videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.video); true}
+                // BUTTONS ----------------------------------
+                val videoURL = video.url
+                downloadMusic.tag = "$videoURL##audio"
+                downloadMusic.setTag(R.id.cancelDownload, "false")
+                downloadMusic.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.audio) }
+                downloadMusic.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.audio); true}
+                downloadVideo.tag = "$videoURL##video"
+                downloadVideo.setTag(R.id.cancelDownload, "false")
+                downloadVideo.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.video) }
+                downloadVideo.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.video); true}
 
 
-        // PROGRESS BAR ----------------------------------------------------
-        val progressBar = card.findViewById<LinearProgressIndicator>(R.id.download_progress)
-        progressBar.tag = "$videoURL##progress"
-        progressBar.progress = 0
-        progressBar.isIndeterminate = true
-        progressBar.visibility = View.GONE
+                // PROGRESS BAR ----------------------------------------------------
+                downloadProgress.tag = "$videoURL##progress"
+                downloadProgress.progress = 0
+                downloadProgress.isIndeterminate = true
+                downloadProgress.visibility = View.GONE
 
 //        if (video.isDownloading()){
 //            progressBar.setVisibility(View.VISIBLE);
@@ -132,25 +112,37 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 //                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
 //            }
 //        }
-        if (checkedItems.contains(videoURL)) {
-            card.isChecked = true
-            card.strokeWidth = 5
-        } else {
-            card.isChecked = false
-            card.strokeWidth = 0
-        }
-        card.tag = "$videoURL##card"
-        card.setOnLongClickListener {
-            checkCard(card, videoURL)
-            true
-        }
-        card.setOnClickListener {
-            if (checkedItems.size > 0) {
-                checkCard(card, videoURL)
-            }else{
-                onItemClickListener.onCardDetailsClick(videoURL)
+                if (checkedItems.contains(videoURL)) {
+                    resultCardView.isChecked = true
+                    resultCardView.strokeWidth = 5
+                } else {
+                    resultCardView.isChecked = false
+                    resultCardView.strokeWidth = 0
+                }
+                resultCardView.tag = "$videoURL##card"
+                resultCardView.setOnLongClickListener {
+                    checkCard(resultCardView, videoURL)
+                    true
+                }
+                resultCardView.setOnClickListener {
+                    if (checkedItems.size > 0) {
+                        checkCard(resultCardView, videoURL)
+                    }else{
+                        onItemClickListener.onCardDetailsClick(videoURL)
+                    }
+                }
             }
         }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ResultCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val video = getItem(position)
+        holder.bind(video)
     }
 
     private fun checkCard(card: MaterialCardView, videoURL: String) {

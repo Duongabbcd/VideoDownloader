@@ -28,6 +28,7 @@ import com.ezt.video.downloader.receiver.CancelWorkReceiver
 import com.ezt.video.downloader.receiver.PauseDownloadNotificationReceiver
 import com.ezt.video.downloader.receiver.activities.ResumeActivity
 import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.player.PlayerActivity
 import com.ezt.video.downloader.util.Extensions.toBitmap
 
 
@@ -285,8 +286,9 @@ class NotificationUtil(var context: Context) {
                     openFileIntent.apply {
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        action = Intent.ACTION_VIEW
-                        data = uris.first()
+                        setClass(context, PlayerActivity::class.java)
+                        putExtra("playerURL", uris.first().toString())
+                        putExtra("playerName", title)
                     }
 
                     shareFileIntent.apply {
@@ -313,8 +315,8 @@ class NotificationUtil(var context: Context) {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
 
-                notificationBuilder.addAction(0, res.getString(R.string.Open_File), openNotificationPendingIntent)
-                notificationBuilder.addAction(0, res.getString(R.string.share), shareNotificationPendingIntent)
+//                notificationBuilder.addAction(0, res.getString(R.string.Open_File), openNotificationPendingIntent)
+//                notificationBuilder.addAction(0, res.getString(R.string.share), shareNotificationPendingIntent)
             }catch (_: Exception){}
         }
         notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(contentText.toString().trimIndent()))

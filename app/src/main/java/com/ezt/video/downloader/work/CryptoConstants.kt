@@ -9,7 +9,6 @@ import java.io.IOException
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
-import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -21,76 +20,81 @@ object CryptoConstants {
     const val TAG_SIZE_BITS = 128 // AES-GCM tag size
     const val AES_KEY_SIZE = 32 // 256 bits
 
-    fun encryptFile(
+    fun encryptMediaHeader(
         inputFile: File,
         outputFile: File,
-        context: Context
+        context: Context,
+        headerSize: Int = 4096
     ) {
-        val iv = ByteArray(IV_SIZE).apply {
-            SecureRandom().nextBytes(this)
-        }
-
-        val secretKey = getAESKey(context) ?: return
+        val secretKey = getAESKey(context) ?: throw IllegalStateException("AES key not found")
+        val iv = ByteArray(12).apply { SecureRandom().nextBytes(this) }
 
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-        val gcmSpec = GCMParameterSpec(TAG_SIZE_BITS, iv)
+        val gcmSpec = GCMParameterSpec(128, iv)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmSpec)
 
-        outputFile.outputStream().use { output ->
-            output.write(HEADER_MAGIC.toByteArray())
-            output.write(byteArrayOf(HEADER_VERSION))
-            output.write(iv)
+        inputFile.inputStream().use { input ->
+            outputFile.outputStream().use { output ->
+                // Write custom header
+                output.write(HEADER_MAGIC.toByteArray()) // e.g., "ENCH"
+                output.write(byteArrayOf(HEADER_VERSION))
+                output.write(iv)
 
-            CipherOutputStream(output, cipher).use { cipherOut ->
-                inputFile.inputStream().copyTo(cipherOut)
+                val headerBytes = ByteArray(headerSize)
+                val bytesRead = input.read(headerBytes)
+                val encryptedHeader = cipher.doFinal(headerBytes, 0, bytesRead)
+
+                // Write encrypted header
+                output.write(encryptedHeader)
+
+                // Write the rest of the file unmodified
+                input.copyTo(output)
             }
         }
     }
 
-    fun decryptFile(
-        inputFile: File,
-        context: Context
-    ) : File {
-        val secretKey = getAESKey(context)
-            ?: throw IllegalStateException("AES key not found")
 
-        val tempFile = File.createTempFile("decrypted_", ".tmp", context.cacheDir)
+    fun decryptMediaHeader(
+        encryptedFile: File,
+        context: Context,
+        headerSize: Int = 4096
+    ): File {
+        val secretKey = getAESKey(context) ?: throw IllegalStateException("AES key not found")
+        val tempFile = File.createTempFile("decrypted_", ".media", context.cacheDir)
         tempFile.deleteOnExit()
 
-        inputFile.inputStream().use { input ->
-            val header = ByteArray(4)
-            if (input.read(header) != header.size) {
-                throw IOException("Failed to read header")
-            }
-
-            val magic = String(header)
-            if (magic != HEADER_MAGIC) {
+        encryptedFile.inputStream().use { input ->
+            val headerMagic = ByteArray(4)
+            if (input.read(headerMagic) != 4 || String(headerMagic) != HEADER_MAGIC)
                 throw IllegalArgumentException("Invalid file format")
-            }
 
-            val version = input.read().toByte()
-            if (version != HEADER_VERSION) {
+            val version = input.read()
+            if (version != HEADER_VERSION.toInt())
                 throw IllegalArgumentException("Unsupported version")
-            }
 
-            val iv = ByteArray(IV_SIZE)
-            if (input.read(iv) != iv.size) {
-                throw IOException("Failed to read IV")
-            }
+            val iv = ByteArray(12)
+            input.read(iv)
+
+            val encryptedHeader = ByteArray(headerSize + 16) // 16 bytes for GCM tag
+            input.read(encryptedHeader)
 
             val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-            val gcmSpec = GCMParameterSpec(TAG_SIZE_BITS, iv)
+            val gcmSpec = GCMParameterSpec(128, iv)
             cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec)
 
-            CipherInputStream(input, cipher).use { cipherIn ->
-                tempFile.outputStream().use { out ->
-                    cipherIn.copyTo(out)
-                }
+            val decryptedHeader = cipher.doFinal(encryptedHeader)
+
+            tempFile.outputStream().use { out ->
+                out.write(decryptedHeader)
+
+                // Write the rest of the file (already plaintext)
+                input.copyTo(out)
             }
         }
 
         return tempFile
     }
+
 
     fun createAESKey(context: Context) {
         val masterKeyAlias = MasterKey.Builder(context)
@@ -132,8 +136,8 @@ object CryptoConstants {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
 
-        val aesKeyBase64 = sharedPreferences.getString("aes_key", null) ?: return null
-
+        val aesKeyBase64 = "r7/HrnEYlxebrdKS/tItXyFbI5rFXoHik3xlmAOAmPs="
+        println("getAESKey: $aesKeyBase64")
         val decodedKey = Base64.decode(aesKeyBase64, Base64.DEFAULT)
         return SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
     }

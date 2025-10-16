@@ -57,7 +57,9 @@
 
     </LinearLayout>
 
-    <include layout="@layout/no_results"
+    <include
+        android:id="@+id/noResults"
+        layout="@layout/no_results"
         android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

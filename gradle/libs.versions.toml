@@ -21,7 +21,11 @@ uiAndroid = "1.9.3"
 material3Android = "1.4.0"
 preference = "1.2.1"
 
+adjustAndroid = "4.33.1"
+firebaseConfig = "22.0.1"
+
 [libraries]
+adjust-android = { module = "com.adjust.sdk:adjust-android", version.ref = "adjustAndroid" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -42,6 +46,7 @@ gson = { group = "com.google.code.gson", name = "gson", version = "2.10.1" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config", version.ref = "firebaseConfig" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

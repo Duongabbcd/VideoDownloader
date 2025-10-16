@@ -431,4 +431,13 @@
         <item>@color/cool_blue</item>
         <item>@color/purple_500</item>
     </integer-array>
+
+    //ads color
+    <color name="select_title">#3A236D</color>
+    <color name="button_language">#8246FF</color>
+    <color name="main_color">#8246FF</color>
+    <color name="blue_grey_700">#455A64</color>
+    <color name="defaultGray">#ECECEC</color>
+    <color name="customBlack_0_5">#80323232</color>
+    <color name="subTitle">#8F8F8F</color>
 </resources>

@@ -149,7 +149,7 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
         } else {
             Toast.makeText(this@PlayerActivity, resources.getString(R.string.preparing), Toast.LENGTH_SHORT).show()
             try {
-                CryptoConstants.decryptFile(File(encryptedFilePath), this)
+                CryptoConstants.decryptMediaHeader(File(encryptedFilePath), this)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "Failed to decrypt file: ${e.message}", Toast.LENGTH_LONG).show()

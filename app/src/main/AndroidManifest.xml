@@ -49,6 +49,10 @@
 
         <activity android:name=".ui.player.PlayerActivity"
             android:exported="true"/>
+
+        <activity android:name=".ui.splash.SplashActivity"
+            android:exported="true"/>
+
         <activity
             android:name=".ui.home.MainActivity"
             android:configChanges="locale"
@@ -508,6 +512,19 @@
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"/>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+        <meta-data
+            android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"
+            android:value="true" />
     </application>
 
 </manifest>

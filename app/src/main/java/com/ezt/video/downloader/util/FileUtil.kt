@@ -22,7 +22,7 @@ import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.MyApplication
-import com.ezt.video.downloader.work.CryptoConstants.encryptFile
+import com.ezt.video.downloader.work.CryptoConstants.encryptMediaHeader
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -165,7 +165,7 @@ object FileUtil {
                                     // 🔐 Encrypt the moved file
                                     val originalFile = File(movedFilePath)
                                     val tempEncryptedFile = File("$movedFilePath.tmp")
-                                    encryptFile(originalFile, tempEncryptedFile, context)
+                                    encryptMediaHeader(originalFile, tempEncryptedFile, context)
 
                                     if (originalFile.delete()) {
                                         if (tempEncryptedFile.renameTo(originalFile)) {
@@ -192,7 +192,7 @@ object FileUtil {
                                     // 🔐 Encrypt the copied file
                                     val originalFile = File(newFileName)
                                     val tempEncryptedFile = File("$newFileName.tmp")
-                                    encryptFile(originalFile, tempEncryptedFile, context)
+                                    encryptMediaHeader(originalFile, tempEncryptedFile, context)
 
                                     if (originalFile.delete()) {
                                         if (tempEncryptedFile.renameTo(originalFile)) {
@@ -237,7 +237,7 @@ object FileUtil {
                                         val file = File(path)
                                         if (file.isFile && file.exists()) {
                                             val temp = File(path + ".tmp")
-                                            encryptFile(file, temp, context)
+                                            encryptMediaHeader(file, temp, context)
                                             if (file.delete()) {
                                                 temp.renameTo(file)
                                             }
@@ -297,7 +297,7 @@ object FileUtil {
                                     val file = File(path)
                                     if (file.exists()) {
                                         val temp = File(path + ".tmp")
-                                        encryptFile(file, temp, context)
+                                        encryptMediaHeader(file, temp, context)
                                         if (file.delete()) {
                                             temp.renameTo(file)
                                         }

@@ -101,7 +101,6 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
         CrashListener(this).registerExceptionHandler()
         ThemeUtil.updateTheme(this)
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
-        setContentView(R.layout.activity_main)
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]

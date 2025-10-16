@@ -19,9 +19,12 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.HistoryItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.HistoryCardBinding
+import com.ezt.video.downloader.databinding.HistoryCardMultipleBinding
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.Extensions.popup
@@ -50,42 +53,50 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
-
-        init {
-            cardView = itemView.findViewById(R.id.downloads_card_view)
-        }
+    sealed class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        class Single(val binding: HistoryCardBinding) : ViewHolder(binding)
+        class Multiple(val binding: HistoryCardMultipleBinding) : ViewHolder(binding)
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryPaginatedAdapter.ViewHolder {
-        return if (viewType == 0){
-            val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.history_card, parent, false)
-            ViewHolder(cardView, onItemClickListener)
-        }else{
-            val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.history_card_multiple, parent, false)
-            ViewHolder(cardView, onItemClickListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return when (viewType) {
+            0 -> {
+                val binding = HistoryCardBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+                ViewHolder.Single(binding)
+            }
+            else -> {
+                val binding = HistoryCardMultipleBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+                ViewHolder.Multiple(binding)
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        getItem(position)?.apply {
-            return if(this.downloadPath.size == 1){
-                0
-            }else{
-                1
-            }
-        }
-        return 0
+        return if (getItem(position)?.downloadPath?.size == 1) 0 else 1
     }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) ?: return
-        val card = holder.cardView
-        holder.itemView.tag = item.id.toString()
+
+        when (holder) {
+            is ViewHolder.Single -> bindCommon(holder.binding.downloadsCardView, holder.binding, item, position)
+            is ViewHolder.Multiple -> bindCommon(holder.binding.downloadsCardView, holder.binding, item, position)
+        }
+
+    }
+
+
+    private fun <T : ViewBinding> bindCommon(
+        card: MaterialCardView,
+        binding: T,
+        item: HistoryItem,
+        position: Int
+    ) {
         card.tag = item.id.toString()
         card.popup()
 

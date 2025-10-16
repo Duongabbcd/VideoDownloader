@@ -125,6 +125,7 @@ class FormatSelectionBottomSheetDialog(
         refreshBtn = view.findViewById(R.id.format_refresh)
         okBtn = view.findViewById(R.id.format_ok)
         filterBtn = view.findViewById(R.id.format_filter)
+        filterBtn.isVisible = false
         val shimmers = view.findViewById<ShimmerFrameLayout>(R.id.format_list_shimmer)
 
         lifecycleScope.launch {
@@ -144,7 +145,7 @@ class FormatSelectionBottomSheetDialog(
 
         lifecycleScope.launch {
             formatViewModel.showFilterBtn.collectLatest {
-                filterBtn.isVisible = it
+                filterBtn.isVisible = false
             }
         }
 

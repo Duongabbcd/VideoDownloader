@@ -35,6 +35,9 @@ import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.YTDLPViewModel
+import com.ezt.video.downloader.databinding.FragmentDownloadQueueMainScreenBinding
+import com.ezt.video.downloader.databinding.FragmentInqueueBinding
+import com.ezt.video.downloader.ui.BaseFragment
 import com.ezt.video.downloader.ui.adapter.QueuedDownloadAdapter
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.forceFastScrollMode
@@ -54,14 +57,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickListener {
+class QueuedDownloadsFragment :
+    BaseFragment<FragmentInqueueBinding>(FragmentInqueueBinding::inflate),
+    QueuedDownloadAdapter.OnItemClickListener {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var ytdlpViewModel : YTDLPViewModel
-    private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var adapter : QueuedDownloadAdapter
-    private lateinit var noResults : RelativeLayout
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var fileSize: TextView
     private lateinit var dragHandleToggle: TextView
@@ -69,41 +72,33 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
     private var totalSize: Int = 0
     private var actionMode : ActionMode? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_inqueue, container, false)
-        activity = getActivity()
-        notificationUtil = NotificationUtil(requireContext())
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
-        return fragmentView
-    }
 
     @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity = getActivity()
+        notificationUtil = NotificationUtil(requireContext())
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         fileSize = view.findViewById(R.id.filesize)
         dragHandleToggle = view.findViewById(R.id.drag)
         val itemTouchHelper = ItemTouchHelper(queuedDragDropHelper)
         adapter = QueuedDownloadAdapter(this, requireActivity(), itemTouchHelper)
 
-        noResults = view.findViewById(R.id.no_results)
-        queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
-        queuedRecyclerView.forceFastScrollMode()
-        queuedRecyclerView.adapter = adapter
-        queuedRecyclerView.enableFastScroll()
-        itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
+
+        binding.downloadRecyclerview.forceFastScrollMode()
+        binding.downloadRecyclerview.adapter = adapter
+        binding.downloadRecyclerview.enableFastScroll()
+        itemTouchHelper.attachToRecyclerView( binding.downloadRecyclerview)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("queued")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
-            itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
+            itemTouchHelper.attachToRecyclerView( binding.downloadRecyclerview)
         }
-        queuedRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
+        binding.downloadRecyclerview.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
         lifecycleScope.launch {
             downloadViewModel.queuedDownloads.collectLatest {
@@ -133,7 +128,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
 
         downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Queued)).observe(viewLifecycleOwner){
             totalSize = it
-            noResults.isVisible = it == 0
+            binding.noResults.root.isVisible = it == 0
             dragHandleToggle.isVisible = it > 1
         }
 
@@ -156,7 +151,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                     downloadViewModel.updateDownload(item)
                 }
 
-                Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title.ifEmpty { item.url }, Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(binding.downloadRecyclerview, getString(R.string.cancelled) + ": " + item.title.ifEmpty { item.url }, Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.undo)) {
                         lifecycleScope.launch(Dispatchers.IO) {
                             downloadViewModel.deleteDownload(item.id)

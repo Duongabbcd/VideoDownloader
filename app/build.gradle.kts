@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.parcelize)
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
     id("dagger.hilt.android.plugin")
+//    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -22,13 +24,50 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk  =  false
+        }
+    }
+
+    //    signingConfigs {
+//        create("release") {
+//            storeFile = rootProject.file("keystore/piano2.jks")
+//            storePassword = "12345678"
+//            keyAlias = "piano2025"
+//            keyPassword = "12345678"
+//        }
+//    }
+
+    base {
+        archivesName.set("VideoDownloader_${defaultConfig.versionName}")
+    }
+
+    flavorDimensions("default")
+    productFlavors {
+
+        create("develop") {
+            applicationIdSuffix = ".dev"
+        }
+
+
+        create("production") {
+
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+//            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -75,6 +114,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.firebase.config)
 
     implementation(libs.gson)
     implementation(libs.constraintlayout)
@@ -103,6 +143,7 @@ dependencies {
     implementation("io.github.junkfood02.youtubedl-android:library:0.18.0")
     implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.18.0")
     implementation("io.github.junkfood02.youtubedl-android:aria2c:0.17.3")
+
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 
@@ -155,4 +196,26 @@ dependencies {
     implementation("androidx.browser:browser:1.6.0")
 
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    //advertisement
+    implementation("com.facebook.android:facebook-android-sdk:18.0.2")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging")
+
+    implementation(libs.adjust.android)
+    implementation("com.android.installreferrer:installreferrer:2.2")
+
+//    implementation("com.google.ads.mediation:pangle:7.2.0.6.0")
+//    implementation("com.google.ads.mediation:applovin:13.4.0.0")
+//    implementation("com.google.ads.mediation:facebook:6.20.0.0")
+//    implementation("com.google.ads.mediation:vungle:7.5.1.0")
+//    implementation("com.google.ads.mediation:mintegral:16.9.91.1")
+//
+    implementation("com.google.android.gms:play-services-ads:24.7.0") // or latest
+
+    //check update
+//    implementation("com.google.android.play:app-update:2.1.0")
+//    implementation("com.google.android.play:app-update-ktx:2.1.0")
 }

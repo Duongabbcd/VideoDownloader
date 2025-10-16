@@ -262,7 +262,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     tabLayout.selectTab(tabLayout.getTabAt(1))
                     val s = Snackbar.make(view, getString(R.string.add_template_first), Snackbar.LENGTH_LONG)
                     val snackbarView: View = s.view
-                    val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                    val snackTextView = snackbarView.findViewById<View>(R.id.snackbar_text) as TextView
                     snackTextView.maxLines = 9999999
                     s.setAction(R.string.new_template){
                         UiUtil.showCommandTemplateCreationOrUpdatingSheet(
@@ -381,6 +381,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
                 val item: DownloadItem = getDownloadItem()
+                Toast.makeText(view.context, view.context.resources.getString(R.string.high_note), Toast.LENGTH_SHORT).show()
                 if (item.videoPreferences.alsoDownloadAsAudio){
                     val itemsToQueue = mutableListOf<DownloadItem>()
                     itemsToQueue.add(item)
@@ -407,6 +408,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
 
         download.setOnLongClickListener {
+            return@setOnLongClickListener false
             val dd = MaterialAlertDialogBuilder(requireContext())
             dd.setTitle(getString(R.string.save_for_later))
             dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }

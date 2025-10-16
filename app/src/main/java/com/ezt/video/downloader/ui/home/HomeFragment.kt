@@ -25,7 +25,6 @@ import android.view.View.GONE
 import android.view.View.OnClickListener
 import android.view.View.OnTouchListener
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -39,10 +38,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.forEach
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -58,12 +55,13 @@ import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
+import com.ezt.video.downloader.databinding.FragmentHomeBinding
+import com.ezt.video.downloader.ui.BaseFragment
 import com.ezt.video.downloader.ui.adapter.SearchSuggestionsAdapter
 import com.ezt.video.downloader.ui.home.adapter.BookmarkAdapter
 import com.ezt.video.downloader.ui.more.WebViewActivity
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
 import com.ezt.video.downloader.util.Common.gone
-import com.ezt.video.downloader.util.Common.visible
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
 import com.ezt.video.downloader.util.NotificationUtil
@@ -71,14 +69,12 @@ import com.ezt.video.downloader.util.ThemeUtil
 import com.ezt.video.downloader.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,7 +86,7 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 import kotlin.sequences.forEach
 
-class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
     private var inputQueries: MutableList<String>? = null
     private var homeAdapter: HomeAdapter? = null
     private var searchSuggestionsAdapter: SearchSuggestionsAdapter? = null
@@ -98,7 +94,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     private var downloadSelectedFab: ExtendedFloatingActionButton? = null
     private var downloadAllFab: ExtendedFloatingActionButton? = null
-    private var clipboardFab: ExtendedFloatingActionButton? = null
+
     private var homeFabs: LinearLayout? = null
     private var notificationUtil: NotificationUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
@@ -116,13 +112,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var fragmentContext: Context? = null
     private var layoutinflater: LayoutInflater? = null
     private var shimmerCards: ShimmerFrameLayout? = null
-    private var searchBar: SearchBar? = null
-    private var searchView: SearchView? = null
     private var providersChipGroup: ChipGroup? = null
     private var chipGroupDivider: View? = null
     private var queriesChipGroup: ChipGroup? = null
-    private var recyclerView: RecyclerView? = null
-    private var bookmarkRecyclerView: RecyclerView? = null
     private var searchSuggestionsRecyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
@@ -130,35 +122,22 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var actionMode: ActionMode? = null
-    private var appBarLayout: AppBarLayout? = null
-    private var materialToolbar: MaterialToolbar? = null
-    private var settingIcon: ImageView? = null
-    private var recentlySearch: TextView? = null
     private var loadingItems: Boolean = false
-    private var loading: LinearLayout? = null
     private var queryList = mutableListOf<String>()
 
     private var showDownloadAllFab: Boolean = false
     private var showClipboardFab: Boolean = false
 
     private lateinit var bookmarkAdapter: BookmarkAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
+    
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         activity = getActivity()
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
         notificationUtil = NotificationUtil(requireContext())
         selectedObjects = arrayListOf()
-        return fragmentView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+        
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
         uiHandler = Handler(Looper.getMainLooper())
@@ -174,23 +153,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         //initViews
-        searchBar = view.findViewById(R.id.search_bar)
-        searchView = view.findViewById(R.id.search_view)
-        appBarLayout = view.findViewById(R.id.home_appbarlayout)
-        materialToolbar = view.findViewById(R.id.home_toolbar)
         queriesChipGroup = view.findViewById(R.id.queries)
         queriesConstraint = view.findViewById(R.id.queries_constraint)
         homeFabs = view.findViewById(R.id.home_fabs)
         downloadSelectedFab = homeFabs!!.findViewById(R.id.download_selected_fab)
         downloadAllFab = homeFabs!!.findViewById(R.id.download_all_fab)
-        clipboardFab = homeFabs!!.findViewById(R.id.copied_url_fab)
         playlistNameFilterScrollView = view.findViewById(R.id.playlist_selection_chips_scrollview)
         playlistNameFilterChipGroup = view.findViewById(R.id.playlist_selection_chips)
-        settingIcon = view.findViewById(R.id.setting_icon)
-        recentlySearch = view.findViewById(R.id.recentlySearch)
-        loading = view.findViewById(R.id.loading)
 
-        runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
+        runCatching { binding.homeToolbar.title = ThemeUtil.getStyledAppName(requireContext()) }
 
         homeAdapter =
             HomeAdapter(
@@ -198,14 +169,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 requireActivity()
             )
         bookmarkAdapter = BookmarkAdapter()
-        recyclerView = view.findViewById(R.id.recyclerViewHome)
-        bookmarkRecyclerView = view.findViewById(R.id.recyclerViewHome)
-        recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
-        bookmarkRecyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.multiple_grid_size))
-        recyclerView?.adapter = homeAdapter
-        bookmarkRecyclerView?.adapter = bookmarkAdapter
-        recyclerView?.enableFastScroll()
-        bookmarkRecyclerView?.enableFastScroll()
+        binding.recyclerViewHome.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
+        binding.allBookmarks.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.multiple_grid_size))
+        binding.recyclerViewHome.adapter = homeAdapter
+        binding.allBookmarks.adapter = bookmarkAdapter
+        binding.recyclerViewHome.enableFastScroll()
+        binding.allBookmarks.enableFastScroll()
 
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
 
@@ -271,7 +240,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         if (arguments?.getString("url") != null){
             val url = requireArguments().getString("url")
             if (inputQueries == null) inputQueries = mutableListOf()
-            searchBar?.setText(url)
+            binding.searchBar.setText(url)
             val argList = url!!.split("\n").filter { it.isURL() }.toMutableList()
             argList.removeAll(listOf("", null))
             inputQueries!!.addAll(argList)
@@ -285,7 +254,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
         }
 
-        searchView?.addTransitionListener { _, _, newState ->
+        binding.searchView.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.SHOWING){
                 mainActivity?.hideBottomNavigation()
             }else if (newState == SearchView.TransitionState.HIDING){
@@ -294,8 +263,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         mainActivity?.onBackPressedDispatcher?.addCallback(this) {
-            if (searchView?.isShowing == true) {
-                searchView?.hide()
+            if (binding.searchView.isShowing == true) {
+                binding.searchView.hide()
             }else{
                 mainActivity?.finishAffinity()
             }
@@ -347,11 +316,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     loadingItems = res.processing
                     progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                     if (res.processing){
-                        recyclerView?.setPadding(0,0,0,0)
+                        binding.recyclerViewHome.setPadding(0,0,0,0)
                         shimmerCards!!.startShimmer()
                         shimmerCards!!.visibility = VISIBLE
                     }else{
-                        recyclerView?.setPadding(0,0,0,100)
+                        binding.recyclerViewHome.setPadding(0,0,0,100)
                         shimmerCards!!.stopShimmer()
                         shimmerCards!!.visibility = GONE
 
@@ -379,7 +348,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
         }
 
-        settingIcon?.setOnClickListener {
+        binding.settingIcon.setOnClickListener {
             val intent = Intent(context, SettingsActivity::class.java)
             startActivity(intent)
         }
@@ -422,17 +391,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         if(arguments?.getBoolean("search") == true){
             arguments?.remove("search")
             requireView().post {
-                searchBar?.performClick()
+                binding.searchBar.performClick()
             }
         }
 
-        if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
-            updateSearchViewItems(searchView?.editText?.text.toString())
+        if (binding.searchView.currentTransitionState == SearchView.TransitionState.SHOWN){
+            updateSearchViewItems(binding.searchView.editText.text.toString())
         }
 
         requireView().post {
             checkClipboard().apply {
-                this?.apply {
+                this?.apply { 
                     if(this.isEmpty()) {
                         return@apply
                     }
@@ -441,34 +410,37 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
 
                     latestURL = this.last()
-                    searchBar?.setText(latestURL)
+                    binding.searchBar.setText(latestURL)
 
                     showClipboardFab = this.isNotEmpty()
-                    clipboardFab?.isVisible = showClipboardFab
-                    clipboardFab?.setOnClickListener {
-                        if (this.size == 1){
-                            searchView?.setText(this.first())
-                            showClipboardFab = false
-                            clipboardFab?.isVisible = false
-                            initSearch(searchView!!)
-                        }else{
-                            searchBar?.performClick()
-                            lifecycleScope.launch {
-                                withContext(Dispatchers.IO){
-                                    delay(500)
-                                }
-                                this@apply.forEach {
-                                    onSearchSuggestionAdd(it)
+                   
+                        binding.copiedUrlFab.isVisible = showClipboardFab
+                        binding.copiedUrlFab.setOnClickListener {
+                            if (this.size == 1){
+                                binding.searchView.setText(this.first())
+                                showClipboardFab = false
+                                binding.copiedUrlFab.isVisible = false
+                                initSearch(binding.searchView)
+                            }else{
+                                binding.searchBar.performClick()
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.IO){
+                                        delay(500)
+                                    }
+                                    this@apply.forEach {
+                                        onSearchSuggestionAdd(it)
+                                    }
                                 }
                             }
                         }
-                    }
+                    
+                
                 }
 
                 lifecycleScope.launch {
-                    clipboardFab?.extend()
+                    binding.copiedUrlFab.extend()
                     delay(1000)
-                    clipboardFab?.shrink()
+                    binding.copiedUrlFab.shrink()
                 }
             }
         }
@@ -480,7 +452,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         val queriesInitStartBtn = queriesConstraint.findViewById<MaterialButton>(R.id.init_search_query)
         val isRightToLeft = resources.getBoolean(R.bool.is_right_to_left)
 
-        providersChipGroup = searchView!!.findViewById(R.id.providers)
+        providersChipGroup = binding.searchView.findViewById(R.id.providers)
         val providers = resources.getStringArray(R.array.search_engines)
         val providersValues = resources.getStringArray(R.array.search_engines_values).toMutableList()
 
@@ -504,7 +476,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         chipGroupDivider = requireView().findViewById(R.id.chipGroupDivider)
 
-        searchView!!.addTransitionListener { _, _, newState ->
+        binding.searchView.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.SHOWN) {
                 val currentProvider = sharedPreferences?.getString("search_engine", "ytsearch")
                 providersChipGroup?.children?.forEach {
@@ -515,7 +487,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
                 }
 
-                if (Patterns.WEB_URL.matcher(searchBar!!.text.toString()).matches() && searchBar!!.text.isNotBlank()){
+                if (Patterns.WEB_URL.matcher(binding.searchBar.text.toString()).matches() && binding.searchBar.text.isNotBlank()){
                     providersChipGroup?.visibility = GONE
                     chipGroupDivider?.visibility = GONE
                 }else{
@@ -523,29 +495,29 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     chipGroupDivider?.visibility = GONE
                 }
 
-                updateSearchViewItems(searchView!!.editText.text.toString())
+                updateSearchViewItems(binding.searchView.editText.text.toString())
             }
         }
 
-        searchView!!.editText.doAfterTextChanged {
-            if (searchView!!.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
+        binding.searchView.editText.doAfterTextChanged {
+            if (binding.searchView.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
             updateSearchViewItems(it.toString())
         }
 
-        searchView!!.editText.setOnTouchListener(OnTouchListener { _, event ->
+        binding.searchView.editText.setOnTouchListener(OnTouchListener { _, event ->
             try{
                 val drawableLeft = 0
                 val drawableRight = 2
                 if (event.action == MotionEvent.ACTION_UP) {
                     if (
-                        (isRightToLeft && (event.x < (searchView!!.editText.left - searchView!!.editText.compoundDrawables[drawableLeft].bounds.width()))) ||
-                        (!isRightToLeft && (event.x > (searchView!!.editText.right - searchView!!.editText.compoundDrawables[drawableRight].bounds.width())))
+                        (isRightToLeft && (event.x < (binding.searchView.editText.left - binding.searchView.editText.compoundDrawables[drawableLeft].bounds.width()))) ||
+                        (!isRightToLeft && (event.x > (binding.searchView.editText.right - binding.searchView.editText.compoundDrawables[drawableRight].bounds.width())))
                     ){
 
-                        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == searchView!!.editText.text.toString() }
+                        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == binding.searchView.editText.text.toString() }
                         if (present == null) {
                             val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
-                            chip.text = searchView!!.editText.text
+                            chip.text = binding.searchView.editText.text
                             chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                             chip.setOnClickListener {
                                 queriesChipGroup!!.removeView(chip)
@@ -555,7 +527,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         }
                         if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
                         else queriesConstraint.visibility = VISIBLE
-                        searchView!!.editText.setText("")
+                        binding.searchView.editText.setText("")
                         return@OnTouchListener true
 
                     }
@@ -564,19 +536,19 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             false
         })
 
-        searchView!!.editText.setOnEditorActionListener { _, _, _ ->
+        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
             println("searchView 1")
-            val text = searchView?.editText?.text.toString() ?: ""
+            val text = binding.searchView?.editText?.text.toString() ?: ""
             if(text.contains("youtube",true ) || text.contains("youtu.be", true)) {
-                searchBar!!.setText("")
+                binding.searchBar.setText("")
                 Toast.makeText(requireContext(), resources.getString(R.string.youtube_desc), Toast.LENGTH_SHORT).show()
                 return@setOnEditorActionListener false // Exit early: prevent further execution
             }
-            initSearch(searchView!!)
+            initSearch(binding.searchView)
             true
         }
 
-        searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
+        binding.searchBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_results -> {
                     resultsList = listOf()
@@ -587,7 +559,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
 //                    resultViewModel.getHomeRecommendations()
                     selectedObjects = ArrayList()
-                    searchBar!!.setText("")
+                    binding.searchBar.setText("")
                     showDownloadAllFab = false
                     downloadAllFab!!.visibility = GONE
                     downloadSelectedFab!!.visibility = GONE
@@ -606,17 +578,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         queriesInitStartBtn.setOnClickListener {
             println("searchView 2")
-            initSearch(searchView!!)
+            initSearch(binding.searchView)
         }
     }
 
     @SuppressLint("InflateParams")
     private fun updateSearchViewItems(searchQuery: String) = lifecycleScope.launch(Dispatchers.Main) {
         lifecycleScope.launch {
-            if (searchView!!.editText.text.isEmpty()){
-                searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            if (binding.searchView.editText.text.isEmpty()){
+                binding.searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
             }else{
-                searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
+                binding.searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
             }
 
             val combinedList = mutableListOf<SearchSuggestionItem>()
@@ -687,7 +659,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 //            searchHistoryLinearLayout!!.isVisible = history.isNotEmpty()
 //            if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
 //                linkYouCopied.visibility = VISIBLE
-//                clipboardFab?.isVisible = true
+//                binding.copiedUrlFab?.isVisible = true
 //            }
 //
 //            suggestions.forEach { s ->
@@ -712,7 +684,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 //            }
 //            searchSuggestionsLinearLayout!!.isVisible = suggestions.isNotEmpty()
 
-            if (Patterns.WEB_URL.matcher(searchView!!.editText.text).matches()){
+            if (Patterns.WEB_URL.matcher(binding.searchView.editText.text).matches()){
                 providersChipGroup?.visibility = GONE
                 chipGroupDivider?.visibility = GONE
             }else{
@@ -724,7 +696,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     private fun initSearch(searchView: SearchView){
-        loading?.visibility = VISIBLE
+        binding.loading.visibility = VISIBLE
         queryList = mutableListOf()
         if (queriesChipGroup!!.childCount > 0){
             queriesChipGroup!!.children.forEach {
@@ -741,7 +713,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         if (queryList.isEmpty()) return
         if (queryList.size == 1){
-            searchBar!!.setText(searchView.text)
+            binding.searchBar.setText(searchView.text)
         }
 
         searchView.hide()
@@ -770,7 +742,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
                                 type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
-                            loading?.gone()
+                            binding.loading.gone()
                         }
                     } else {
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
@@ -779,7 +751,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         )
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                         withContext(Dispatchers.Main) {
-                            loading?.gone()
+                            binding.loading.gone()
                         }
                     }
 
@@ -787,7 +759,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     resultViewModel.parseQueries(queryList){
                         lifecycleScope.launch {
                             withContext(Dispatchers.Main) {
-                                loading?.gone()
+                                binding.loading.gone()
                             }
                         }
                     }
@@ -797,7 +769,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 resultViewModel.parseQueries(queryList){
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            loading?.gone()
+                            binding.loading.gone()
                         }
                     }
                 }
@@ -806,8 +778,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     fun scrollToTop() {
-        recyclerView!!.scrollToPosition(0)
-        runCatching { (searchBar!!.parent as AppBarLayout).setExpanded(true, true) }
+        binding.recyclerViewHome.scrollToPosition(0)
+        runCatching { (binding.searchBar.parent as AppBarLayout).setExpanded(true, true) }
     }
 
     @SuppressLint("ResourceType")
@@ -815,7 +787,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
-        recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
+        binding.recyclerViewHome.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
         if (sharedPreferences!!.getBoolean("download_card", true)) {
             println("showSingleDownloadSheet 3")
             showSingleDownloadSheet(item!!, type!!)
@@ -910,12 +882,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.main_menu_context, menu)
             mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
-            searchBar!!.isEnabled = false
+            binding.searchBar.isEnabled = false
             playlistNameFilterChipGroup.children.forEach { it.isEnabled = false }
-            searchBar!!.menu.forEach { it.isEnabled = false }
+            binding.searchBar.menu.forEach { it.isEnabled = false }
             (activity as MainActivity).disableBottomNavigation()
             downloadAllFab!!.isVisible = false
-            clipboardFab!!.isVisible = false
+            binding.copiedUrlFab!!.isVisible = false
             return true
         }
 
@@ -1011,13 +983,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             actionMode = null
             (activity as MainActivity).enableBottomNavigation()
             clearCheckedItems()
-            searchBar!!.isEnabled = true
+            binding.searchBar.isEnabled = true
             playlistNameFilterChipGroup.children.forEach { it.isEnabled = true }
-            searchBar!!.menu.forEach { it.isEnabled = true }
-            searchBar?.expand(appBarLayout!!)
+            binding.searchBar.menu.forEach { it.isEnabled = true }
+            binding.searchBar.expand(binding.homeAppbarlayout)
 
             downloadAllFab!!.isVisible = showDownloadAllFab
-            clipboardFab!!.isVisible = showClipboardFab
+            binding.copiedUrlFab!!.isVisible = showClipboardFab
         }
     }
 
@@ -1049,7 +1021,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 // Clear clipboard
                 clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
                 // Show toast
-                searchBar!!.setText("")
+                binding.searchBar.setText("")
                 Toast.makeText(requireContext(), resources.getString(R.string.youtube_desc), Toast.LENGTH_SHORT).show()
                 return null
             }
@@ -1087,10 +1059,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         val res = text.split("\n")
         if (res.size == 1){
             showClipboardFab = false
-            clipboardFab?.isVisible = false
-            searchView!!.setText(text)
+            binding.copiedUrlFab?.isVisible = false
+            binding.searchView.setText(text)
             println("searchView 3")
-            initSearch(searchView!!)
+            initSearch(binding.searchView)
         }else{
             res.forEach {
                 onSearchSuggestionAdd(it)
@@ -1117,7 +1089,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         }
 
-        searchView!!.editText.setText("")
+        binding.searchView.editText.setText("")
         queriesConstraint?.isVisible = queriesChipGroup?.childCount!! > 0
 
         searchSuggestionsAdapter?.getList()?.apply {
@@ -1141,14 +1113,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
             resultViewModel.removeSearchQueryFromHistory(text)
-            updateSearchViewItems(searchView!!.editText.text.toString())
+            updateSearchViewItems(binding.searchView.editText.text.toString())
         }
         deleteDialog.show()
     }
 
     override fun onSearchSuggestionAddToSearchBar(text: String) {
-        searchView!!.editText.setText(text)
-        searchView!!.editText.setSelection(searchView!!.editText.length())
+        binding.searchView.editText.setText(text)
+        binding.searchView.editText.setSelection(binding.searchView.editText.length())
     }
 
 

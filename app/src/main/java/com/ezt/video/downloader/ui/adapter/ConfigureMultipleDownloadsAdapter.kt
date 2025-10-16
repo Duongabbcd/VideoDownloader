@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -21,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.expand.table.DownloadItemConfigureMultiple
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.DownloadCardBinding
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.Extensions.popup
 import com.ezt.video.downloader.util.FileUtil
@@ -45,18 +45,148 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val cardView: FrameLayout
+    inner class ViewHolder(private val binding: DownloadCardBinding, private val activity: Activity, private val sharedPreferences: SharedPreferences,
+                     private val onItemClickListener: OnItemClickListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: DownloadItemConfigureMultiple?) {
+            binding.apply {
+                downloadCardView.popup()
+                if (item == null) return
+                downloadCardView.tag = item.id.toString()
 
-        init {
-            cardView = itemView.findViewById(R.id.download_card_view)
+                val uiHandler = Handler(Looper.getMainLooper())
+
+                // THUMBNAIL ----------------------------------
+                val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
+                uiHandler.post { downloadsImageView.loadThumbnail(hideThumb, item.thumb) }
+
+                duration.text = item.duration
+
+                // TITLE  ----------------------------------
+                var titleStr = item.title
+                if (titleStr.length > 100) {
+                    titleStr = titleStr.substring(0, 40) + "..."
+                }
+                title.text = titleStr
+
+                downloadType.isVisible = false
+
+                // Format Note ----------------------------------
+                if (item.format.format_note.isNotEmpty()){
+                    formatNote.text = item.format.format_note.uppercase(Locale.getDefault())
+                    formatNote.visibility = View.VISIBLE
+                }else{
+                    formatNote.visibility = View.GONE
+                }
+
+                incognitoLabel.isVisible = item.incognito
+
+                val codecText =
+                    if (item.format.encoding != "") {
+                        item.format.encoding.uppercase()
+                    }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                        item.format.vcodec.uppercase()
+                    } else {
+                        item.format.acodec.uppercase()
+                    }
+                if (codecText == "" || codecText == "none" || codecText == "DEFAULT"){
+                    codec.visibility = View.GONE
+                }else{
+                    codec.visibility = View.VISIBLE
+                    codec.text = codecText
+                }
+
+                container.isVisible = item.container.isNotBlank()
+                container.text = item.container.uppercase()
+
+                val fileSizeReadable = if(item.type != DownloadViewModel.Type.video){
+                    FileUtil.convertFileSize(item.format.filesize)
+                }else{
+                    if (item.format.filesize < 10L) {
+                        FileUtil.convertFileSize(0)
+                    }else{
+                        val preferredAudioFormatIDs = item.videoPreferences.audioFormatIDs
+                        val audioFilesize = if (item.videoPreferences.removeAudio) {
+                            0
+                        }else{
+                            item.allFormats
+                                .filter { preferredAudioFormatIDs.contains(it.format_id) }
+                                .sumOf { it.filesize }
+                        }
+
+                        FileUtil.convertFileSize(item.format.filesize + audioFilesize)
+                    }
+
+                }
+                if (fileSizeReadable == "?") fileSize.visibility = View.GONE
+                else {
+                    fileSize.text = fileSizeReadable
+                    fileSize.visibility = View.VISIBLE
+                }
+
+                // Type Icon Button
+                if (actionButton.hasOnClickListeners()) actionButton.setOnClickListener(null)
+
+                actionButton.setOnClickListener {
+                    onItemClickListener.onButtonClick(item.id)
+                }
+
+                when(item.type) {
+                    DownloadViewModel.Type.audio -> {
+                        actionButton.setIconResource(R.drawable.ic_music)
+                        actionButton.contentDescription = activity.getString(R.string.audio)
+                    }
+                    DownloadViewModel.Type.video -> {
+                        actionButton.setIconResource(R.drawable.ic_video)
+                        actionButton.contentDescription = activity.getString(R.string.video)
+                    }
+                    else -> {
+                        actionButton.setIconResource(R.drawable.ic_terminal)
+                        actionButton.contentDescription = activity.getString(R.string.command)
+                    }
+                }
+
+                val checkbox = downloadCardView.findViewById<CheckBox>(R.id.checkBox)
+                checkbox.isVisible = _isCheckingItems
+                checkbox.isChecked = (checkedItems.contains(item.id) && !inverted) || (inverted && !checkedItems.contains(item.id))
+                checkbox.setOnClickListener {
+                    if (checkbox.isChecked) {
+                        if (inverted) checkedItems.remove(item.id)
+                        else checkedItems.add(item.id)
+                        onItemClickListener.onCardChecked(item.id)
+                    }else {
+                        if (inverted) checkedItems.add(item.id)
+                        else checkedItems.remove(item.id)
+                        onItemClickListener.onCardUnChecked(item.id)
+                    }
+                }
+
+                index.isVisible = _isCheckingItems
+                index.text = (position + 1).toString()
+
+                downloadCardView.setOnClickListener {
+                    if (_isCheckingItems) {
+                        checkbox.performClick()
+                    }else {
+                        onItemClickListener.onCardClick(item.id)
+                    }
+                }
+
+                downloadCardView.setOnLongClickListener {
+                    if (_isCheckingItems) {
+                        checkbox.performClick()
+                    }else{
+                        onItemClickListener.onDelete(item.id)
+                    }
+                    true
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.download_card, parent, false)
-        return ViewHolder(cardView)
+        val binding = DownloadCardBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+        return ViewHolder(binding, activity, sharedPreferences, onItemClickListener)
     }
 
     fun isCheckingItems() : Boolean {
@@ -126,148 +256,8 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val card = holder.cardView
-        card.popup()
-        if (item == null) return
-        card.tag = item.id.toString()
+        holder.bind(item)
 
-        val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-
-        // THUMBNAIL ----------------------------------
-        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item.thumb) }
-
-        val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item.duration
-
-        // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title
-        if (title.length > 100) {
-            title = title.substring(0, 40) + "..."
-        }
-        itemTitle.text = title
-
-        card.findViewById<TextView>(R.id.download_type).isVisible = false
-
-        // Format Note ----------------------------------
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
-        if (item.format.format_note.isNotEmpty()){
-            formatNote.text = item.format.format_note.uppercase(Locale.getDefault())
-            formatNote.visibility = View.VISIBLE
-        }else{
-            formatNote.visibility = View.GONE
-        }
-
-
-        val incognitoLabel = card.findViewById<MaterialButton>(R.id.incognitoLabel)
-        incognitoLabel.isVisible = item.incognito
-
-        val codec = card.findViewById<TextView>(R.id.codec)
-        val codecText =
-            if (item.format.encoding != "") {
-                item.format.encoding.uppercase()
-            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                item.format.vcodec.uppercase()
-            } else {
-                item.format.acodec.uppercase()
-            }
-        if (codecText == "" || codecText == "none" || codecText == "DEFAULT"){
-            codec.visibility = View.GONE
-        }else{
-            codec.visibility = View.VISIBLE
-            codec.text = codecText
-        }
-
-        val container = card.findViewById<TextView>(R.id.container)
-        container.isVisible = item.container.isNotBlank()
-        container.text = item.container.uppercase()
-
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = if(item.type != DownloadViewModel.Type.video){
-            FileUtil.convertFileSize(item.format.filesize)
-        }else{
-            if (item.format.filesize < 10L) {
-                FileUtil.convertFileSize(0)
-            }else{
-                val preferredAudioFormatIDs = item.videoPreferences.audioFormatIDs
-                val audioFilesize = if (item.videoPreferences.removeAudio) {
-                    0
-                }else{
-                    item.allFormats
-                        .filter { preferredAudioFormatIDs.contains(it.format_id) }
-                        .sumOf { it.filesize }
-                }
-
-                FileUtil.convertFileSize(item.format.filesize + audioFilesize)
-            }
-
-        }
-        if (fileSizeReadable == "?") fileSize.visibility = View.GONE
-        else {
-            fileSize.text = fileSizeReadable
-            fileSize.visibility = View.VISIBLE
-        }
-
-        // Type Icon Button
-        val btn = card.findViewById<MaterialButton>(R.id.action_button)
-        if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
-
-        btn.setOnClickListener {
-            onItemClickListener.onButtonClick(item.id)
-        }
-
-        when(item.type) {
-            DownloadViewModel.Type.audio -> {
-                btn.setIconResource(R.drawable.ic_music)
-                btn.contentDescription = activity.getString(R.string.audio)
-            }
-            DownloadViewModel.Type.video -> {
-                btn.setIconResource(R.drawable.ic_video)
-                btn.contentDescription = activity.getString(R.string.video)
-            }
-            else -> {
-                btn.setIconResource(R.drawable.ic_terminal)
-                btn.contentDescription = activity.getString(R.string.command)
-            }
-        }
-
-        val checkbox = card.findViewById<CheckBox>(R.id.checkBox)
-        checkbox.isVisible = _isCheckingItems
-        checkbox.isChecked = (checkedItems.contains(item.id) && !inverted) || (inverted && !checkedItems.contains(item.id))
-        checkbox.setOnClickListener {
-            if (checkbox.isChecked) {
-                if (inverted) checkedItems.remove(item.id)
-                else checkedItems.add(item.id)
-                onItemClickListener.onCardChecked(item.id)
-            }else {
-                if (inverted) checkedItems.add(item.id)
-                else checkedItems.remove(item.id)
-                onItemClickListener.onCardUnChecked(item.id)
-            }
-        }
-
-        val index = card.findViewById<TextView>(R.id.index)
-        index.isVisible = _isCheckingItems
-        index.text = (position + 1).toString()
-
-        card.setOnClickListener {
-            if (_isCheckingItems) {
-                checkbox.performClick()
-            }else {
-                onItemClickListener.onCardClick(item.id)
-            }
-        }
-
-        card.setOnLongClickListener {
-            if (_isCheckingItems) {
-                checkbox.performClick()
-            }else{
-                onItemClickListener.onDelete(item.id)
-            }
-            true
-        }
     }
 
     interface OnItemClickListener {

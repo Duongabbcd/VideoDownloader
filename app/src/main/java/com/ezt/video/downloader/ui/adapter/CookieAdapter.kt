@@ -13,6 +13,8 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.CookieItem
+import com.ezt.video.downloader.databinding.CookieItemBinding
+import com.ezt.video.downloader.databinding.DownloadCardBinding
 import com.ezt.video.downloader.util.Extensions.popup
 
 class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CookieItem?, CookieAdapter.ViewHolder>(AsyncDifferConfig.Builder(
@@ -26,47 +28,42 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         this.activity = activity
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val item: MaterialCardView
+    inner class ViewHolder(private val binding: CookieItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: CookieItem?) {
+            binding.apply {
+                if (item == null) return
+                cookieCard.popup()
 
-        init {
-            item = itemView.findViewById(R.id.cookie_card)
+                title.text = item.description.ifBlank { item.url }
+                content.text = item.content
+
+                cookieEnabled.isChecked = item.enabled
+
+                cookieCard.setOnClickListener {
+                    onItemClickListener.onItemClick(item, position)
+                }
+
+                cookieCard.setOnLongClickListener {
+                    onItemClickListener.onDelete(item); true
+                }
+
+                cookieEnabled.setOnCheckedChangeListener { _, isEnabled ->
+                    onItemClickListener.onItemEnabledChanged(item, isEnabled)
+                    true
+                }
+            }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.cookie_item, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+        val binding = CookieItemBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        if (item == null) return
-        val card = holder.item
-        card.popup()
-
-        val title = card.findViewById<TextView>(R.id.title)
-        title.text = item.description.ifBlank { item.url }
-
-        val content = card.findViewById<TextView>(R.id.content)
-        content.text = item.content
-
-        val switch = card.findViewById<MaterialSwitch>(R.id.cookieEnabled)
-        switch.isChecked = item.enabled
-
-        card.setOnClickListener {
-            onItemClickListener.onItemClick(item, position)
-        }
-
-        card.setOnLongClickListener {
-            onItemClickListener.onDelete(item); true
-        }
-
-        switch.setOnCheckedChangeListener { _, isEnabled ->
-            onItemClickListener.onItemEnabledChanged(item, isEnabled)
-            true
-        }
+        holder.bind(item)
     }
 
     interface OnItemClickListener {

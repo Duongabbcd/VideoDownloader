@@ -41,7 +41,7 @@ typealias Inflate<T> = (LayoutInflater) -> T
 
 @Suppress("DEPRECATION")
 abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) :
-    AppCompatActivity(), AppStateListener {
+    BaseActivity(), AppStateListener {
     val binding: T by lazy { inflater(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -170,36 +170,6 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
         }
     }
 
-    fun askPermissions() {
-        val permissions = arrayListOf<String>()
-        val hasFilePerm = if (Build.VERSION.SDK_INT >= 30) {
-            true
-        }else {
-            (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) &&
-                    (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_GRANTED)
-        }
-
-        if (!hasFilePerm){
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (!checkNotificationPermission()){
-                permissions.add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-
-        if (permissions.isNotEmpty()){
-            ActivityCompat.requestPermissions(
-                this,
-                permissions.toTypedArray(),
-                1
-            )
-        }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

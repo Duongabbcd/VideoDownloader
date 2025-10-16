@@ -126,7 +126,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("history")){
-            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            val itemTouchHelper = ItemTouchHelper(getSimpleCallback(false))
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
 
@@ -623,18 +623,18 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     deleteDialog.show()
                     true
                 }
-                R.id.share -> {
-                    lifecycleScope.launch {
-                        val selectedObjects = getSelectedIDs()
-                        val paths = withContext(Dispatchers.IO){
-                            historyViewModel.getDownloadPathsFromIDs(selectedObjects)
-                        }
-                        FileUtil.shareFileIntent(requireContext(), paths.flatten())
-                        historyAdapter.clearCheckedItems()
-                        actionMode?.finish()
-                    }
-                    true
-                }
+//                R.id.share -> {
+//                    lifecycleScope.launch {
+//                        val selectedObjects = getSelectedIDs()
+//                        val paths = withContext(Dispatchers.IO){
+//                            historyViewModel.getDownloadPathsFromIDs(selectedObjects)
+//                        }
+//                        FileUtil.shareFileIntent(requireContext(), paths.flatten())
+//                        historyAdapter.clearCheckedItems()
+//                        actionMode?.finish()
+//                    }
+//                    true
+//                }
                 R.id.redownload -> {
                     lifecycleScope.launch {
                         val selectedObjects = getSelectedIDs()
@@ -701,8 +701,9 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
     }
 
 
-    private var simpleCallback: ItemTouchHelper.SimpleCallback =
-        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+    private fun getSimpleCallback(enableSwipe: Boolean = false): ItemTouchHelper.SimpleCallback  {
+      val swipeDirs = if (enableSwipe) ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT else 0
+       return object : ItemTouchHelper.SimpleCallback(0, swipeDirs) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
@@ -794,6 +795,8 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                 )
             }
         }
+    }
+
 
     override fun onButtonClick(itemID: Long, isPresent: Boolean) {
         if (isPresent){

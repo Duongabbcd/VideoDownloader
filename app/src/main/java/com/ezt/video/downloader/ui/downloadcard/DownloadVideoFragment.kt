@@ -32,6 +32,8 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel.Type
 import com.ezt.video.downloader.database.viewmodel.FormatViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
+import com.ezt.video.downloader.databinding.FragmentDownloadVideoBinding
+import com.ezt.video.downloader.ui.BaseFragment
 import com.ezt.video.downloader.util.Extensions.applyFilenameTemplateForCuts
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.FormatUtil
@@ -52,7 +54,12 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.text.format
 
-class DownloadVideoFragment(private var resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "", private var nonSpecific: Boolean = false) : Fragment(), GUISync {
+class DownloadVideoFragment(
+    private var resultItem: ResultItem? = null,
+    private var currentDownloadItem: DownloadItem? = null,
+    private var url: String = "",
+    private var nonSpecific: Boolean = false
+) : BaseFragment<FragmentDownloadVideoBinding>(FragmentDownloadVideoBinding::inflate), GUISync {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -60,10 +67,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var preferences: SharedPreferences
     private lateinit var shownFields: List<String>
-    lateinit var title : TextInputLayout
-    lateinit var author : TextInputLayout
-    private lateinit var saveDir : TextInputLayout
-    private lateinit var freeSpace : TextView
 
     private lateinit var genericVideoFormats: MutableList<Format>
     private lateinit var genericAudioFormats: MutableList<Format>
@@ -71,15 +74,12 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     lateinit var downloadItem: DownloadItem
 
     private var disabledCutClicked: Boolean = false
+    
 
+    @SuppressLint("SetTextI18n")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    @SuppressLint("RestrictedApi")
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
@@ -88,14 +88,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         genericVideoFormats = formatUtil.getGenericVideoFormats(requireContext().resources)
         genericAudioFormats = formatUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
-        return fragmentView
-    }
-
-
-    @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        shownFields = preferences.getStringSet(
+            "modify_download_card",
+            requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet()
+        )!!.toList()
+        
         lifecycleScope.launch {
             downloadItem = withContext(Dispatchers.IO){
                 if (savedInstanceState?.containsKey("updated") == true) {
@@ -125,27 +122,25 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
-                title = view.findViewById(R.id.title_textinput)
-                title.visibility = if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
-                if (title.editText?.text?.isEmpty() == true){
-                    title.editText!!.setText(downloadItem.title)
-                    title.endIconMode = END_ICON_NONE
+                binding.titleTextinput.visibility = if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
+                if (binding.titleTextinput.editText?.text?.isEmpty() == true){
+                    binding.titleTextinput.editText!!.setText(downloadItem.title)
+                    binding.titleTextinput.endIconMode = END_ICON_NONE
                 }
-                title.editText!!.addTextChangedListener(object : TextWatcher {
+                binding.titleTextinput.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.title = p0.toString()
                     }
                 })
-
-                author = view.findViewById(R.id.author_textinput)
-                author.visibility = if (shownFields.contains("author") && !nonSpecific) View.VISIBLE else View.GONE
-                if (author.editText?.text?.isEmpty() == true){
-                    author.editText!!.setText(downloadItem.author)
-                    author.endIconMode = END_ICON_NONE
+                
+                binding.authorTextinput.visibility = if (shownFields.contains("author") && !nonSpecific) View.VISIBLE else View.GONE
+                if (binding.authorTextinput.editText?.text?.isEmpty() == true){
+                    binding.authorTextinput.editText!!.setText(downloadItem.author)
+                    binding.authorTextinput.endIconMode = END_ICON_NONE
                 }
-                author.editText!!.addTextChangedListener(object : TextWatcher {
+                binding.authorTextinput.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(p0: Editable?) {
@@ -154,40 +149,39 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 })
 
                 if (savedInstanceState?.containsKey("updated") == true){
-                    if (!listOf(resultItem?.title, downloadItem.title).contains(title.editText?.text.toString())){
-                        title.endIconMode = END_ICON_CUSTOM
-                        title.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
-                        downloadItem.title = title.editText?.text.toString()
+                    if (!listOf(resultItem?.title, downloadItem.title).contains(binding.titleTextinput.editText?.text.toString())){
+                        binding.titleTextinput.endIconMode = END_ICON_CUSTOM
+                        binding.titleTextinput.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
+                        downloadItem.title = binding.titleTextinput.editText?.text.toString()
                     }
 
-                    if (!listOf(resultItem?.author, downloadItem.author).contains(author.editText?.text.toString())){
-                        author.endIconMode = END_ICON_CUSTOM
-                        author.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
-                        downloadItem.author = author.editText?.text.toString()
+                    if (!listOf(resultItem?.author, downloadItem.author).contains(binding.authorTextinput.editText?.text.toString())){
+                        binding.authorTextinput.endIconMode = END_ICON_CUSTOM
+                        binding.authorTextinput.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
+                        downloadItem.author = binding.authorTextinput.editText?.text.toString()
                     }
                 }
 
-                title.setEndIconOnClickListener {
+                binding.titleTextinput.setEndIconOnClickListener {
                     if (resultItem != null){
-                        title.editText?.setText(resultItem?.title)
+                        binding.titleTextinput.editText?.setText(resultItem?.title)
                     }
-                    title.endIconMode = END_ICON_NONE
+                    binding.titleTextinput.endIconMode = END_ICON_NONE
                 }
 
-                author.setEndIconOnClickListener {
+                binding.authorTextinput.setEndIconOnClickListener {
                     if (resultItem != null){
-                        author.editText?.setText(resultItem?.author)
+                        binding.authorTextinput.editText?.setText(resultItem?.author)
                     }
-                    author.endIconMode = END_ICON_NONE
+                    binding.authorTextinput.endIconMode = END_ICON_NONE
                 }
-
-                saveDir = view.findViewById(R.id.outputPath)
-                saveDir.editText!!.setText(
+                
+                binding.outputPath.editText!!.setText(
                     FileUtil.formatPath(downloadItem.downloadPath)
                 )
-                saveDir.editText!!.isFocusable = false
-                saveDir.editText!!.isClickable = true
-                saveDir.editText!!.setOnClickListener {
+                 binding.outputPath.editText!!.isFocusable = false
+                 binding.outputPath.editText!!.isClickable = true
+                 binding.outputPath.editText!!.setOnClickListener {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -195,11 +189,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     pathResultLauncher.launch(intent)
                 }
 
-                freeSpace = view.findViewById(R.id.freespace)
                 val free = FileUtil.convertFileSize(
                     File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
-                freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
-                if (free == "?") freeSpace.visibility = View.GONE
+                binding.freespace.text = String.format( getString(R.string.freespace) + ": " + free)
+                if (free == "?") binding.freespace.visibility = View.GONE
 
 
                 var formats = mutableListOf<Format>()
@@ -504,10 +497,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     override fun updateTitleAuthor(t: String, a: String){
         downloadItem.title = t
         downloadItem.author = a
-        title.editText?.setText(t)
-        title.endIconMode = END_ICON_NONE
-        author.editText?.setText(a)
-        title.endIconMode = END_ICON_NONE
+        binding.titleTextinput.editText?.setText(t)
+        binding.titleTextinput.endIconMode = END_ICON_NONE
+        binding.authorTextinput.editText?.setText(a)
+        binding.titleTextinput.endIconMode = END_ICON_NONE
     }
 
     override fun updateUI(res: ResultItem?) {
@@ -550,12 +543,12 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
             }
 
             downloadItem.downloadPath = result.data?.data.toString()
-            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+             binding.outputPath.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
             val free = FileUtil.convertFileSize(
                 File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
-            freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
-            if (free == "?") freeSpace.visibility = View.GONE
+            binding.freespace.text = String.format( getString(R.string.freespace) + ": " + free)
+            if (free == "?") binding.freespace.visibility = View.GONE
 
         }
     }

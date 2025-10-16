@@ -43,11 +43,10 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(private val binding: ActiveDownloadCardBinding,
+    inner class ViewHolder(private val binding: ActiveDownloadCardBinding,
                      private val activity: Activity,
                      private val sharedPreferences: SharedPreferences,
                      private val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
-        val cardView: MaterialCardView = binding.activeDownloadCardView
         fun bind(item: DownloadItem?) {
             binding.apply {
                 activeDownloadCardView.tag = "${item!!.id}##card"

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.LogItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.databinding.LogCardBinding
 import com.ezt.video.downloader.util.Extensions.popup
 import com.ezt.video.downloader.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -34,95 +35,89 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
         this.activity = activity
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val item: MaterialCardView
+    inner class ViewHolder(private val binding:LogCardBinding ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: LogItem?) {
+            binding.apply {
+                logCardView.popup()
 
-        init {
-            item = itemView.findViewById(R.id.log_card_view)
+                title.text = item?.title
+
+                downloadedTime.text = SimpleDateFormat(
+                    DateFormat.getBestDateTimePattern(
+                        Locale.getDefault(), "ddMMMyyyy - HH:mm"), Locale.getDefault()).format(item!!.downloadTime)
+
+                when(item.downloadType){
+                    DownloadViewModel.Type.audio -> {
+                        downloadType.setIconResource(R.drawable.ic_music)
+                        downloadType.contentDescription = activity.getString(R.string.audio)
+                    }
+                    DownloadViewModel.Type.video -> {
+                        downloadType.setIconResource(R.drawable.ic_video)
+                        downloadType.contentDescription = activity.getString(R.string.video)
+                    }
+                    DownloadViewModel.Type.command -> {
+                        downloadType.setIconResource(R.drawable.ic_terminal)
+                        downloadType.contentDescription = activity.getString(R.string.command)
+                    }
+                    else -> {}
+                }
+
+                if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+                    View.GONE
+                else formatNote!!.text = item.format.format_note.uppercase()
+
+                val codecText =
+                    if (item.format.encoding != "") {
+                        item.format.encoding.uppercase()
+                    }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                        item.format.vcodec.uppercase()
+                    } else {
+                        item.format.acodec.uppercase()
+                    }
+                if (codecText == "" || codecText == "none"){
+                    codec.visibility = View.GONE
+                }else{
+                    codec.visibility = View.VISIBLE
+                    codec.text = codecText
+                }
+
+                val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
+                if (fileSizeReadable == "?") fileSize.visibility = View.GONE
+                else fileSize.text = fileSizeReadable
+
+                if (checkedItems.contains(item.id)) {
+                    logCardView.isChecked = true
+                    logCardView.strokeWidth = 5
+                } else {
+                    logCardView.isChecked = false
+                    logCardView.strokeWidth = 0
+                }
+                logCardView.setOnClickListener {
+                    if (checkedItems.size > 0) {
+                        checkCard(logCardView, item.id)
+                    } else {
+                        onItemClickListener.onItemClick(item.id)
+                    }
+                }
+
+                logCardView.setOnLongClickListener {
+                    checkCard(logCardView, item.id)
+                    true
+                }
+            }
         }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.log_card, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+        val binding = LogCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val card = holder.item
-        card.popup()
-
-        val title = card.findViewById<TextView>(R.id.title)
-        title.text = item?.title
-
-        val downloadedTime = card.findViewById<TextView>(R.id.downloadedTime)
-        downloadedTime.text = SimpleDateFormat(
-            DateFormat.getBestDateTimePattern(
-                Locale.getDefault(), "ddMMMyyyy - HH:mm"), Locale.getDefault()).format(item!!.downloadTime)
-
-        val downloadTypeIcon = card.findViewById<MaterialButton>(R.id.download_type)
-        when(item.downloadType){
-            DownloadViewModel.Type.audio -> {
-                downloadTypeIcon.setIconResource(R.drawable.ic_music)
-                downloadTypeIcon.contentDescription = activity.getString(R.string.audio)
-            }
-            DownloadViewModel.Type.video -> {
-                downloadTypeIcon.setIconResource(R.drawable.ic_video)
-                downloadTypeIcon.contentDescription = activity.getString(R.string.video)
-            }
-            DownloadViewModel.Type.command -> {
-                downloadTypeIcon.setIconResource(R.drawable.ic_terminal)
-                downloadTypeIcon.contentDescription = activity.getString(R.string.command)
-            }
-            else -> {}
-        }
-
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
-            View.GONE
-        else formatNote!!.text = item.format.format_note.uppercase()
-
-        val codec = card.findViewById<TextView>(R.id.codec)
-        val codecText =
-            if (item.format.encoding != "") {
-                item.format.encoding.uppercase()
-            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                item.format.vcodec.uppercase()
-            } else {
-                item.format.acodec.uppercase()
-            }
-        if (codecText == "" || codecText == "none"){
-            codec.visibility = View.GONE
-        }else{
-            codec.visibility = View.VISIBLE
-            codec.text = codecText
-        }
-
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSizeReadable == "?") fileSize.visibility = View.GONE
-        else fileSize.text = fileSizeReadable
-
-        if (checkedItems.contains(item.id)) {
-            card.isChecked = true
-            card.strokeWidth = 5
-        } else {
-            card.isChecked = false
-            card.strokeWidth = 0
-        }
-        card.setOnClickListener {
-            if (checkedItems.size > 0) {
-                checkCard(card, item.id)
-            } else {
-                onItemClickListener.onItemClick(item.id)
-            }
-        }
-
-        card.setOnLongClickListener {
-            checkCard(card, item.id)
-            true
-        }
+        holder.bind(item)
     }
 
     @SuppressLint("NotifyDataSetChanged")

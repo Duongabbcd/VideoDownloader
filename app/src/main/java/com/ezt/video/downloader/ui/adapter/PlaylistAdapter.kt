@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.ResultItem
+import com.ezt.video.downloader.databinding.PlaylistItemBinding
 import com.ezt.video.downloader.util.Extensions.loadThumbnail
 import com.ezt.video.downloader.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
@@ -39,46 +39,43 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
+    inner class ViewHolder(private val binding: PlaylistItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ResultItem?) {
+            binding.apply {
+                playlistCard.popup()
+                val uiHandler = Handler(Looper.getMainLooper())
 
-        init {
-            cardView = itemView.findViewById(R.id.playlist_card)
+                // THUMBNAIL ----------------------------------
+                val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
+                uiHandler.post { downloadsImageView.loadThumbnail(hideThumb, item!!.thumb) }
+
+                title.text = item!!.title
+                author.text = item.author
+                duration.text = item.duration
+                index.text = ((item.playlistIndex ?: (position + 1))).toString()
+
+                // CHECKBOX ----------------------------------
+
+                checkBox.isChecked = checkedItems.contains(item.id)
+                checkBox.setOnClickListener {
+                    checkCard(checkBox.isChecked, item.id)
+                }
+
+                playlistCard.setOnClickListener {
+                    checkBox.performClick()
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.playlist_item, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+        val binding = PlaylistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val card = holder.cardView
-        card.popup()
-        val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-
-        // THUMBNAIL ----------------------------------
-        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item!!.thumb) }
-
-        card.findViewById<TextView>(R.id.title).text = item!!.title
-        card.findViewById<TextView>(R.id.author).text = item.author
-        card.findViewById<TextView>(R.id.duration).text = item.duration
-        card.findViewById<TextView>(R.id.index).text = ((item.playlistIndex ?: (position + 1))).toString()
-
-        // CHECKBOX ----------------------------------
-        val check = card.findViewById<CheckBox>(R.id.checkBox)
-        check.isChecked = checkedItems.contains(item.id)
-        check.setOnClickListener {
-            checkCard(check.isChecked, item.id)
-        }
-
-        card.setOnClickListener {
-            check.performClick()
-        }
+        holder.bind(item)
     }
 
     private fun checkCard(isChecked: Boolean, id: Long) {

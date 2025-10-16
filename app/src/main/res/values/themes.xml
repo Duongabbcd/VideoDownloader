@@ -242,4 +242,9 @@
 
     </style>
 
+    <style name="ShapeAppearanceOverlay_CustomShape10dp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/_10sdp</item>
+        <item name="background">@color/transparent</item>
+    </style>
 </resources>

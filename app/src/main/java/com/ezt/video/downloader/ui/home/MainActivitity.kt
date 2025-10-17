@@ -160,6 +160,11 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                             (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
                         }
                     }
+                    R.id.downloadQueueMainFragment -> {
+                        kotlin.runCatching {
+                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as DownloadQueueMainFragment).scrollToActive()
+                        }
+                    }
                     R.id.historyFragment -> {
 //                        if(!showingDownloadQueue) {
 //                            navController.navigate(R.id.downloadQueueMainFragment)
@@ -169,11 +174,6 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 //                            }
 //                        }
                         (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
-                    }
-                    R.id.downloadQueueMainFragment -> {
-                        kotlin.runCatching {
-                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as DownloadQueueMainFragment).scrollToActive()
-                        }
                     }
                     R.id.moreFragment -> {
                         val intent = Intent(context, SettingsActivity::class.java)

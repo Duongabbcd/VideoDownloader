@@ -522,5 +522,6 @@
     <string name="youtube_desc">It is not allowed to download Youtube videos, please copy URLs from other websites.</string>
     <string name="preparing">Preparing for playing video. Please wait</string>
     <string name="high_note">The downloaded media files can be only played by this app</string>
+    <string name="media_format">All media formats</string>
 
 </resources>

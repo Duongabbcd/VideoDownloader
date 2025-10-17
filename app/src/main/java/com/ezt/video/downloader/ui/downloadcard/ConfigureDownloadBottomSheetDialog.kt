@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -90,10 +91,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
                 commandTemplateNr = commandTemplateViewModel.getTotalNumber()
-                if(commandTemplateNr <= 0){
-                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
-                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
-                }
+                (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isVisible = false
             }
         }
 
@@ -212,7 +210,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
         }
 
         val incognitoBtn = view.findViewById<Button>(R.id.bottomsheet_incognito)
-        incognitoBtn.alpha = if (incognito) 1f else 0.3f
+        incognitoBtn.isVisible = false
         incognitoBtn.setOnClickListener {
             if (incognito) {
                 it.alpha = 0.3f

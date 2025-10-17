@@ -134,6 +134,7 @@ object UiUtil {
             setOnClickListener {
                 formatCard.callOnClick()
             }
+            visibility = View.GONE
         }
 
         formatCard.findViewById<TextView>(R.id.format_id).apply {
@@ -161,6 +162,7 @@ object UiUtil {
             setOnClickListener {
                 formatCard.callOnClick()
             }
+            visibility = View.GONE
         }
 
 
@@ -184,6 +186,7 @@ object UiUtil {
                 isVisible = true
                 text = chosenFormat.tbr
             }
+            visibility = View.GONE
         }
 
         if (showSize) {

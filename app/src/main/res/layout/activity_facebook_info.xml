@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="@dimen/_32sdp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -80,75 +81,6 @@
 
     </com.google.android.material.search.SearchView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/allBookmarks"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:scrollbars="none" />
-        
-        <TextView
-            android:id="@+id/recentlySearch"
-            android:visibility="gone"
-            android:text="@string/recently_search"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:paddingStart="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@id/allBookmarks"
-            android:layout_below="@id/allBookmarks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewHome"
-            app:layout_constraintTop_toBottomOf="@id/recentlySearch"
-            android:layout_below="@+id/recentlySearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_results_framelayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/recyclerViewHome"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/home_appbarlayout"
@@ -159,13 +91,22 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/app_name">
+            android:layout_height="@dimen/_40sdp"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageView
+                android:id="@+id/backIcon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:contentDescription="@string/imageView"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/ic_back" />
 
             <!-- Add an ImageView here -->
             <ImageView
-                android:id="@+id/setting_icon"
+                android:id="@+id/appIcon"
                 android:visibility="gone"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
@@ -217,95 +158,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <HorizontalScrollView
-            android:id="@+id/playlist_selection_chips_scrollview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:visibility="gone"
-            app:layout_scrollFlags="scroll|enterAlways">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/_20sdp">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/playlist_selection_chips"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:selectionRequired="false"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/all"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:minWidth="@dimen/_30sdp"
-                        android:tag="all"
-                        android:text="@string/all"
-                        app:cornerRadius="@dimen/_10sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </com.google.android.material.chip.ChipGroup>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
-    <LinearLayout
-        android:id="@+id/home_fabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:orientation="vertical">
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/copied_url_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:contentDescription="@string/link_you_copied"
-            android:text="@string/link_you_copied"
-            android:visibility="gone"
-            app:icon="@drawable/ic_clipboard"
-            app:useCompatPadding="true" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/download_all_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/download_all"
-            android:visibility="gone"
-            app:icon="@drawable/ic_down" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/download_selected_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/download"
-            android:visibility="gone"
-            app:elevation="0dp"
-            app:icon="@drawable/ic_down"
-            app:srcCompat="@drawable/ic_music" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/loading"
@@ -329,5 +183,4 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -59,8 +59,10 @@ import com.ezt.video.downloader.databinding.FragmentHomeBinding
 import com.ezt.video.downloader.ui.BaseFragment
 import com.ezt.video.downloader.ui.adapter.SearchSuggestionsAdapter
 import com.ezt.video.downloader.ui.home.adapter.BookmarkAdapter
+import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.more.WebViewActivity
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
+import com.ezt.video.downloader.ui.social.FacebookInfoActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
@@ -400,50 +402,51 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         requireView().post {
-            checkClipboard().apply {
-                this?.apply { 
-                    if(this.isEmpty()) {
-                        return@apply
-                    }
-                    this.onEach {
-                        println("checkClipboard: $it")
-                    }
+            val clipboardList = checkClipboard()
 
-                    latestURL = this.last()
-                    binding.searchBar.setText(latestURL)
+            // Nothing in clipboard → continue normally
+            if (clipboardList.isNullOrEmpty()) return@post
 
-                    showClipboardFab = this.isNotEmpty()
-                   
-                        binding.copiedUrlFab.isVisible = showClipboardFab
-                        binding.copiedUrlFab.setOnClickListener {
-                            if (this.size == 1){
-                                binding.searchView.setText(this.first())
-                                showClipboardFab = false
-                                binding.copiedUrlFab.isVisible = false
-                                initSearch(binding.searchView)
-                            }else{
-                                binding.searchBar.performClick()
-                                lifecycleScope.launch {
-                                    withContext(Dispatchers.IO){
-                                        delay(500)
-                                    }
-                                    this@apply.forEach {
-                                        onSearchSuggestionAdd(it)
-                                    }
-                                }
-                            }
+            latestURL = clipboardList.last()
+
+            if (latestURL.contains("facebook", true) || latestURL.contains("instagram", true)) {
+                val ctx = context ?: return@post
+                startActivity(Intent(ctx, FacebookInfoActivity::class.java).apply {
+                    putExtra("facebookURL", latestURL)
+                })
+                return@post // ✅ STOP here → no more code in this post block will run
+            }
+
+            println("It is here")
+            // Normal case: put URL into search bar
+            binding.searchBar.setText(latestURL)
+            showClipboardFab = true
+            binding.copiedUrlFab.isVisible = true
+
+            binding.copiedUrlFab.setOnClickListener {
+                if (clipboardList.size == 1) {
+                    binding.searchView.setText(clipboardList.first())
+                    showClipboardFab = false
+                    binding.copiedUrlFab.isVisible = false
+                    initSearch(binding.searchView)
+                } else {
+                    binding.searchBar.performClick()
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO) {
+                            delay(500)
                         }
-                    
-                
-                }
-
-                lifecycleScope.launch {
-                    binding.copiedUrlFab.extend()
-                    delay(1000)
-                    binding.copiedUrlFab.shrink()
+                        clipboardList.forEach { onSearchSuggestionAdd(it) }
+                    }
                 }
             }
+
+            lifecycleScope.launch {
+                binding.copiedUrlFab.extend()
+                delay(1000)
+                binding.copiedUrlFab.shrink()
+            }
         }
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -810,24 +813,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         showSingleDownloadSheet(item!!, type!!)
     }
 
+//    @SuppressLint("RestrictedApi")
+//    private fun showSingleDownloadSheet(
+//        resultItem: ResultItem,
+//        type: DownloadViewModel.Type,
+//        disableUpdateData : Boolean = false
+//    ){
+//        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null &&
+//            findNavController().currentDestination?.id == R.id.homeFragment
+//        ){
+//            //show the fragment if its not in the backstack
+//            val bundle = Bundle()
+//            bundle.putParcelable("result", resultItem)
+//            bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
+//            if (disableUpdateData) {
+//                bundle.putBoolean("disableUpdateData", true)
+//            }
+//            findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
+//        }
+//    }
+
     @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
         type: DownloadViewModel.Type,
         disableUpdateData : Boolean = false
-    ){
-        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null &&
-            findNavController().currentDestination?.id == R.id.homeFragment
-        ){
-            //show the fragment if its not in the backstack
-            val bundle = Bundle()
-            bundle.putParcelable("result", resultItem)
-            bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
-            if (disableUpdateData) {
-                bundle.putBoolean("disableUpdateData", true)
-            }
-            findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
+    ) {
+        val intent = Intent(mainActivity, DownloadInfoActivity::class.java)
+        intent.putExtra("isFromFB", false)
+        intent.putExtra("result", resultItem)
+        intent.putExtra("type", downloadViewModel.getDownloadType(type, resultItem.url))
+        if (disableUpdateData) {
+            intent.putExtra("disableUpdateData", true)
         }
+
+        startActivity(intent)
     }
 
     override fun onCardClick(videoURL: String, add: Boolean) {

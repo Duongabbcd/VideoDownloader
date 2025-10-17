@@ -130,11 +130,11 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
                 // ✅ Dismissed by user
                 Log.d("DownloadBottomSheet", "Dismissed by user")
                 existenceDismissedByUser = false
-                resultViewModel.deleteAll(false)
             } else {
                 // ❌ Dismissed programmatically (e.g. dismiss(), navigate(), etc.)
                 Log.d("DownloadBottomSheet", "Dismissed programmatically")
             }
+            resultViewModel.deleteAll(false)
             downloadViewModel.deleteWithDuplicateStatus()
         }
     }

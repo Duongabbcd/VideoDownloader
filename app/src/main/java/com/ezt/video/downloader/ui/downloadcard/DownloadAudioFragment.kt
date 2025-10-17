@@ -34,6 +34,8 @@ import com.ezt.video.downloader.database.viewmodel.FormatViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.FragmentDownloadAudioBinding
 import com.ezt.video.downloader.ui.BaseFragment
+import com.ezt.video.downloader.util.Common.gone
+import com.ezt.video.downloader.util.Common.visible
 import com.ezt.video.downloader.util.Extensions.applyFilenameTemplateForCuts
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.FormatUtil
@@ -130,7 +132,7 @@ class DownloadAudioFragment(
                 })
                 
                 binding.authorTextinput.visibility =
-                    if (shownFields.contains("author") && !nonSpecific) View.VISIBLE else View.GONE
+                    if (shownFields.contains("author") && !nonSpecific) View.GONE else View.GONE
                 if ( binding.authorTextinput.editText?.text?.isEmpty() == true) {
                      binding.authorTextinput.editText!!.setText(downloadItem.author)
                      binding.authorTextinput.endIconMode = END_ICON_NONE
@@ -229,7 +231,7 @@ class DownloadAudioFragment(
                     getString(R.string.defaultValue)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 container.visibility =
-                    if (shownFields.contains("container")) View.VISIBLE else View.GONE
+                    if (shownFields.contains("container")) View.GONE else View.GONE
                 if (nonSpecific) {
                     val param = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -254,6 +256,7 @@ class DownloadAudioFragment(
                     null,
                     showSize = downloadItem.downloadSections.isEmpty()
                 )
+                formatCard.visible()
                 formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(formatTuple: FormatTuple) {
@@ -311,6 +314,15 @@ class DownloadAudioFragment(
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }
+
+                binding.moreOption.setOnClickListener {
+                    if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
+                        formatViewModel.setItem(downloadItem, !nonSpecific)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listener)
+                        bottomSheet.show(parentFragmentManager, "formatSheet")
+                    }
+                }
+
                 formatCard.setOnLongClickListener {
                     UiUtil.showFormatDetails(downloadItem.format, requireActivity())
                     true

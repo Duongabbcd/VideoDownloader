@@ -209,6 +209,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     fun setItem(item: DownloadItem, updateFormats: Boolean? = null) = viewModelScope.launch {
+        println("setItem: $item")
         canUpdate = updateFormats ?: canUpdate
         selectedItems.apply {
             value = listOf(item)

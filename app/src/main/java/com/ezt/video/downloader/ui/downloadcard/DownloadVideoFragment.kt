@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.expand.table.Format
@@ -34,6 +35,10 @@ import com.ezt.video.downloader.database.viewmodel.FormatViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.FragmentDownloadVideoBinding
 import com.ezt.video.downloader.ui.BaseFragment
+import com.ezt.video.downloader.ui.adapter.FormatAdapter
+import com.ezt.video.downloader.ui.downloadcard.FormatSelectionBottomSheetDialog
+import com.ezt.video.downloader.util.Common.gone
+import com.ezt.video.downloader.util.Common.visible
 import com.ezt.video.downloader.util.Extensions.applyFilenameTemplateForCuts
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.FormatUtil
@@ -74,7 +79,9 @@ class DownloadVideoFragment(
     lateinit var downloadItem: DownloadItem
 
     private var disabledCutClicked: Boolean = false
-    
+
+//    private lateinit var adapter: FormatAdapter
+//    private lateinit var listener: OnFormatClickListener
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,8 +99,63 @@ class DownloadVideoFragment(
             "modify_download_card",
             requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet()
         )!!.toList()
-        
+
         lifecycleScope.launch {
+
+//            adapter =
+//                FormatAdapter(
+//                    this@DownloadVideoFragment,
+//                    requireActivity()
+//                )
+//            binding.allVideoSolutions.layoutManager = LinearLayoutManager(requireContext(),
+//                LinearLayoutManager.VERTICAL, false)
+//            binding.allVideoSolutions.adapter = adapter
+//            var formats = mutableListOf<Format>()
+//            val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
+//            listener = object : OnFormatClickListener {
+//                override fun onFormatClick(formatTuple: FormatTuple) {
+//                    formatTuple.format?.apply {
+//                        downloadItem.format = this
+//                    }
+//                    downloadItem.videoPreferences.audioFormatIDs.clear()
+//                    formatTuple.audioFormats?.map { it.format_id }?.let {
+//                        downloadItem.videoPreferences.audioFormatIDs.addAll(it)
+//                    }
+//                    val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
+//                        if(downloadItem.videoPreferences.removeAudio) listOf() else formatTuple.audioFormats,
+//                        showSize = downloadItem.downloadSections.isEmpty()
+//                    )
+//                    formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
+//                }
+//
+//                override fun onFormatsUpdated(allFormats: List<Format>) {
+//                    lifecycleScope.launch {
+//                        withContext(Dispatchers.IO){
+//                            resultItem?.apply {
+//                                this.formats.removeAll(formats)
+//                                this.formats.addAll(allFormats.filter { !genericVideoFormats.contains(it) })
+//                                resultViewModel.update(this)
+//                            }
+//
+//                            currentDownloadItem?.apply {
+//                                downloadViewModel.updateDownloadItemFormats(this.id, allFormats.filter { !genericVideoFormats.contains(it) })
+//                            }
+//                        }
+//                    }
+//                    formats = allFormats.filter { !genericVideoFormats.contains(it) }.toMutableList()
+//                    val preferredFormat = downloadViewModel.getFormat(formats, Type.video)
+//                    val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
+//                    downloadItem.format = preferredFormat
+//                    downloadItem.allFormats = formats
+//                    val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat,
+//                        if(downloadItem.videoPreferences.removeAudio) listOf() else formats.filter { preferredAudioFormats.contains(it.format_id) },
+//                        showSize = downloadItem.downloadSections.isEmpty()
+//                    )
+//                    formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
+//                }
+//            }
+
+
             downloadItem = withContext(Dispatchers.IO){
                 if (savedInstanceState?.containsKey("updated") == true) {
                     downloadItem.apply {
@@ -120,6 +182,20 @@ class DownloadVideoFragment(
                 }
             }
 
+//            formatViewModel.setItem(downloadItem, !nonSpecific)
+//            formatViewModel.formats.collectLatest {
+//                if (it.isEmpty()) {
+//                    binding.allVideoSolutions.gone()
+//                    return@collectLatest
+//                }
+//                it.onEach { format ->
+//                    println("Download Video: $format")
+//                }
+//                adapter.setCanMultiSelectAudio(formatViewModel.canMultiSelectAudio.value)
+//                adapter.submitList(it.toMutableList())
+//            }
+
+
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
                 binding.titleTextinput.visibility = if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
@@ -135,7 +211,7 @@ class DownloadVideoFragment(
                     }
                 })
                 
-                binding.authorTextinput.visibility = if (shownFields.contains("author") && !nonSpecific) View.VISIBLE else View.GONE
+                binding.authorTextinput.visibility =  View.GONE
                 if (binding.authorTextinput.editText?.text?.isEmpty() == true){
                     binding.authorTextinput.editText!!.setText(downloadItem.author)
                     binding.authorTextinput.endIconMode = END_ICON_NONE
@@ -218,7 +294,7 @@ class DownloadVideoFragment(
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
-                container.visibility = if (shownFields.contains("container")) View.VISIBLE else View.GONE
+                container.visibility = if (shownFields.contains("container")) View.GONE else View.GONE
                 if (nonSpecific){
                     val param = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -236,7 +312,7 @@ class DownloadVideoFragment(
                 if (formats.isEmpty()) formats = genericVideoFormats
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
-
+                formatCard.visible()
                 val chosenFormat = downloadItem.format
                 val chosenAudioFormats = downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) }
                 val filesize = UiUtil.populateFormatCard(
@@ -292,6 +368,14 @@ class DownloadVideoFragment(
 
                 }
                 formatCard.setOnClickListener{
+                    if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
+                        formatViewModel.setItem(downloadItem, !nonSpecific)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listener)
+                        bottomSheet.show(parentFragmentManager, "formatSheet")
+                    }
+                }
+
+                binding.moreOption.setOnClickListener {
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
                         formatViewModel.setItem(downloadItem, !nonSpecific)
                         val bottomSheet = FormatSelectionBottomSheetDialog(listener)
@@ -552,5 +636,12 @@ class DownloadVideoFragment(
 
         }
     }
+
+//    override fun onItemSelect(
+//        item: Format,
+//        audioFormats: List<Format>?
+//    ) {
+//        listener.onFormatClick(FormatTuple(item, audioFormats))
+//    }
 
 }

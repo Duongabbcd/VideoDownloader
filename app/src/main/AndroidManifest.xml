@@ -66,7 +66,11 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
-
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".receiver.activities.ShareActivity"

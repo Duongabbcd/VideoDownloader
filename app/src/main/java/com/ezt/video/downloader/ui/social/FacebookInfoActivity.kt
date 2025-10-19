@@ -152,7 +152,7 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
         val intent = Intent(this@FacebookInfoActivity, DownloadInfoActivity::class.java)
 
         intent.putExtra("result", resultItem)
-        intent.putExtra("facebookURL", "")
+        intent.putExtra("facebookURL", facebookURL)
         intent.putExtra("isFromFB", true)
         intent.putExtra("type", downloadViewModel.getDownloadType(type, resultItem.url))
         if (disableUpdateData) {

@@ -1028,6 +1028,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val clipText = clipboard.primaryClip?.getItemAt(0)?.coerceToText(requireContext())?.toString()
                 ?: return null
 
+            println("checkClipboard: $clipText")
+
             val urls = clipText
                 .split("\r", "\n")
                 .map { it.trim() }

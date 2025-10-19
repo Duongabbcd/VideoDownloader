@@ -1,6 +1,8 @@
 package com.ezt.video.downloader.ui.home
 
 import android.app.ActionBar.LayoutParams
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -92,6 +94,8 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        handleIncomingIntent(intent)
 
         if(Common.getCountOpenApp(this@MainActivity) == 0) {
             Common.setCountOpenApp(this@MainActivity, 1)
@@ -299,6 +303,21 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
             }
         }
     }
+
+
+    private fun handleIncomingIntent(intent: Intent?) {
+        if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
+            val sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT)
+            Log.d("ShareReceiver", "Received shared URL: $sharedUrl")
+            if (!sharedUrl.isNullOrEmpty()) {
+
+                // ✅ Set clipboard immediately
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("shared_url", sharedUrl)
+                clipboard.setPrimaryClip(clip)
+            }
+        }
+    }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         savedInstanceState.putBundle("nav_state", navController.saveState())
@@ -397,6 +416,7 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        handleIncomingIntent(intent)
         handleIntents(intent)
     }
 

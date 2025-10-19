@@ -214,7 +214,7 @@ dependencies {
 //    implementation("com.google.ads.mediation:mintegral:16.9.91.1")
 //
     implementation("com.google.android.gms:play-services-ads:24.7.0") // or latest
-
+    implementation ("com.airbnb.android:lottie:6.4.0")
     //check update
 //    implementation("com.google.android.play:app-update:2.1.0")
 //    implementation("com.google.android.play:app-update-ktx:2.1.0")

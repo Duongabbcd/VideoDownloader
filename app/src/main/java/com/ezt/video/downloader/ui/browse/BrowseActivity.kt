@@ -1,5 +1,6 @@
 package com.ezt.video.downloader.ui.browse
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.webkit.JavascriptInterface
 import android.webkit.URLUtil
 import android.webkit.WebChromeClient
 import android.webkit.WebChromeClient.CustomViewCallback
@@ -122,11 +124,14 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 binding.progressBar.visibility = View.VISIBLE
+                showLoadingAnimation()
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 binding.progressBar.visibility = View.GONE
+                hideLoadingAnimation()
+                injectVideoDetectionJS()
             }
 
             override fun onReceivedError(
@@ -173,13 +178,67 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
     }
 
 
+    private fun showLoadingAnimation() {
+        binding.downloadBtn.setAnimation("animation2.json") // your loading animation
+        binding.downloadBtn.visibility = View.VISIBLE
+        binding.downloadBtn.playAnimation()
+    }
 
+    private fun hideLoadingAnimation() {
+        binding.downloadBtn.cancelAnimation()
+        binding.downloadBtn.visibility = View.GONE
+    }
+
+    private fun showVideoDetectedAnimation() {
+        binding.downloadBtn.setAnimation("animation1.json") // your video detected animation
+        binding.downloadBtn.visibility = View.VISIBLE
+        binding.downloadBtn.playAnimation()
+    }
+
+    private fun injectVideoDetectionJS() {
+        // Inject JS to scan video links on scroll
+        val js = """
+            (function() {
+                function scanForVideos() {
+                    var links = document.getElementsByTagName('a');
+                    for (var i = 0; i < links.length; i++) {
+                        if (links[i].href && links[i].href.match(/\.(mp4|mov|m3u8|youtube\.com|vimeo\.com)/i)) {
+                            // Notify Android
+                            Android.onVideoDetected(links[i].href);
+                            return;
+                        }
+                    }
+                }
+                window.addEventListener('scroll', function() {
+                    scanForVideos();
+                });
+
+                scanForVideos();
+            })();
+        """.trimIndent()
+
+        binding.webView.evaluateJavascript(js, null)
+    }
+    
     override fun onBackPressed() {
         when {
             customView != null -> binding.webView.webChromeClient?.onHideCustomView()
             binding.webView.canGoBack() -> binding.webView.goBack()
             else -> super.onBackPressed()
         }
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    override fun onResume() {
+        super.onResume()
+        binding.webView.addJavascriptInterface(object {
+            @JavascriptInterface
+            fun onVideoDetected(url: String) {
+                runOnUiThread {
+                    showVideoDetectedAnimation()
+                }
+            }
+        }, "Android")
     }
 
     companion object {

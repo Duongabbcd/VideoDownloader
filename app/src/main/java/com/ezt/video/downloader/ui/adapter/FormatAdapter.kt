@@ -4,19 +4,15 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.expand.non_table.FormatRecyclerView
 import com.ezt.video.downloader.database.models.expand.table.Format
 import com.ezt.video.downloader.databinding.FormatItemBinding
 import com.ezt.video.downloader.databinding.FormatTypeLabelBinding
 import com.ezt.video.downloader.util.UiUtil
-import com.google.android.material.card.MaterialCardView
 
 class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<FormatRecyclerView?, FormatAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
@@ -41,7 +37,7 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         class FormatViewHolder(
             val binding: FormatItemBinding,
             val activity: Activity,
-            val onItemClickListener: FormatAdapter.OnItemClickListener,
+            val onItemClickListener: OnItemClickListener,
             val adapter: FormatAdapter
         ) : ViewHolder(binding.root) {
 

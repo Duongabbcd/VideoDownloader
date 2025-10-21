@@ -522,5 +522,22 @@
     <string name="youtube_desc">It is not allowed to download Youtube videos, please copy URLs from other websites.</string>
     <string name="preparing">Preparing for playing video. Please wait</string>
     <string name="high_note">The downloaded media files can be only played by this app</string>
+    <string name="media_format">All media formats</string>
 
+    //language
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="spanish">Spanish</string>
+    <string name="french">French</string>
+    <string name="arabic">Arabic</string>
+    <string name="bengali">Bengali</string>
+    <string name="russian">Russian</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="indonesian">Indonesian</string>
+    <string name="german">German</string>
+    <string name="italian">Italian</string>
+    <string name="korean">Korean</string>
+    <string name="done">Done</string>
+    <string name="retry">Retry</string>
+    <string name="send">Send</string>
 </resources>

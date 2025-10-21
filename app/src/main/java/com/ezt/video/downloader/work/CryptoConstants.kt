@@ -5,10 +5,8 @@ import android.util.Base64
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import java.io.File
-import java.io.IOException
 import java.security.SecureRandom
 import javax.crypto.Cipher
-import javax.crypto.CipherInputStream
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec

@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/title"
-            android:paddingBottom="@dimen/_10sdp"
             android:paddingHorizontal="@dimen/_10sdp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -40,6 +39,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/author_textinput"
+                android:visibility="gone"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,6 +58,7 @@
                 android:id="@+id/downloadContainer"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_weight="45"
                 android:labelFor="@id/container_textview"
@@ -77,17 +78,52 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/freespace"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:textSize="16sp"
+            android:textColor="@android:color/tab_indicator_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingTop="@dimen/_10sdp"
             android:text="@string/video_quality" />
 
-        <include layout="@layout/format_item" />
+
+        <include
+            android:visibility="visible"
+            layout="@layout/format_item" />
+
+        <TextView
+            android:id="@+id/moreOption"
+            android:background="@drawable/background_radius_16_gray"
+            android:backgroundTint="@color/dark_blue"
+            android:text="@string/more"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allVideoSolutions"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outputPath"
+            android:visibility="gone"
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,15 +140,10 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/freespace"
-            android:paddingHorizontal="@dimen/_20sdp"
-            android:textSize="13sp"
-            android:textColor="@android:color/tab_indicator_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <include layout="@layout/adjust_video" />
+        <include
+            android:id="@+id/adjust"
+            android:visibility="gone"
+            layout="@layout/adjust_video" />
 
 
     </LinearLayout>

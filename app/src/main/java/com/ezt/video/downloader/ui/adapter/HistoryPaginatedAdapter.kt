@@ -121,7 +121,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         author.text = item.author
 
         val length = card.findViewById<TextView>(R.id.length)
-        length.text = if(item.downloadPath.size == 1) item.duration else ""
+        length.text = if(item.downloadPath.size == 1 && item.duration != "-1") item.duration else ""
 
 
         // TIME DOWNLOADED  ----------------------------------

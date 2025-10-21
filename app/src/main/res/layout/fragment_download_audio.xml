@@ -78,16 +78,42 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/freespace"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:textSize="16sp"
+                android:textColor="@android:color/tab_indicator_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/_10sdp"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:text="@string/audio_quality" />
+
             <include layout="@layout/format_item" />
 
+            <TextView
+                android:id="@+id/moreOption"
+                android:background="@drawable/background_radius_16_gray"
+                android:backgroundTint="@color/dark_blue"
+                android:text="@string/more"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:padding="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outputPath"
+                android:visibility="gone"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingBottom="0dp"
                 android:paddingTop="@dimen/_10sdp"
@@ -104,15 +130,11 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/freespace"
-                android:paddingHorizontal="@dimen/_20sdp"
-                android:textSize="13sp"
-                android:textColor="@android:color/tab_indicator_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <include layout="@layout/adjust_audio" />
+            <include
+                android:id="@+id/adjust"
+                android:visibility="gone"
+                layout="@layout/adjust_audio" />
 
 
         </LinearLayout>

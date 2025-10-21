@@ -311,7 +311,7 @@
         android:id="@+id/loading"
         android:gravity="center"
         android:visibility="gone"
-        android:background="@color/light_grey_0_3"
+        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >

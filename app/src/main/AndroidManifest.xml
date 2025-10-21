@@ -48,9 +48,20 @@
             android:exported="true"/>
 
         <activity android:name=".ui.player.PlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="sensor"
             android:exported="true"/>
 
         <activity android:name=".ui.splash.SplashActivity"
+            android:exported="true"/>
+
+        <activity android:name=".ui.social.FacebookInfoActivity"
+            android:exported="true"/>
+
+        <activity android:name=".ui.info.DownloadInfoActivity"
+            android:exported="true"/>
+
+        <activity android:name=".ui.whatsapp.WhatsAppActivity"
             android:exported="true"/>
 
         <activity
@@ -60,7 +71,11 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
-
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".receiver.activities.ShareActivity"
@@ -70,11 +85,11 @@
             android:taskAffinity=""
             android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.SEND" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <data android:mimeType="text/plain" />-->
+<!--            </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

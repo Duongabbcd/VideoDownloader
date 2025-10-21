@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleY="0.5"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
 
@@ -130,23 +130,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/downloadBtn"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        tools:ignore="RedundantDescriptionCheck" />
 
 
+    <LinearLayout
+        android:id="@+id/loading"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-<!--    <com.airbnb.lottie.LottieAnimationView-->
-<!--        android:id="@+id/downloadBtn"-->
-<!--        android:layout_width="@dimen/_60sdp"-->
-<!--        android:layout_height="@dimen/_60sdp"-->
-<!--        app:lottie_rawRes="@raw/download"-->
-<!--        app:lottie_autoPlay="true"-->
-<!--        app:lottie_loop="true"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.95"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.9"-->
-<!--        tools:ignore="RedundantDescriptionCheck" />-->
+        <ProgressBar
+            android:id="@+id/processingBar"
+            android:indeterminateTint="@color/dark_blue"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"/>
+
+        <TextView
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp"
+            android:text="@string/please_wait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout >

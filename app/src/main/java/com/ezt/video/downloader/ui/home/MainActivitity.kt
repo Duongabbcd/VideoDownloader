@@ -1,6 +1,8 @@
 package com.ezt.video.downloader.ui.home
 
 import android.app.ActionBar.LayoutParams
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +11,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -48,6 +51,7 @@ import com.ezt.video.downloader.ui.downloads.HistoryFragment
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
 import com.ezt.video.downloader.util.Common
 import com.ezt.video.downloader.util.CrashListener
+import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.NavbarUtil
 import com.ezt.video.downloader.util.NavbarUtil.applyNavBarStyle
 import com.ezt.video.downloader.util.ThemeUtil
@@ -71,6 +75,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
+import java.io.File
+import java.io.IOException
 import java.io.InputStreamReader
 import java.io.Reader
 import java.nio.charset.Charset
@@ -92,6 +98,8 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        addingNoMediaFiles()
+        handleIncomingIntent(intent)
 
         if(Common.getCountOpenApp(this@MainActivity) == 0) {
             Common.setCountOpenApp(this@MainActivity, 1)
@@ -160,6 +168,11 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                             (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
                         }
                     }
+                    R.id.downloadQueueMainFragment -> {
+                        kotlin.runCatching {
+                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as DownloadQueueMainFragment).scrollToActive()
+                        }
+                    }
                     R.id.historyFragment -> {
 //                        if(!showingDownloadQueue) {
 //                            navController.navigate(R.id.downloadQueueMainFragment)
@@ -169,11 +182,6 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 //                            }
 //                        }
                         (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
-                    }
-                    R.id.downloadQueueMainFragment -> {
-                        kotlin.runCatching {
-                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as DownloadQueueMainFragment).scrollToActive()
-                        }
                     }
                     R.id.moreFragment -> {
                         val intent = Intent(context, SettingsActivity::class.java)
@@ -299,6 +307,47 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
             }
         }
     }
+
+    private fun addingNoMediaFiles() {
+        val videoDownloaderPath: String = FileUtil.getDefaultVideoPath()
+        val folder = File(videoDownloaderPath)
+
+        if (!folder.exists()) {
+            folder.mkdirs()  // Create folder if it doesn't exist
+        }
+
+        val nomediaFile = File(folder, ".nomedia")
+
+        if (!nomediaFile.exists()) {
+            try {
+                val created = nomediaFile.createNewFile()
+                if (created) {
+                    println(".nomedia file created")
+                } else {
+                    println("Failed to create .nomedia file")
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        } else {
+            println(".nomedia already exists")
+        }
+    }
+
+
+    private fun handleIncomingIntent(intent: Intent?) {
+        if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
+            val sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT)
+            Log.d("ShareReceiver", "Received shared URL: $sharedUrl")
+            if (!sharedUrl.isNullOrEmpty()) {
+                isSharedURL = true
+                // ✅ Set clipboard immediately
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("shared_url", sharedUrl)
+                clipboard.setPrimaryClip(clip)
+            }
+        }
+    }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         savedInstanceState.putBundle("nav_state", navController.saveState())
@@ -397,6 +446,7 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        handleIncomingIntent(intent)
         handleIntents(intent)
     }
 
@@ -450,7 +500,7 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                     bundle
                 )
             } catch (e: Exception) {
-                Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }else if (action == Intent.ACTION_VIEW){
@@ -514,5 +564,6 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
     companion object {
         private const val TAG = "MainActivity"
         var isChangeTheme = false
+        var isSharedURL = false
     }
 }

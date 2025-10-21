@@ -810,6 +810,7 @@ object UiUtil {
                 R.drawable.ic_terminal
             }
         btn?.setImageResource(typeImageResource)
+        btn?.gone()
 
         if (isPresent){
             btn?.apply {
@@ -961,7 +962,7 @@ object UiUtil {
         )
     }
 
-    fun showFormatDetails(format: Format, activity: Activity){
+    fun showFormatDetails(format: Format, activity: Activity, isToast: Boolean = true){
         val bottomSheet = BottomSheetDialog(activity)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.format_details_sheet)
@@ -978,14 +979,14 @@ object UiUtil {
 
 
         val clicker = View.OnClickListener {
-            copyToClipboard(((it as ConstraintLayout).getChildAt(1) as TextView).text.toString(), activity)
+            copyToClipboard(((it as ConstraintLayout).getChildAt(1) as TextView).text.toString(), activity, false)
         }
 
         val longClicker = View.OnLongClickListener {
             val txt = ((it as ConstraintLayout).getChildAt(1) as TextView).text.toString()
             val snackbar = Snackbar.make(bottomSheet.findViewById(android.R.id.content)!!, txt, Snackbar.LENGTH_LONG)
             snackbar.setAction(android.R.string.copy){
-                copyToClipboard(txt, activity)
+                copyToClipboard(txt, activity, false)
             }
             val snackbarView: View = snackbar.view
             val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
@@ -1210,12 +1211,15 @@ object UiUtil {
     }
 
 
-    fun copyToClipboard(text: String, activity: Activity){
-        val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(text, text)
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(activity, activity.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT)
-            .show()
+    fun copyToClipboard(text: String, activity: Activity, isToast: Boolean = true){
+        if(isToast) {
+            val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText(text, text)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(activity, activity.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT)
+                .show()
+        }
+
     }
 
 

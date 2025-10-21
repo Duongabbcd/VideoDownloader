@@ -186,6 +186,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     private suspend fun parseQueriesImpl(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
+        println("parseQueriesImpl: $inputQueries")
         if (inputQueries.size > 1){
             repository.itemCount.value = inputQueries.size
         }
@@ -221,6 +222,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     suspend fun parseQueries(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
+        println("parseQueries: $inputQueries")
         if (parsingQueries == null || parsingQueries?.isCancelled == true || parsingQueries?.isCompleted == true) {
             parsingQueries = viewModelScope.launch(Dispatchers.IO) {
                 parseQueriesImpl(inputQueries) {

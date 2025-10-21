@@ -61,21 +61,34 @@
         android:id="@+id/iconRotation"
         android:src="@drawable/icon_rotation"
         android:padding="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:contentDescription="@string/imageView"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playerButtons"
+        app:layout_constraintBottom_toBottomOf="@+id/playerButtons"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="@dimen/_32sdp"
         android:layout_height="@dimen/_32sdp" />
+
+    <ImageView
+        android:id="@+id/iconVolume"
+        android:src="@drawable/icon_volume_on"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:contentDescription="@string/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/playerButtons"
+        app:layout_constraintTop_toTopOf="@+id/playerButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp" />
+
 
     <!-- Control buttons -->
     <LinearLayout
         android:id="@+id/playerButtons"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/playerControls"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,8 +110,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"/>
 
         <ImageButton
             android:id="@+id/forward10"

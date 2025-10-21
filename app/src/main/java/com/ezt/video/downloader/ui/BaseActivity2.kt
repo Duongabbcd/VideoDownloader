@@ -33,6 +33,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.player.PlayerActivity.Companion.returnedFromSettings
 import com.ezt.video.downloader.util.Common
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.system.exitProcess
@@ -112,7 +113,7 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
         val oldUiMode = 0
         Log.d(TAG, "System UI mode changed from $oldUiMode to $systemUiMode")
 
-        if (oldUiMode != systemUiMode) {
+        if (oldUiMode != systemUiMode && !returnedFromSettings) {
             // Save new value
             lastKnownUiMode = systemUiMode
 

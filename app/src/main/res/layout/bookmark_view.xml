@@ -9,9 +9,9 @@
     <ImageView
         android:id="@+id/bookmarkIcon"
         android:contentDescription="@string/imageView"
-        android:layout_width="@dimen/_36sdp"
-        android:layout_height="@dimen/_36sdp"
-        android:layout_marginVertical="@dimen/_4sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_2sdp"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/_11sdp"
@@ -24,6 +24,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="Bookmark"
+        android:layout_marginTop="@dimen/_2sdp"
         android:textColor="@color/black"
         android:textSize="11sp" />
 

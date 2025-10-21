@@ -12,6 +12,7 @@ import com.ezt.video.downloader.R
 import com.ezt.video.downloader.databinding.BookmarkViewBinding
 import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.home.Bookmark
+import com.ezt.video.downloader.ui.whatsapp.WhatsAppActivity
 import com.google.android.material.snackbar.Snackbar
 
 class BookmarkAdapter(private val isActivity: Boolean = false) :
@@ -47,7 +48,12 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
                 binding.bookmarkName.text = bookmark.name
 
                 binding.root.setOnClickListener {
-                   openBookmark(bookmark)
+                    if(bookmark.name.contains("WhatsApp", true)) {
+                        context.startActivity(Intent(context, WhatsAppActivity::class.java))
+                    } else {
+                        openBookmark(bookmark)
+
+                    }
 
                 }
             }

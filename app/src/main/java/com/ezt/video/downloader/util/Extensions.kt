@@ -356,7 +356,14 @@ object Extensions {
                     .into(this)
 
             } else {
-                Picasso.get().load(R.color.black).into(this)
+                println("loadThumbnail: $hideThumb and $imageURL")
+                Picasso.get()
+                    .load(R.drawable.background_radius_10_gray)
+                    .resize(1280, 0)
+                    .onlyScaleDown()
+                    .placeholder(R.drawable.background_radius_10_gray)
+                    .error(R.drawable.background_radius_10_gray)
+                    .into(this)
             }
         }
     }

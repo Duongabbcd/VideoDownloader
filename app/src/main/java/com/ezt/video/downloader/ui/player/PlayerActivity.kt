@@ -1,5 +1,7 @@
 package com.ezt.video.downloader.ui.player
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -8,10 +10,13 @@ import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.databinding.ActivityPlayerBinding
@@ -55,23 +60,19 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
     private var startPositionValue: Long = 0L
     private var playWhenReadyState: Boolean = true
 
+    @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 🔐 Register here
-
+        returnedFromSettings = true
         startPositionValue = savedInstanceState?.getLong("playback_position") ?: 0L
         playWhenReadyState = savedInstanceState?.getBoolean("play_when_ready") ?: true
 
 
         binding.apply {
-            playerButtons.gone()
             Log.d(TAG, "PlayerActivity: $videoUrl and $videoNameStr")
             videoName.text = videoNameStr
             videoName.isSelected = true
-            root.setOnClickListener {
-                playerButtons.fadeInAndOut()
-            }
-
             playPause.setOnClickListener {
                 player?.let {exoPlayer ->
                     when {
@@ -119,14 +120,47 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                 finish()
             }
 
-            iconRotation.setOnClickListener {
-                currentRotation = (currentRotation + 90) % 360
-
-                playerView.animate()
-                    .rotation(currentRotation.toFloat())
-                    .setDuration(300)
-                    .start()
+            iconVolume.setOnClickListener {
+                toggleMute()
             }
+
+            binding.iconRotation.setOnClickListener {
+                // Delay orientation change slightly to avoid crashes
+                binding.root.post {
+                    val currentOrientation = resources.configuration.orientation
+                    requestedOrientation = when (currentOrientation) {
+                        Configuration.ORIENTATION_PORTRAIT -> {
+                            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
+                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                            }
+
+                        }
+                        Configuration.ORIENTATION_LANDSCAPE -> {
+                            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT.also {
+                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                            }
+                        }
+                        else -> {
+                            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
+                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun toggleMute() {
+        player?.let {
+            val isMuted = it.volume == 0f
+            it.volume = if (isMuted) 1f else 0f
+
+            // Optionally change the icon depending on the state
+            binding.iconVolume.setImageResource(
+                if (isMuted) R.drawable.icon_volume_on else R.drawable.icon_volume_off
+            )
         }
     }
 
@@ -141,62 +175,58 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
 
 
     private fun initializePlayer(encryptedFilePath: String) {
-        println("initializePlayer: $encryptedFilePath")
+
         hasInitialized = true
         val isEncrypted = CryptoConstants.isFileEncryptedByUs(File(encryptedFilePath))
-        decryptedFile = if(!isEncrypted) {
-            File(encryptedFilePath)
-        } else {
-            Toast.makeText(this@PlayerActivity, resources.getString(R.string.preparing), Toast.LENGTH_SHORT).show()
-            try {
-                CryptoConstants.decryptMediaHeader(File(encryptedFilePath), this)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "Failed to decrypt file: ${e.message}", Toast.LENGTH_LONG).show()
-                return
-            }
-        }
+        println("initializePlayer: $encryptedFilePath and $isEncrypted")
+        try {
+            decryptedFile =  CryptoConstants.decryptMediaHeader(File(encryptedFilePath), this)
+            binding.apply {
+                playerView.visibility = PlayerView.VISIBLE
 
-        binding.apply {
-            playerView.visibility = PlayerView.VISIBLE
+                player = ExoPlayer.Builder(this@PlayerActivity).build().also { exoPlayer ->
+                    playerView.player = exoPlayer
+                    exoPlayer.volume = 1f
+                    iconVolume.setImageResource(R.drawable.icon_volume_on)
+                    val mediaItem = MediaItem.fromUri(Uri.fromFile(decryptedFile))
+                    exoPlayer.setMediaItem(mediaItem)
+                    // Loop one track indefinitely
+                    exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+                    // Playback error listener
+                    exoPlayer.addListener(object : Player.Listener {
+                        override fun onPlaybackStateChanged(playbackState: Int) {
+                            if(playbackState == Player.STATE_ENDED) {
 
-            player = ExoPlayer.Builder(this@PlayerActivity).build().also { exoPlayer ->
-                playerView.player = exoPlayer
-
-                val mediaItem = MediaItem.fromUri(Uri.fromFile(decryptedFile))
-                exoPlayer.setMediaItem(mediaItem)
-                // Loop one track indefinitely
-                exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
-                // Playback error listener
-                exoPlayer.addListener(object : Player.Listener {
-                    override fun onPlaybackStateChanged(playbackState: Int) {
-                        if(playbackState == Player.STATE_ENDED) {
-
+                            }
                         }
-                    }
-                    override fun onPlayerError(error: PlaybackException) {
-                        Toast.makeText(
-                            this@PlayerActivity,
-                            "Playback error: ${error.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                        override fun onPlayerError(error: PlaybackException) {
+                            Toast.makeText(
+                                this@PlayerActivity,
+                                "Playback error: ${error.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
 
-                    override fun onIsPlayingChanged(isPlaying: Boolean) {
-                        super.onIsPlayingChanged(isPlaying)
-                        binding.playPause.setImageResource(
-                            if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
-                        )
-                    }
-                })
+                        override fun onIsPlayingChanged(isPlaying: Boolean) {
+                            super.onIsPlayingChanged(isPlaying)
+                            binding.playPause.setImageResource(
+                                if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
+                            )
+                        }
+                    })
 
-                exoPlayer.prepare()
-                exoPlayer.seekTo(startPositionValue)
-                exoPlayer.playWhenReady = playWhenReadyState
-                handler.post(updateSeekBarRunnable)
+                    exoPlayer.prepare()
+                    exoPlayer.seekTo(startPositionValue)
+                    exoPlayer.playWhenReady = playWhenReadyState
+                    handler.post(updateSeekBarRunnable)
+                }
             }
-        }
 
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to decrypt file: ${e.message}", Toast.LENGTH_LONG).show()
+            return
+        }
     }
 
     override fun onStop() {
@@ -217,6 +247,8 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
     }
 
     private fun releasePlayer() {
+        returnedFromSettings = false
+
         player?.release()
         player = null
         hasInitialized = false

@@ -1,6 +1,5 @@
 package com.ezt.video.downloader.ui.info
 
-import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.DialogInterface
@@ -23,12 +22,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.models.main.ResultItem
@@ -39,12 +35,11 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel.Type
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.ActivityDownloadInfoBinding
-import com.ezt.video.downloader.receiver.activities.ShareActivity
 import com.ezt.video.downloader.ui.BaseActivity
 import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.downloadcard.BackgroundToForegroundPageTransformer
 import com.ezt.video.downloader.ui.downloadcard.DownloadAudioFragment
-import com.ezt.video.downloader.ui.downloadcard.DownloadBottomSheetDialog
 import com.ezt.video.downloader.ui.downloadcard.DownloadFragmentAdapter
 import com.ezt.video.downloader.ui.downloadcard.DownloadVideoFragment
 import com.ezt.video.downloader.ui.downloadcard.DownloadsAlreadyExistDialog
@@ -55,7 +50,6 @@ import com.ezt.video.downloader.ui.social.FacebookInfoActivity
 import com.ezt.video.downloader.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
@@ -128,6 +122,7 @@ class DownloadInfoActivity :
         disableUpdateData = intent.getBooleanExtra("disableUpdateData", false) == true
         ignoreDuplicates = intent.getBooleanExtra("ignore_duplicates", false) == true
 
+
         println("DownloadBottomSheetDialog 1: $res")
         println("DownloadBottomSheetDialog 2: $dwl")
         println("DownloadBottomSheetDialog 3: ${HomeFragment.latestURL}")
@@ -145,16 +140,29 @@ class DownloadInfoActivity :
     override fun onResume() {
         super.onResume()
         binding.backIcon.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                resultViewModel.deleteAll(false)
-            }
+            if(facebookURL.contains("BrowseActivity", true)) {
+                println("DownloadBottomSheetDialog 0: $facebookURL")
+                val intent = Intent(this@DownloadInfoActivity, BrowseActivity::class.java).apply {
+                    // Optional: clear back stack
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+                startActivity(intent)
+                finish()
+            } else {
+                val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
 
-            val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
-            val targetActivity = if(isFromFB) FacebookInfoActivity::class.java else MainActivity::class.java
-            startActivity(Intent(this@DownloadInfoActivity, targetActivity).apply {
-                putExtra("facebookURL", facebookURL)
-            })
+                CoroutineScope(Dispatchers.IO).launch {
+                    resultViewModel.deleteAll(false)
+                }
+
+//                val targetActivity = if(isFromFB) FacebookInfoActivity::class.java else MainActivity::class.java
+                val targetActivity = MainActivity::class.java
+                startActivity(Intent(this@DownloadInfoActivity, targetActivity).apply {
+                    putExtra("facebookURL", facebookURL)
+                })
+                finish()
+            }
         }
 
         tabLayout = findViewById(R.id.download_tablayout)

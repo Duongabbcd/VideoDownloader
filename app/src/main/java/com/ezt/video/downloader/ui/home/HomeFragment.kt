@@ -26,9 +26,7 @@ import android.view.View.OnClickListener
 import android.view.View.OnTouchListener
 import android.view.View.VISIBLE
 import android.widget.HorizontalScrollView
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -417,6 +415,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 return@post // ✅ STOP here → no more code in this post block will run
             }
 
+            if(MainActivity.isSharedURL) {
+                MainActivity.isSharedURL  = false
+                executeSearchingClipboard(clipboardList)
+            }
+
             println("It is here")
             // Normal case: put URL into search bar
             binding.searchBar.setText(latestURL)
@@ -424,20 +427,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.copiedUrlFab.isVisible = true
 
             binding.copiedUrlFab.setOnClickListener {
-                if (clipboardList.size == 1) {
-                    binding.searchView.setText(clipboardList.first())
-                    showClipboardFab = false
-                    binding.copiedUrlFab.isVisible = false
-                    initSearch(binding.searchView)
-                } else {
-                    binding.searchBar.performClick()
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO) {
-                            delay(500)
-                        }
-                        clipboardList.forEach { onSearchSuggestionAdd(it) }
-                    }
-                }
+               executeSearchingClipboard(clipboardList)
             }
 
             lifecycleScope.launch {
@@ -448,6 +438,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
     }
+
+    private fun executeSearchingClipboard(clipboardList: List<String>) {
+        if (clipboardList.size == 1) {
+            binding.searchView.setText(clipboardList.first())
+            showClipboardFab = false
+            binding.copiedUrlFab.isVisible = false
+            initSearch(binding.searchView)
+        } else {
+            binding.searchBar.performClick()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    delay(500)
+                }
+                clipboardList.forEach { onSearchSuggestionAdd(it) }
+            }
+        }
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initMenu() {
@@ -1066,13 +1074,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         private val defaultList = listOf<Bookmark>(
 //            Bookmark("Google", "https://www.google.com", null, R.drawable.icon_google),
 //            Bookmark("Youtube", "https://youtube.com", null, R.drawable.icon_youtube),
-            Bookmark("Imdb", "https://www.imdb.com", "com.imdb.mobile", R.drawable.icon_imdb),
             Bookmark("Facebook", "https://www.facebook.com/", "com.facebook.katana", R.drawable.icon_facebook),
             Bookmark("Instagram", "https://www.instagram.com/", "com.instagram.android", R.drawable.icon_instagram),
-            Bookmark("TikTok", "https://www.tiktok.com", "com.zhiliaoapp.musically", R.drawable.icon_tiktok),
             Bookmark("WhatsApp", "https://www.whatsapp.com", "com.whatsapp", R.drawable.icon_whatsapp),
+            Bookmark("TikTok", "https://www.tiktok.com", "com.zhiliaoapp.musically", R.drawable.icon_tiktok),
             Bookmark("Twitter (X)", "https://x.com",  "com.twitter.android", R.drawable.icon_twitter),
             Bookmark("Dailymotion", "https://www.dailymotion.com",  "com.dailymotion.dailymotion",  R.drawable.icon_dailymotion),
+            Bookmark("Imdb", "https://www.imdb.com", "com.imdb.mobile", R.drawable.icon_imdb),
             Bookmark("Pinterest", "https://www.pinterest.com", "com.pinterest", R.drawable.icon_pinterest)
         )
     }

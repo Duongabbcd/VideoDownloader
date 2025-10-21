@@ -324,7 +324,7 @@ class DownloadAudioFragment(
                 }
 
                 formatCard.setOnLongClickListener {
-                    UiUtil.showFormatDetails(downloadItem.format, requireActivity())
+                    UiUtil.showFormatDetails(downloadItem.format, requireActivity(), false)
                     true
                 }
 

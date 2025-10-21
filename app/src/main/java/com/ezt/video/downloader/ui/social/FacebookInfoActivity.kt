@@ -82,7 +82,7 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                 val clipboard = this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
 
-               startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
+               finish()
             }
         }
     }

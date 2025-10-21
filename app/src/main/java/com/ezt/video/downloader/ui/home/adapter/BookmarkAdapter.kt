@@ -12,6 +12,7 @@ import com.ezt.video.downloader.R
 import com.ezt.video.downloader.databinding.BookmarkViewBinding
 import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.home.Bookmark
+import com.ezt.video.downloader.ui.social.FacebookInfoActivity
 import com.ezt.video.downloader.ui.whatsapp.WhatsAppActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -62,19 +63,21 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
         private fun openBookmark(bookmark: Bookmark) {
             val packageName = bookmark.packageName
 
-            if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
-                // Open the installed app
-                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
-                if (launchIntent != null) {
-                    context.startActivity(launchIntent)
-                } else {
-                    // fallback in rare cases
-                    openInBrowseActivity(bookmark.url)
-                }
-            } else {
-                // fallback to BrowseActivity
-                openInBrowseActivity(bookmark.url)
-            }
+//            if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
+//                // Open the installed app
+//                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+//                if (launchIntent != null) {
+//                    context.startActivity(launchIntent)
+//                } else {
+//                    // fallback in rare cases
+//                    openInBrowseActivity(bookmark.url)
+//                }
+//            } else {
+//                openInBrowseActivity(bookmark.url)
+//            }
+
+            // fallback to BrowseActivity
+            openInBrowseActivity(bookmark.url)
         }
 
 
@@ -88,15 +91,30 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
         }
 
         private fun openInBrowseActivity(url: String) {
-            context.startActivity(Intent(context, BrowseActivity::class.java).apply {
-                putExtra("receivedURL", url)
-            })
+            when {
+                url.contains("facebook", true) ->    context.startActivity(Intent(context,
+                    FacebookInfoActivity::class.java).apply {
+                    putExtra("facebookURL", url)
+                })
+
+                url.contains("instagram", true) ->    context.startActivity(Intent(context,
+                    FacebookInfoActivity::class.java).apply {
+                    putExtra("facebookURL", url)
+                })
+
+                url.contains("whatsapp", true) ->    context.startActivity(Intent(context,
+                    WhatsAppActivity::class.java))
+
+                else -> {
+                    context.startActivity(Intent(context, BrowseActivity::class.java).apply {
+                        putExtra("receivedURL", url)
+                    })
+                }
+            }
+
         }
 
     }
-
-
-
 
 
     override fun onCreateViewHolder(

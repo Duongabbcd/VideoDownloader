@@ -561,6 +561,11 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        exitProcess(0)
+    }
+
     companion object {
         private const val TAG = "MainActivity"
         var isChangeTheme = false

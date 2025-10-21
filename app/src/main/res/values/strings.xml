@@ -540,4 +540,7 @@
     <string name="done">Done</string>
     <string name="retry">Retry</string>
     <string name="send">Send</string>
+    <string name="all_tabs">All Tabs</string>
+    <string name="blank_page">Blank page</string>
+    <string name="home_page">Home page</string>
 </resources>

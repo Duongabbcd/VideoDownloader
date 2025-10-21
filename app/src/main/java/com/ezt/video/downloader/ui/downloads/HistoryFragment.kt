@@ -507,39 +507,39 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                 historyViewModel.getByID(itemID)
             }
 
-            val ctx =context ?: return@launch
-              if (item.downloadPath.size == 1) {
-                  ctx.startActivity(Intent(ctx, PlayerActivity::class.java).apply {
-                    putExtra("playerURL", item.downloadPath.first())
-                    putExtra("playerName", item.title)
-                })
-            }else{
-                openMultipleFilesIntent(requireActivity(), item.downloadPath)
-            }
+//            val ctx =context ?: return@launch
+//              if (item.downloadPath.size == 1) {
+//                  ctx.startActivity(Intent(ctx, PlayerActivity::class.java).apply {
+//                    putExtra("playerURL", item.downloadPath.first())
+//                    putExtra("playerName", item.title)
+//                })
+//            }else{
+//                openMultipleFilesIntent(requireActivity(), item.downloadPath)
+//            }
 
-//            UiUtil.showHistoryItemDetailsCard(item, requireActivity(), filePresent, sharedPreferences,
-//                removeItem = { it, deleteFile ->
-//                    historyViewModel.delete(it, deleteFile)
-//                },
-//                redownloadItem = {
-//                    val downloadItem = downloadViewModel.createDownloadItemFromHistory(it)
-//                    runBlocking{
-//                        if (!filePresent) {
-//                            historyViewModel.delete(it, false)
-//                        }
-//                        downloadViewModel.queueDownloads(listOf(downloadItem), ignoreDuplicates = true)
-//                    }
-//                    historyViewModel.delete(it, false)
-//                },
-//                redownloadShowDownloadCard = {
-//                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-//                        Pair("result", downloadViewModel.createResultItemFromHistory(it)),
-//                        Pair("type", it.type),
-//                        Pair("ignore_duplicates", true),
-//                    )
-//                    )
-//                }
-//            )
+            UiUtil.showHistoryItemDetailsCard(item, requireActivity(), filePresent, sharedPreferences,
+                removeItem = { it, deleteFile ->
+                    historyViewModel.delete(it, deleteFile)
+                },
+                redownloadItem = {
+                    val downloadItem = downloadViewModel.createDownloadItemFromHistory(it)
+                    runBlocking{
+                        if (!filePresent) {
+                            historyViewModel.delete(it, false)
+                        }
+                        downloadViewModel.queueDownloads(listOf(downloadItem), ignoreDuplicates = true)
+                    }
+                    historyViewModel.delete(it, false)
+                },
+                redownloadShowDownloadCard = {
+                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                        Pair("result", downloadViewModel.createResultItemFromHistory(it)),
+                        Pair("type", it.type),
+                        Pair("ignore_duplicates", true),
+                    )
+                    )
+                }
+            )
         }
     }
 

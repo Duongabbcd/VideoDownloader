@@ -61,6 +61,8 @@ import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.more.WebViewActivity
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
 import com.ezt.video.downloader.ui.social.FacebookInfoActivity
+import com.ezt.video.downloader.ui.tab.TabActivity
+import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
@@ -105,6 +107,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var historyViewModel : HistoryViewModel
+    private lateinit var tabViewModel: TabViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -145,6 +148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
+        tabViewModel = ViewModelProvider(this)[TabViewModel::class.java]
 
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
@@ -191,6 +195,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         searchSuggestionsRecyclerView?.itemAnimator = null
 
         val progressBar = view.findViewById<View>(R.id.progress)
+
+        tabViewModel.tabs.observe(viewLifecycleOwner) {
+            binding.tab.text = it.size.toString()
+        }
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         resultViewModel.getFilteredList().observe(requireActivity()) { items ->
@@ -252,6 +260,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 resultViewModel.parseQueries(inputQueries!!){}
                 inputQueries = null
             }
+        }
+        binding.tab.setOnClickListener {
+            val ctx = context ?: return@setOnClickListener
+            startActivity(Intent(ctx, TabActivity::class.java))
         }
 
         binding.searchView.addTransitionListener { _, _, newState ->
@@ -367,6 +379,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun onResume() {
         super.onResume()
+        tabViewModel.displayAllCurrentTabs()
+
         if(arguments?.getString("url") == null){
             if (!resultViewModel.uiState.value.processing){
 //                resultViewModel.checkTrending()

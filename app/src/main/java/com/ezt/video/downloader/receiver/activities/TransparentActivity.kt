@@ -18,6 +18,7 @@ import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.util.ThemeUtil
 import com.ezt.video.downloader.util.UiUtil
 
+//no use
 class TransparentActivity : BaseActivity2<ActivityShareBinding>(ActivityShareBinding::inflate) {
 
     lateinit var context: Context

@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
-
+//No use
 class ShareActivity : BaseActivity2<ActivityShareBinding>(ActivityShareBinding::inflate) {
 
     lateinit var context: Context

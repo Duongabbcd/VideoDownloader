@@ -36,6 +36,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+//No use
 class WebViewActivity : BaseActivity2<WebviewActivityBinding>(WebviewActivityBinding::inflate) {
     private lateinit var cookiesViewModel: CookieViewModel
     private var webView: WebView? = null

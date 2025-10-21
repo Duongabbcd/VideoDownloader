@@ -35,6 +35,8 @@ import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.ActivityBrowseBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
+import com.ezt.video.downloader.ui.tab.TabActivity
+import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +102,15 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
             homePage.setOnClickListener {
                 finish()
             }
-            topSearchBar.setText(urlNew)
+            topSearchBar.setText(urlNew).also {
+                val position = TabActivity.currentTabPosition
+                println("currentTabPosition 1: $position")
+                if(position >= 0) {
+                    val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
+                    allTabs[position] = urlNew
+                    TabViewModel.addNewTab(this@BrowseActivity, allTabs)
+                }
+            }
             setupWebView()
             val result = formatUrl(urlNew)
             println("BrowseActivity: $result")
@@ -121,7 +131,18 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                     val query = binding.topSearchBar.text.toString().trim()
 
                     if (query.isNotEmpty()) {
-                        webView.loadUrl(result)
+                        webView.loadUrl(result).also {
+                            if(TabActivity.currentTabPosition >= 0) {
+                                val position = TabActivity.currentTabPosition
+                                println("currentTabPosition 2: $position")
+                                if(position >= 0) {
+                                    val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
+                                    allTabs[position] = urlNew
+                                    TabViewModel.addNewTab(this@BrowseActivity, allTabs)
+                                }
+
+                            }
+                        }
                     }
 
                     true // consume the action

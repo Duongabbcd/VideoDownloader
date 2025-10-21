@@ -64,6 +64,9 @@
         <activity android:name=".ui.whatsapp.WhatsAppActivity"
             android:exported="true"/>
 
+        <activity android:name=".ui.tab.TabActivity"
+            android:exported="true"/>
+
         <activity
             android:name=".ui.home.MainActivity"
             android:configChanges="locale"
@@ -77,6 +80,19 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.more.settings.SettingsActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
+            android:exported="true"
+            android:parentActivityName=".ui.home.MainActivity">
+            <intent-filter>
+                <action android:name="ytdlnis.settings.SettingsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+     <!--        No use-->
         <activity
             android:name=".receiver.activities.ShareActivity"
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
@@ -85,11 +101,11 @@
             android:taskAffinity=""
             android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.SEND" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <data android:mimeType="text/plain" />-->
-<!--            </intent-filter>-->
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.SEND" />-->
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <data android:mimeType="text/plain" />-->
+            <!--            </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -354,16 +370,6 @@
         </activity>
 
         <activity
-            android:name=".ui.more.settings.SettingsActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".ui.home.MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.settings.SettingsActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.more.terminal.TerminalActivity"
             android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
             android:exported="true"
@@ -374,6 +380,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".receiver.activities.ResumeActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.BottomSheet">
+            <intent-filter>
+                <action android:name="ytdlnis.ResumeActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    <!--        No use-->
 
         <activity-alias
             android:name=".terminalShareAlias"
@@ -490,19 +510,6 @@
         <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />
         <receiver android:name=".receiver.CancelScheduleAlarmReceiver" />
         <receiver android:name=".receiver.ScheduleAlarmReceiver" />
-
-        <activity
-            android:name=".receiver.activities.ResumeActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.BottomSheet">
-            <intent-filter>
-                <action android:name="ytdlnis.ResumeActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

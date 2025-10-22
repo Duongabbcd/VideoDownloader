@@ -1094,7 +1094,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             Bookmark("TikTok", "https://www.tiktok.com", "com.zhiliaoapp.musically", R.drawable.icon_tiktok),
             Bookmark("Twitter (X)", "https://x.com",  "com.twitter.android", R.drawable.icon_twitter),
             Bookmark("Dailymotion", "https://www.dailymotion.com",  "com.dailymotion.dailymotion",  R.drawable.icon_dailymotion),
-            Bookmark("Vimeo", "https://www.pinterest.com", "com.vimeo.android.videoapp", R.drawable.icon_vimeo),
+            Bookmark("Vimeo", "https://vimeo.com", "com.vimeo.android.videoapp", R.drawable.icon_vimeo),
             Bookmark("Tubidy", "https://tubidy.cv", "com.tubidy", R.drawable.icon_tubidy),
             Bookmark("Pinterest", "https://www.pinterest.com", "com.pinterest", R.drawable.icon_pinterest),
             Bookmark("ImDb", "https://www.imdb.com", "com.imdb.mobile", R.drawable.icon_imdb),

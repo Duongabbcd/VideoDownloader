@@ -141,7 +141,7 @@
     <string name="error_updating_formats">Error updating formats!</string>
     <string name="log_downloads">Log downloads</string>
     <string name="log_downloads_summary">Create a log file for each download</string>
-    <string name="download_queue">Download queue</string>
+    <string name="download_queue">Download Queue</string>
     <string name="running">Running</string>
     <string name="command">Command</string>
     <string name="import_from_clipboard">Import from clipboard</string>
@@ -540,7 +540,18 @@
     <string name="done">Done</string>
     <string name="retry">Retry</string>
     <string name="send">Send</string>
+
     <string name="all_tabs">All Tabs</string>
     <string name="blank_page">Blank page</string>
     <string name="home_page">Home page</string>
+
+    <string name="images_status">Images</string>
+    <string name="videos_status">Videos</string>
+    <string name="saved_status">Saved</string>
+
+    //WhatsApp
+    <string name="empty_description">Open WhatsApp, check out some of your friends\' updates, then come back! 🎈</string>
+    <string name="empty_description_bonus">Maybe you skip grant permission before, please go to Setting -> Search -> typing Special app access -> Notification access -> Choose your app</string>
+    <string name="empty_notification">No new statuses yet.</string>
+    <string name="open_whatsapp">Open Whatsapp</string>
 </resources>

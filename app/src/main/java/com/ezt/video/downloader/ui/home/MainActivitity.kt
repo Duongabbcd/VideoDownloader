@@ -11,16 +11,13 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
@@ -44,7 +41,6 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
 import com.ezt.video.downloader.databinding.ActivityMainBinding
-import com.ezt.video.downloader.ui.BaseActivity
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.downloads.DownloadQueueMainFragment
 import com.ezt.video.downloader.ui.downloads.HistoryFragment
@@ -98,7 +94,10 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addingNoMediaFiles()
+        val videoDownloaderPath: String = FileUtil.getDefaultVideoPath()
+        val savedStatusPath: String = FileUtil.getDefaultStatusPath()
+        addingNoMediaFiles(videoDownloaderPath)
+        addingNoMediaFiles(savedStatusPath)
         handleIncomingIntent(intent)
 
         if(Common.getCountOpenApp(this@MainActivity) == 0) {
@@ -308,8 +307,8 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
         }
     }
 
-    private fun addingNoMediaFiles() {
-        val videoDownloaderPath: String = FileUtil.getDefaultVideoPath()
+    private fun addingNoMediaFiles(videoDownloaderPath: String) {
+
         val folder = File(videoDownloaderPath)
 
         if (!folder.exists()) {
@@ -570,5 +569,6 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
         private const val TAG = "MainActivity"
         var isChangeTheme = false
         var isSharedURL = false
+        var currentTabPosition = -1
     }
 }

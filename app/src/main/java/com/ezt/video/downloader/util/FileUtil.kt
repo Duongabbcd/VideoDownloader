@@ -403,6 +403,10 @@ object FileUtil {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "VideoDownloader/Video"
     }
 
+    fun getDefaultStatusPath() : String{
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "VideoDownloader/Status"
+    }
+
     fun getDefaultCommandPath() : String {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "VideoDownloader/Command"
     }

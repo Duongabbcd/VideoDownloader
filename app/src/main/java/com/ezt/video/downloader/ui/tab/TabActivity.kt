@@ -1,10 +1,13 @@
 package com.ezt.video.downloader.ui.tab
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.ActivityTabBinding
 import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.browse.BrowseActivity
+import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.home.MainActivity.Companion.currentTabPosition
 import com.ezt.video.downloader.ui.tab.adapter.OnEditTabListener
 import com.ezt.video.downloader.ui.tab.adapter.TabAdapter
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
@@ -12,7 +15,8 @@ import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import org.schabi.newpipe.extractor.timeago.patterns.th
 
-class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflate), OnEditTabListener {
+class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflate),
+    OnEditTabListener {
     private lateinit var tabAdapter: TabAdapter
     private lateinit var tabViewModel: TabViewModel
 
@@ -27,7 +31,7 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
             allTabs.adapter = tabAdapter
             tabViewModel.tabs.observe(this@TabActivity) { list ->
                 println("onCreate: $list")
-                if(list.isEmpty()) {
+                if (list.isEmpty()) {
                     noResults.root.visible()
                     allTabs.gone()
                 } else {
@@ -55,6 +59,19 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
         tabViewModel.displayAllCurrentTabs()
     }
 
+    override fun onClickListener(tab: String) {
+        if (tab.contains("Home", true)) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            val intent = Intent(this, BrowseActivity::class.java)
+            intent.putExtra("receivedURL", tab)
+            startActivity(intent)
+            finish()
+        }
+    }
+
     override fun onDeleteTabListener(position: Int) {
         val allTabs = TabViewModel.getAllTabs(this@TabActivity).toMutableList()
         allTabs.removeAt(position)
@@ -68,10 +85,6 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
 
     override fun onDestroy() {
         super.onDestroy()
-    }
-
-    companion object {
-        var currentTabPosition = -1
     }
 
 }

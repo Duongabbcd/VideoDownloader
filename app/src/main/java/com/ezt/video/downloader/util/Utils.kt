@@ -295,6 +295,46 @@ object Utils {
         return formatted
     }
 
+    @SuppressLint("DefaultLocale")
+    fun formatDurationTime(ms: Long): String {
+        val minutes = (ms / 1000) / 60
+        val seconds = (ms / 1000) % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    fun getRelativeTime(lastModified: Long): String {
+        val now = System.currentTimeMillis()
+        val diff = now - lastModified
+        println("getRelativeTime: $now $lastModified and $diff")
+        val seconds = abs(diff / 1000)
+        val minutes =  abs(seconds / 60)
+        val hours = abs(minutes / 60)
+        val days = abs(hours / 24)
+
+        return when {
+            seconds < 60 -> "just now"
+            minutes < 60 -> "${minutes}m ago"
+            hours < 24 -> "${hours}h ago"
+            days < 7 -> "${days}d ago"
+            else -> {
+                val date = java.text.SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)
+                date.format(java.util.Date(lastModified))
+            }
+        }
+    }
+
+    fun getMediaDuration(context: Context, uri: Uri): Long {
+        val retriever = MediaMetadataRetriever()
+        return try {
+            retriever.setDataSource(context, uri)
+            val durationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            durationStr?.toLong() ?: 0L
+        } catch (e: Exception) {
+            0L
+        } finally {
+            retriever.release()
+        }
+    }
 }
 
 data class DownloadResult(

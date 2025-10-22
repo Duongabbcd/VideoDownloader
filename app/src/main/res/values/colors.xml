@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="black_0_6">#99000000</color>
     <color name="grey">#323232</color>
     <color name="light_grey">#A6A6A6</color>
     <color name="light_grey_0_3">#4DA6A6A6</color>
@@ -427,6 +428,14 @@
     <color name="float_transparent">#00000000</color>
     <color name="customText">#2C2C2C</color>
     <color name="un_select">#EFEFEF</color>
+    <color name="no_result">#989FB0</color>
+    <color name="tab_select">#15AD72</color>
+    <color name="text_display">@color/black</color>
+    <color name="text_color">#101010</color>
+    <color name="ad_btn">#00C377</color>
+
+    //WhatsApp
+    <color name="select_background">#B7CBC0</color>
 
     <integer-array name="myColors">
         <item>@color/cool_green</item>

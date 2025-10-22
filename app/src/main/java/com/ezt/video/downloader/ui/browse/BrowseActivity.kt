@@ -34,6 +34,7 @@ import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.ActivityBrowseBinding
 import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.tab.TabActivity
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
@@ -103,7 +104,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                 finish()
             }
             topSearchBar.setText(urlNew).also {
-                val position = TabActivity.currentTabPosition
+                val position = MainActivity.currentTabPosition
                 println("currentTabPosition 1: $position")
                 if(position >= 0) {
                     val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
@@ -132,8 +133,8 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
 
                     if (query.isNotEmpty()) {
                         webView.loadUrl(result).also {
-                            if(TabActivity.currentTabPosition >= 0) {
-                                val position = TabActivity.currentTabPosition
+                            if(MainActivity.currentTabPosition >= 0) {
+                                val position = MainActivity.currentTabPosition
                                 println("currentTabPosition 2: $position")
                                 if(position >= 0) {
                                     val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()

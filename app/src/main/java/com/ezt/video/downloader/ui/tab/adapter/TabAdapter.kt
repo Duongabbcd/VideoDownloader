@@ -54,16 +54,14 @@ class TabAdapter(private val onEditTabListener: OnEditTabListener) : RecyclerVie
                 if(tab.contains("Home", true)) {
                     root.setOnClickListener {
                         onEditTabListener.onEditTabListener(position)
-                       val intent = Intent(context, MainActivity::class.java)
-                        context.startActivity(intent)
+                        onEditTabListener.onClickListener(tab)
                     }
                     tabWeb.text = "(${context.resources.getString(R.string.blank_page)})"
                 } else {
                     root.setOnClickListener {
                         onEditTabListener.onEditTabListener(position)
-                        val intent = Intent(context, BrowseActivity::class.java)
-                        intent.putExtra("receivedURL", tab)
-                        context.startActivity(intent)
+                        onEditTabListener.onClickListener(tab)
+
                     }
                     if(tab.endsWith(".com", true)) {
                         tabWeb.text = context.resources.getString(R.string.blank_page)
@@ -78,6 +76,7 @@ class TabAdapter(private val onEditTabListener: OnEditTabListener) : RecyclerVie
 }
 
 interface OnEditTabListener {
+    fun onClickListener(tab: String)
     fun onDeleteTabListener(position: Int)
     fun onEditTabListener(position: Int)
 }

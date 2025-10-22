@@ -15,8 +15,8 @@
         tools:ignore="MissingConstraints">
 
         <ImageView
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerInside"
             android:background="@drawable/ic_no_results" />
@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_results"
             android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/CustomTextStyleMedium18sp" />
 
     </LinearLayout>
 

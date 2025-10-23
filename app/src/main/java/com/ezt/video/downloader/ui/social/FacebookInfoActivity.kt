@@ -3,9 +3,11 @@ package com.ezt.video.downloader.ui.social
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -15,10 +17,13 @@ import com.bumptech.glide.Glide
 import com.ezt.video.downloader.databinding.ActivityFacebookInfoBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.R
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
@@ -72,21 +77,32 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
 
             isFacebook = facebookURL.contains("facebook", true)
             val appImage = if(isFacebook) R.drawable.icon_facebook else R.drawable.icon_instagram
+            val appName = if(isFacebook) "Facebook" else "Instagram"
+            currentAppName.text = appName
             Glide.with(this@FacebookInfoActivity).load(appImage).into(appIcon)
-
-            searchBar.setText(facebookURL)
-            queryList.add(facebookURL)
-            startSearchFacebookURL()
-
             backIcon.setOnClickListener {
+                isDisabled = false
                 val clipboard = this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
 
                finish()
             }
+
+            if(facebookURL.contains("www.facebook.com", true) || facebookURL.contains("www.instagram.com", true)) {
+                println("facebookURL: $facebookURL")
+            } else {
+                searchBar.setText(facebookURL)
+                queryList.add(facebookURL)
+
+                if(!isDisabled) {
+                    startSearchFacebookURL()
+                }
+
+            }
+
+
         }
     }
-
 
     private fun startSearchFacebookURL() {
         binding.loading.visible()
@@ -143,6 +159,37 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(
+            TAG,
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+        )
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+            binding.frBanner.root.gone()
+        } else {
+            loadBanner(this, BANNER_HOME)
+        }
+        binding.apply {
+            pasteBtn.setOnClickListener {
+                val clipboard: ClipboardManager =
+                    application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+
+                var clip = clipboard.primaryClip!!.getItemAt(0).text
+                searchBar.setText(clip)
+            }
+
+            downloadBtn.setOnClickListener {
+                val clipboard: ClipboardManager =
+                    application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+
+                var clip = clipboard.primaryClip!!.getItemAt(0).text
+                queryList.add(clip.toString())
+                startSearchFacebookURL()
+            }
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
@@ -163,7 +210,7 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
     }
 
     companion object {
-        var facebookURL = ""
-
+        var isDisabled = false
+        private val TAG = FacebookInfoActivity::class.java.simpleName
     }
 }

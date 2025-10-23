@@ -166,6 +166,7 @@
             <!-- Add an ImageView here -->
             <ImageView
                 android:id="@+id/setting_icon"
+                android:visibility="gone"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="end"

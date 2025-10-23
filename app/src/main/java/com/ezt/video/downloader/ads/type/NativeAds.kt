@@ -38,6 +38,7 @@ object NativeAds {
     const val NATIVE_LANGUAGE_2 = ADMOB_AD_UNIT_ID_TEST
 
     const val NATIVE_INTRO_1 = ADMOB_AD_UNIT_ID_TEST
+    const val NATIVE_INTRO_2 = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_INTRO_3 = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_PERMISSION = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_FAVOURITE = ADMOB_AD_UNIT_ID_TEST
@@ -46,6 +47,7 @@ object NativeAds {
     const val ALIAS_NATIVE_LANGUAGE_2 = "ads_native_language_2"
 
     const val ALIAS_NATIVE_INTRO_1 = "ads_native_intro_1"
+    const val ALIAS_NATIVE_INTRO_2 = "ads_native_intro_2"
     const val ALIAS_NATIVE_INTRO_3 = "ads_native_intro_3"
     const val ALIAS_NATIVE_PERMISSION = "ads_native_permission"
     const val ALIAS_NATIVE_FAVOURITE = "ads_native_favourite"

@@ -17,7 +17,9 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
@@ -34,6 +36,9 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.ezt.video.downloader.R
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.ads.type.BannerAds
+import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.viewmodel.CookieViewModel
@@ -46,6 +51,7 @@ import com.ezt.video.downloader.ui.downloads.DownloadQueueMainFragment
 import com.ezt.video.downloader.ui.downloads.HistoryFragment
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
 import com.ezt.video.downloader.util.Common
+import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.CrashListener
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.NavbarUtil
@@ -54,6 +60,7 @@ import com.ezt.video.downloader.util.ThemeUtil
 import com.ezt.video.downloader.util.UiUtil
 import com.ezt.video.downloader.util.UpdateUtil
 import com.ezt.video.downloader.work.CryptoConstants
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
@@ -94,10 +101,9 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val videoDownloaderPath: String = FileUtil.getDefaultVideoPath()
-        val savedStatusPath: String = FileUtil.getDefaultStatusPath()
+        val videoDownloaderPath: String = FileUtil.getDefaultApplicationPath()
         addingNoMediaFiles(videoDownloaderPath)
-        addingNoMediaFiles(savedStatusPath)
+
         handleIncomingIntent(intent)
 
         if(Common.getCountOpenApp(this@MainActivity) == 0) {
@@ -432,6 +438,15 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onResume() {
         super.onResume()
+        Log.d(
+           TAG,
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+        )
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+            binding.frBanner.root.gone()
+        } else {
+            loadBanner(this, BANNER_HOME)
+        }
         //incognito header
         val incognitoHeader = findViewById<TextView>(R.id.incognito_header)
         if (preferences.getBoolean("incognito", false)){
@@ -566,9 +581,38 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
     }
 
     companion object {
-        private const val TAG = "MainActivity"
+        private val TAG = MainActivity::class.java.simpleName
         var isChangeTheme = false
         var isSharedURL = false
         var currentTabPosition = -1
+
+        fun loadBanner(activity: AppCompatActivity, banner: String = BannerAds.BANNER_HOME) {
+            println("RemoteConfig.BANNER_COLLAP_ALL_070625: ${RemoteConfig.BANNER_ALL_2}")
+            if (RemoteConfig.BANNER_ALL_2 != "0") {
+                BannerAds.initBannerAds(activity, banner) { isDisplayed ->
+                    if (isDisplayed) {
+                        val root = activity.findViewById<FrameLayout>(R.id.frBanner)
+                        root.isVisible = true
+                        activity.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout).gone()
+                    } else {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            BannerAds.initBannerAds(activity, banner) {isDisplayed ->
+                                if (isDisplayed) {
+                                    val root = activity.findViewById<FrameLayout>(R.id.frBanner)
+                                    root.isVisible = true
+                                    activity.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout).gone()
+                                } else  {
+                                    Handler(Looper.getMainLooper()).postDelayed( {
+                                        activity.findViewById<FrameLayout>(R.id.frBanner).isVisible = false
+                                    }, 1000)
+                                }
+                            }
+                        }, 1000)
+                    }
+
+                }
+            }
+
+        }
     }
 }

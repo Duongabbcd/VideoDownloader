@@ -1,6 +1,7 @@
 package com.ezt.video.downloader.ui.whatsapp
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -9,32 +10,35 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ezt.video.downloader.R
-import com.ezt.video.downloader.database.viewmodel.ResultViewModel
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.database.models.expand.non_table.WhatsAppStatus
 import com.ezt.video.downloader.databinding.ActivityWhatsappBinding
 import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
+import com.ezt.video.downloader.ui.whatsapp.adapter.OnEditWhatsAppListener
 import com.ezt.video.downloader.ui.whatsapp.adapter.StatusAdapter
 import com.ezt.video.downloader.ui.whatsapp.viewmodel.WhatsAppViewModel
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
+import com.ezt.video.downloader.util.FileUtil
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
 
-class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsappBinding::inflate) {
+class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsappBinding::inflate), OnEditWhatsAppListener {
     private val REQUEST_CODE_OPEN_DIRECTORY = 1001
-    private val REQUEST_CODE_SAVED_STATUSES = 1002
     private val PREF_KEY_STATUSES_URI = "statuses_folder_uri"
-    private val PREF_KEY_SAVED_STATUSES_URI = "saved_statuses_folder_uri"
 
     private var currentTab = 0
 
     private lateinit var prefs : SharedPreferences
     private lateinit var statusAdapter: StatusAdapter
-//    private lateinit var statusAdapter1: StatusAdapter
-//    private lateinit var statusAdapter2: StatusAdapter
 
     private lateinit var whatsAppViewModel: WhatsAppViewModel
 
@@ -43,27 +47,12 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
         prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
         whatsAppViewModel = ViewModelProvider(this)[WhatsAppViewModel::class.java]
 
-        statusAdapter = StatusAdapter { status ->
-            println("StatusAdapter: $status")
-        }
+        statusAdapter = StatusAdapter(this)
 
-//        statusAdapter1 = StatusAdapter { status ->
-//            println("StatusAdapter: $status")
-//        }
-//        statusAdapter2 = StatusAdapter { status ->
-//            println("StatusAdapter: $status")
-//        }
-
+        displayByCondition(0)
         binding.apply {
             allStatuses.adapter =statusAdapter
             allStatuses.layoutManager = GridLayoutManager(this@WhatsAppActivity, 2)
-
-//            allStatuses1.adapter =statusAdapter1
-//            allStatuses1.layoutManager = GridLayoutManager(this@WhatsAppActivity, 2)
-//
-//            allStatuses2.adapter =statusAdapter2
-//            allStatuses2.layoutManager = GridLayoutManager(this@WhatsAppActivity, 2)
-
 
             openWhatsAppBtn.setOnClickListener {
                 openWhatsApp(this@WhatsAppActivity)
@@ -91,6 +80,7 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
                 }
                 if(input.isEmpty()) {
                     emptyLayout.visible()
+                    noResultLayout.root.gone()
                     allStatuses.gone()
                 } else {
                     emptyLayout.gone()
@@ -107,6 +97,7 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
                 }
                 if(input.isEmpty()) {
                     emptyLayout.visible()
+                    noResultLayout.root.gone()
                     allStatuses.gone()
                 } else {
                     emptyLayout.gone()
@@ -117,16 +108,18 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
             }
 
             whatsAppViewModel.savedWhatsAppStatus.observe(this@WhatsAppActivity) { input ->
+                println("savedWhatsAppStatus: $input")
                 if(currentTab != 2) {
                     return@observe
                 }
                 if(input.isEmpty()) {
-                    emptyLayout.visible()
+                    noResultLayout.root.visible()
+                    emptyLayout.gone()
                     allStatuses.gone()
                 } else {
                     emptyLayout.gone()
                     allStatuses.visible()
-                    statusAdapter.submitList(input)
+                    statusAdapter.submitList(input, true)
                 }
             }
         }
@@ -147,7 +140,7 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
 
             2 -> {
                 updateTextColor(binding.savedStatus, listOf(binding.imageStatus, binding.videoStatus))
-                whatsAppViewModel.getSavedStatus(this@WhatsAppActivity, getLocalStatusUri())
+                whatsAppViewModel.getSavedStatus()
             }
             else -> {
                 updateTextColor(binding.imageStatus, listOf(binding.videoStatus, binding.savedStatus))
@@ -182,29 +175,11 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
                     println("Picked WhatsApp statuses folder: $uri")
                     saveUri(uri) // Save to PREF_KEY_STATUSES_URI
                 }
-
-                REQUEST_CODE_SAVED_STATUSES -> {
-                    println("Picked Saved statuses folder: $uri")
-                    saveSavedStatusesUri(uri) // Save to PREF_KEY_SAVED_STATUSES_URI
-                }
             }
         }
     }
 
-    fun saveSavedStatusesUri(uri: Uri) {
-        contentResolver.takePersistableUriPermission(
-            uri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
-        prefs.edit().putString(PREF_KEY_SAVED_STATUSES_URI, uri.toString()).apply()
-    }
 
-    fun hasSavedStatusesAccess(): Boolean {
-        val uri = getLocalStatusUri() ?: return false
-        return contentResolver.persistedUriPermissions.any {
-            it.uri == uri && it.isReadPermission
-        }
-    }
 
     private fun openStatusFolderPicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
@@ -226,25 +201,6 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
         startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY)
     }
 
-    private fun openSavedStatusFolderPicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
-            addFlags(
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
-                        Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or
-                        Intent.FLAG_GRANT_PREFIX_URI_PERMISSION
-            )
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val encodedPath = Uri.encode("Download/VideoDownloader/Status")
-            val initialUri = Uri.parse("content://com.android.externalstorage.documents/tree/primary:$encodedPath")
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, initialUri)
-        }
-
-        startActivityForResult(intent, REQUEST_CODE_SAVED_STATUSES)
-    }
-
 
     fun saveUri(uri: Uri) {
         contentResolver.takePersistableUriPermission(
@@ -257,8 +213,6 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
     fun getSavedUri(): Uri? =
         prefs.getString(PREF_KEY_STATUSES_URI, null)?.let { Uri.parse(it) }
 
-    fun getLocalStatusUri(): Uri? =
-        prefs.getString(PREF_KEY_SAVED_STATUSES_URI, null)?.let { Uri.parse(it) }
 
     fun hasAccess(): Boolean {
         val uri = getSavedUri() ?: return false
@@ -270,14 +224,51 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
     override fun onResume() {
         super.onResume()
         // Check for saved URI permission
+
+        Log.d(TAG,
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+        )
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+            binding.frBanner.root.gone()
+        } else {
+            loadBanner(this, BANNER_HOME)
+        }
+
         if (!hasAccess() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // If no access, prompt the user to pick the status folder
             openStatusFolderPicker()
         }
-        if (!hasSavedStatusesAccess() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            openSavedStatusFolderPicker()
+    }
+
+    override fun onDownloadListener(status: WhatsAppStatus) {
+       val path = Uri.parse(status.path)
+        FileUtil.copyStatusFile(this@WhatsAppActivity, path )
+        Toast.makeText(this@WhatsAppActivity, resources.getString(R.string.download_successfully), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDeleteListener(status: WhatsAppStatus) {
+        println("onDeleteListener: ${status.path}")
+        val file = File(status.path)
+        createDeleteFileDialog(file)
+    }
+
+    private fun createDeleteFileDialog(file: File) {
+        val dialog = MaterialAlertDialogBuilder(this)
+        dialog.setTitle(getString(R.string.delete_file_too))
+        dialog.setMessage(getString(R.string.delete_desc))
+        dialog.setOnCancelListener { }
+        dialog.setNegativeButton(getString(R.string.exit_dialog)) { dialog : DialogInterface?, _: Int ->  dialog?.dismiss()  }
+        dialog.setPositiveButton(getString(R.string.ok)) { dialog : DialogInterface?, _: Int ->
+            if (file.exists()) {
+                val deleted = file.delete()
+                Log.d("FileDelete", "Deleted: $deleted")
+                whatsAppViewModel.getSavedStatus()
+            } else {
+                Log.d("FileDelete", "File not found")
+            }
+            dialog?.dismiss()
         }
-        displayByCondition(0)
+        dialog.show()
     }
 
     companion object {

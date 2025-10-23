@@ -120,12 +120,30 @@
 
     </LinearLayout>
 
+    <include
+        android:id="@+id/noResultLayout"
+        android:visibility="gone"
+        layout="@layout/no_results" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allStatuses"
         app:layout_constraintTop_toBottomOf="@id/allMediaOptions"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toTopOf="@id/frBanner" />
+
+    <include
+        android:id="@+id/frBanner"
+        layout="@layout/ads_banner"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 <!--    <androidx.recyclerview.widget.RecyclerView-->

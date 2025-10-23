@@ -29,6 +29,7 @@ import dagger.hilt.components.SingletonComponent
 object BannerAds {
 
     private const val BANNER_TEST_ID = "ca-app-pub-3940256099942544/9214589741"
+     const val BANNER_HOME = "ca-app-pub-3940256099942544/9214589741"
 
     private val BANNER_ID_DEFAULT = BANNER_TEST_ID
     private const val BANNER_ID_COLLAPSIBLE = BANNER_TEST_ID

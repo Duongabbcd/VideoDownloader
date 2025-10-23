@@ -43,7 +43,20 @@
         app:itemBackground="@color/transparent"
         app:labelVisibilityMode="labeled"
         app:itemVerticalPadding="@dimen/_8sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:menu="@menu/bottom_nav_menu"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toTopOf="@id/frBanner" />
+
+    <include
+        android:id="@+id/frBanner"
+        layout="@layout/ads_banner"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

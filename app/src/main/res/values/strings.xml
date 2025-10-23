@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">VideoDownloader</string>
+    <string name="app_name" translatable="false">Short Video Downloader</string>
     <string name="imageView" translatable="false">Image View</string>
 
     <string name="contact_email" translatable="false"></string>
@@ -312,7 +312,7 @@
     <string name="cache_first_summary">Cache files download to internal storage, then move to your chosen directory. Use this when you can\'t write directly to storage</string>
     <string name="scheduling">Scheduling</string>
     <string name="use_scheduler">Download on schedule</string>
-    <string name="update_app_beta">Beta releases</string>
+    <string name="update_app_beta" translatable="false">Beta releases</string>
     <string name="update_app_beta_summary">Enroll in the beta program. It may contain bugs.</string>
     <string name="auto">Auto</string>
     <string name="preferred_video_codec">Preferred video codec</string>
@@ -321,11 +321,11 @@
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="remember_download_type">Remember download type</string>
     <string name="remember_download_type_summary">Select the last opened download type for the current item</string>
-    <string name="user_agent_header">User-Agent header</string>
+    <string name="user_agent_header" translatable="false">User-Agent header</string>
     <string name="length">Length</string>
     <string name="security">Security</string>
     <string name="license">License</string>
-    <string name="download_already_exists_summary">Do you still want to  download?</string>
+    <string name="download_already_exists_summary" translatable="false">Do you still want to  download?</string>
     <string name="schedule">Schedule</string>
     <string name="ignore">Ignore</string>
     <string name="modify_download_card">Modify download card</string>
@@ -366,7 +366,7 @@
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="retry_missing_downloads">Retry missing downloads</string>
-    <string name="retry_missing_downloads_desc">Re-download items not present in the download history</string>
+    <string name="retry_missing_downloads_desc" translatable="false">Re-download items not present in the download history</string>
     <string name="bitrate">Bitrate</string>
     <string name="save_auto_subs">Save automatic subtitles</string>
     <string name="not_deleted">Not deleted</string>
@@ -385,7 +385,7 @@
     <string name="all_queries_finished">All queries have been processed</string>
     <string name="select_between">Select items between</string>
     <string name="reset_processed_links">Reset already processed links</string>
-    <string name="reset_processed_links_desc">Re-download all items again</string>
+    <string name="reset_processed_links_desc" translatable="false">Re-download all items again</string>
     <string name="no_download_fragments">Don\'t download as fragments</string>
     <string name="no_download_fragments_summary">Don\'t use .part files and write directly into output file</string>
     <string name="my_filename_templates">My filename templates</string>
@@ -416,7 +416,7 @@
     <string name="label_visibility">Label visibility</string>
     <string name="always">Always</string>
     <string name="sync_with_source">Sync with source</string>
-    <string name="sync_with_source_desc">Delete downloaded items if they are missing in the source</string>
+    <string name="sync_with_source_desc" translatable="false">Delete downloaded items if they are missing in the source</string>
     <string name="queue">Queue</string>
     <string name="reset">Reset</string>
     <string name="restore_info">Press \'Restore\' to merge the saved data with your current data.\nPress \'Reset\' to erase and only use the saved data in the file.</string>
@@ -433,11 +433,11 @@
     <string name="continue_anyway">Continue anyway</string>
     <string name="playlist_as_album">Use playlist name as album metadata</string>
     <string name="playlist_as_album_summary">If album metadata is not present, use playlist name instead</string>
-    <string name="data_fetching_extractor_youtube">Data fetching extractor (YouTube)</string>
+    <string name="data_fetching_extractor_youtube" translatable="false">Data fetching extractor (YouTube)</string>
     <string name="pause_all">Pause all</string>
     <string name="resume_all">Resume all</string>
     <string name="package_name">Package name</string>
-    <string name="preferred_command_template">Preferred command template</string>
+    <string name="preferred_command_template" translatable="false">Preferred command template</string>
     <string name="status">Status</string>
     <string name="deleted">Deleted</string>
     <string name="websites">Websites</string>
@@ -446,69 +446,71 @@
     <string name="socket_timeout">Socket timeout</string>
     <string name="socket_timeout_description">Time to wait before giving up, in seconds</string>
     <string name="advanced">Advanced</string>
-    <string name="data_fetching_extra_command">Data fetching extra command</string>
+    <string name="data_fetching_extra_command" translatable="false">Data fetching extra command</string>
     <string name="thumbnail">Thumbnail</string>
-    <string name="data_fetching_extra_command_summary">Enable command templates to be used for data fetching as extra commands</string>
-    <string name="disable_write_info_json">Disable write info json</string>
-    <string name="disable_write_info_json_summary">Every time you restart / resume the download, yt-dlp will re-download json data from the servers (not recommended)</string>
+    <string name="data_fetching_extra_command_summary" translatable="false">Enable command templates to be used for data fetching as extra commands</string>
+    <string name="disable_write_info_json" translatable="false">Disable write info json</string>
+    <string name="disable_write_info_json_summary" translatable="false">Every time you restart / resume the download, yt-dlp will re-download json data from the servers (not recommended)</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube watch later (needs cookies)</string>
-    <string name="ytdlp_recommnedations">yt-dlp YouTube recommendations (needs cookies)</string>
-    <string name="ytdlp_liked">yt-dlp YouTube liked videos (needs cookies)</string>
-    <string name="ytdlp_watch_history">yt-dlp YouTube watch history (needs cookies)</string>
-    <string name="no_check_certificates">Suppress HTTPS certificate validation</string>
-    <string name="live_stream">Live stream</string>
-    <string name="live_from_start">Live from start</string>
-    <string name="wait_for_video">Wait for video</string>
-    <string name="retry_every">Retry every</string>
-    <string name="minutes">Minutes</string>
-    <string name="prefer_container_over_codec_audio">Prefer container over codec for audio downloads</string>
-    <string name="prefer_container_over_codec_audio_summary">With this enabled, the preferred audio codec preference will be ignored and only container will change</string>
-    <string name="player_client">Player client</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
-    <string name="use_app_language_for_metadata">Use app language for metadata</string>
-    <string name="layout">Layout</string>
-    <string name="list">List</string>
-    <string name="grid">Grid</string>
-    <string name="use_only_po_token">Use only PO token (ignore player client)</string>
-    <string name="cache_directory">Cache folder</string>
-    <string name="cache_directory_warning">Changing the cache folder might cause unexpected issues. If the app cannot write to the configured path, it will resort to the default internal cache directory</string>
-    <string name="app_icon_change">Icon could change and application will close</string>
-    <string name="use_format_sorting">Use format importance ordering</string>
-    <string name="use_code_highlighter">Use code color highlighter</string>
-    <string name="reset_preferences_in_screen">Reset all preferences in this screen</string>
-    <string name="automatic_backup">Automatic backup</string>
-    <string name="backup_path">Backup path</string>
-    <string name="automatic_backup_summary">Automatically make a backup of everything when a new version of the application is found</string>
-    <string name="write_subs_when_embed_subs">Write subtitles when embedding</string>
-    <string name="write_subs_when_embed_subs_summary">This will apply Save Subtitles and Save Automatic Subtitles to download the sub files and then delete them after embedding</string>
-    <string name="generate_potokens">Generate PO tokens</string>
-    <string name="regenerate">Re-generate</string>
-    <string name="generate_potokens_warning">By enabling this you need to disable cookies</string>
-    <string name="custom">Custom</string>
-    <string name="cut_unsupported">Cutting is not available for this item</string>
-    <string name="select_between_desc">Specify the range of items to select</string>
-    <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">Web Client PO Token</string>
-    <string name="reverse">Reverse</string>
-    <string name="no_keep_subs">Delete subtitle files after embedding</string>
-    <string name="no_keep_subs_summary">When using both Embed Subtitles and Write Subtitles, don\'t keep the subtitle files after embedding</string>
-    <string name="video_compatible">Compatible Video</string>
-    <string name="video_compatible_summary">Recodes the video making it compatible with other apps</string>
-    <string name="no_free_space_warning">There is no free space for this configuration.</string>
-    <string name="preferred_format_size">Preferred Format Size</string>
-    <string name="smallest">Smallest</string>
-    <string name="largest">Largest</string>
-    <string name="no_prefer_drc_audio">Don\'t prefer DRC Audio</string>
-    <string name="potoken_gvs">PO Token (GVS)</string>
-    <string name="potoken_player">PO Token (Player)</string>
-    <string name="potoken_subs">PO Token (Subs)</string>
-    <string name="visitor_data">Visitor Data</string>
-    <string name="get_data_sync_id">Visitor Data</string>
-    <string name="desktop">Desktop</string>
-    <string name="url_regex">URL Regex</string>
-    <string name="disable_flat_playlist">Disable flat playlist</string>
-    <string name="disable_flat_playlist_summary">Don\'t use --flat-playlist. Slower data fetching, but more data rich</string>
-    <string name="chapters">Chapters</string>
+    <string name="ytdlp_recommnedations" translatable="false">yt-dlp YouTube recommendations (needs cookies)</string>
+    <string name="ytdlp_liked" translatable="false">yt-dlp YouTube liked videos (needs cookies)</string>
+    <string name="ytdlp_watch_history" translatable="false">yt-dlp YouTube watch history (needs cookies)</string>
+    <string name="no_check_certificates" translatable="false">Suppress HTTPS certificate validation</string>
+    <string name="live_stream" translatable="false">Live stream</string>
+    <string name="live_from_start" translatable="false">Live from start</string>
+    <string name="wait_for_video" translatable="false">Wait for video</string>
+    <string name="retry_every" translatable="false">Retry every</string>
+    <string name="minutes" translatable="false">Minutes</string>
+    <string name="prefer_container_over_codec_audio" translatable="false">Prefer container over codec for audio downloads</string>
+    <string name="prefer_container_over_codec_audio_summary" translatable="false">With this enabled, the preferred audio codec preference will be ignored and only container will change</string>
+    <string name="player_client" translatable="false">Player client</string>
+    <string name="player_client_summary" translatable="false"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="use_app_language_for_metadata" translatable="false">Use app language for metadata</string>
+    <string name="layout" translatable="false">Layout</string>
+    <string name="list" translatable="false">List</string>
+    <string name="grid" translatable="false">Grid</string>
+    <string name="use_only_po_token" translatable="false">Use only PO token (ignore player client)</string>
+    <string name="cache_directory" translatable="false">Cache folder</string>
+    <string name="cache_directory_warning" translatable="false">Changing the cache folder might cause unexpected issues. If the app cannot write to the configured path, it will resort to the default internal cache directory</string>
+    <string name="app_icon_change" translatable="false">Icon could change and application will close</string>
+    <string name="use_format_sorting" translatable="false">Use format importance ordering</string>
+    <string name="use_code_highlighter" translatable="false">Use code color highlighter</string>
+    <string name="reset_preferences_in_screen" translatable="false">Reset all preferences in this screen</string>
+    <string name="automatic_backup" translatable="false">Automatic backup</string>
+    <string name="backup_path" translatable="false">Backup path</string>
+    <string name="automatic_backup_summary" translatable="false">Automatically make a backup of everything when a new version of the application is found</string>
+    <string name="write_subs_when_embed_subs" translatable="false">Write subtitles when embedding</string>
+    <string name="write_subs_when_embed_subs_summary" translatable="false">This will apply Save Subtitles and Save Automatic Subtitles to download the sub files and then delete them after embedding</string>
+    <string name="generate_potokens" translatable="false">Generate PO tokens</string>
+    <string name="regenerate" translatable="false">Re-generate</string>
+    <string name="generate_potokens_warning" translatable="false">By enabling this you need to disable cookies</string>
+    <string name="custom" translatable="false">Custom</string>
+    <string name="cut_unsupported" translatable="false">Cutting is not available for this item</string>
+    <string name="select_between_desc" translatable="false">Specify the range of items to select</string>
+    <string name="potoken" translatable="false">PO Token</string>
+    <string name="web_client_po_token" translatable="false">Web Client PO Token</string>
+    <string name="reverse" translatable="false">Reverse</string>
+    <string name="no_keep_subs" translatable="false">Delete subtitle files after embedding</string>
+    <string name="no_keep_subs_summary" translatable="false">When using both Embed Subtitles and Write Subtitles, don\'t keep the subtitle files after embedding</string>
+    <string name="video_compatible" translatable="false">Compatible Video</string>
+    <string name="video_compatible_summary" translatable="false">Recodes the video making it compatible with other apps</string>
+    <string name="no_free_space_warning" translatable="false">There is no free space for this configuration.</string>
+    <string name="preferred_format_size" translatable="false">Preferred Format Size</string>
+    <string name="smallest" translatable="false">Smallest</string>
+    <string name="largest" translatable="false">Largest</string>
+    <string name="no_prefer_drc_audio" translatable="false">Don\'t prefer DRC Audio</string>
+    <string name="potoken_gvs" translatable="false">PO Token (GVS)</string>
+    <string name="potoken_player" translatable="false">PO Token (Player)</string>
+    <string name="potoken_subs" translatable="false">PO Token (Subs)</string>
+    <string name="visitor_data" translatable="false">Visitor Data</string>
+    <string name="get_data_sync_id" translatable="false">Visitor Data</string>
+    <string name="desktop" translatable="false">Desktop</string>
+    <string name="url_regex" translatable="false">URL Regex</string>
+    <string name="disable_flat_playlist" translatable="false">Disable flat playlist</string>
+    <string name="disable_flat_playlist_summary" translatable="false">Don\'t use --flat-playlist. Slower data fetching, but more data rich</string>
+    <string name="chapters" translatable="false">Chapters</string>
+
+    //customize
     <string name="recently_search">Recently search</string>
 
     <string name="go_btn">Go Button</string>
@@ -537,6 +539,7 @@
     <string name="german">German</string>
     <string name="italian">Italian</string>
     <string name="korean">Korean</string>
+
     <string name="done">Done</string>
     <string name="retry">Retry</string>
     <string name="send">Send</string>
@@ -554,4 +557,17 @@
     <string name="empty_description_bonus">Maybe you skip grant permission before, please go to Setting -> Search -> typing Special app access -> Notification access -> Choose your app</string>
     <string name="empty_notification">No new statuses yet.</string>
     <string name="open_whatsapp">Open Whatsapp</string>
+    <string name="exit_dialog">Exit</string>
+    <string name="delete_desc">This file will be delete from this device, consider carefully before clicking the confirm button.</string>
+    <string name="download_successfully">Downloaded file successfully!</string>
+
+    <string name="intro_1">Download Any Video From Multiple Apps</string>
+    <string name="highlight_1">Multiple Apps</string>
+    <string name="intro_2">Quickly Download Videos From Your Browser</string>
+    <string name="highlight_2">Quickly Download Videos</string>
+    <string name="intro_3">Download Videos For Offline Viewing</string>
+    <string name="highlight_3">Download Videos</string>
+    <string name="intro_4">Disclaimer</string>
+    <string name="highlight_4">Disclaimer</string>
+
 </resources>

@@ -2,15 +2,20 @@ package com.ezt.video.downloader.ui.tab
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.databinding.ActivityTabBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.ui.home.MainActivity.Companion.currentTabPosition
+import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.tab.adapter.OnEditTabListener
 import com.ezt.video.downloader.ui.tab.adapter.TabAdapter
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
+import com.ezt.video.downloader.ui.whatsapp.WhatsAppActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import org.schabi.newpipe.extractor.timeago.patterns.th
@@ -56,6 +61,15 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
 
     override fun onResume() {
         super.onResume()
+        Log.d(
+            TAG, "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+        )
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+            binding.frBanner.root.gone()
+        } else {
+            loadBanner(this, BANNER_HOME)
+        }
+
         tabViewModel.displayAllCurrentTabs()
     }
 
@@ -85,6 +99,10 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    companion object {
+        private val TAG = TabActivity::class.java.simpleName
     }
 
 }

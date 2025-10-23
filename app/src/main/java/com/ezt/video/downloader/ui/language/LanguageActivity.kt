@@ -16,6 +16,7 @@ import com.ezt.video.downloader.ads.type.NativeAds
 import com.ezt.video.downloader.databinding.ActivityLanguageBinding
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.intro.IntroActivityNew
 import com.ezt.video.downloader.ui.language.adapter.Language
 import com.ezt.video.downloader.ui.language.adapter.LanguageAdapter
 import com.ezt.video.downloader.ui.more.settings.SettingsActivity
@@ -23,7 +24,6 @@ import com.ezt.video.downloader.util.Common
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguageBinding::inflate) {
@@ -141,9 +141,9 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
 //        analyticsLogger.updateUserProperties(this, LANGUAGE_SCREEN, -1)
 //        val duration = System.currentTimeMillis() - now
 //        analyticsLogger.logScreenGo("intro_screen", LANGUAGE_SCREEN, duration)
-//        val intent = Intent(this@LanguageActivity, IntroActivityNew::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-//        startActivity(intent)
+        val intent = Intent(this@LanguageActivity, IntroActivityNew::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
 

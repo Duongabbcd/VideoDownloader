@@ -19,6 +19,13 @@
         android:layout_width="@dimen/_32sdp"
         android:layout_height="@dimen/_32sdp" />
 
+    <ImageView
+        android:id="@+id/statusImage"
+        android:visibility="gone"
+        android:contentDescription="@string/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -173,6 +180,7 @@
                 android:progress="0"
                 android:minHeight="@dimen/_5sdp"
                 android:maxHeight="@dimen/_5sdp"
+                android:thumbTint="@color/progressBar"
                 app:layout_constraintBottom_toBottomOf="@+id/currentTime"
                 app:layout_constraintTop_toTopOf="@+id/currentTime"
                 app:layout_constraintStart_toEndOf="@id/currentTime"

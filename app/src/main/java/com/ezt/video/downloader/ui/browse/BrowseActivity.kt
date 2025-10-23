@@ -29,12 +29,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.ezt.video.downloader.R
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.ActivityBrowseBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.tab.TabActivity
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
@@ -384,6 +387,17 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
     @SuppressLint("SetJavaScriptEnabled")
     override fun onResume() {
         super.onResume()
+        Log.d(
+            TAG,
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+        )
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+            binding.frBanner.root.gone()
+        } else {
+            loadBanner(this, BANNER_HOME)
+        }
+
+
         if (!jsInterfaceAdded) {
             binding.webView.addJavascriptInterface(object {
                 @JavascriptInterface
@@ -410,6 +424,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
     companion object {
         val DESKTOP_URGENT =  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.90 Safari/537.36"
         val MOBILE_URGENT =   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.90 Mobile Safari/537.36"
+        private val TAG = BrowseActivity::class.java.simpleName
 
         fun formatUrl(url: String): String {
             return when {

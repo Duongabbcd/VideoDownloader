@@ -29,6 +29,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
 import okhttp3.internal.lowercase
 import java.io.File
+import java.io.FileOutputStream
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -504,6 +505,69 @@ object FileUtil {
     fun hasAllFilesAccess() : Boolean {
         if (Build.VERSION.SDK_INT < 30) return true
         return Environment.isExternalStorageManager()
+    }
+
+    fun copyStatusFile(context: Context, sourceUri: Uri) {
+        // Step 1: Destination folder
+        val destDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            "VideoDownloader/Status"
+        )
+
+        if (!destDir.exists()) destDir.mkdirs()
+
+        // Step 2: Try to extract filename from the URI string
+        val uriString = sourceUri.toString()
+        val fileNameEncoded = uriString.substringAfter(".Statuses%2F", "")
+        val fileName = if (fileNameEncoded.isNotEmpty()) {
+            URLDecoder.decode(fileNameEncoded, "UTF-8")
+        } else {
+            "status_${System.currentTimeMillis()}.jpg"
+        }
+
+        val destFile = File(destDir, fileName)
+
+        // ✅ Step 3: Check if the file already exists
+        if (destFile.exists()) {
+            println("⚠️ File already exists: ${destFile.absolutePath}")
+            return  // Stop copying
+        }
+
+        // Step 3: Copy the file from content:// URI
+        context.contentResolver.openInputStream(sourceUri)?.use { input ->
+            FileOutputStream(destFile).use { output ->
+                input.copyTo(output)
+            }
+        }
+
+
+        // ✅ Step 5: Set last modified time of destination to match source
+        try {
+            val sourceLastModified = getSourceLastModified(context, sourceUri)
+            if (sourceLastModified > 0) {
+                destFile.setLastModified(sourceLastModified)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        println("✅ File copied to: ${destFile.absolutePath}")
+    }
+
+    private fun getSourceLastModified(context: Context, uri: Uri): Long {
+        return try {
+            // Try to open a file descriptor and read its last modified time
+            val fd = context.contentResolver.openFileDescriptor(uri, "r")
+            val time = fd?.statSize // Note: not all URIs expose time; may return 0
+            fd?.close()
+
+            // Fallback: use DocumentFile if available
+            val docFile = androidx.documentfile.provider.DocumentFile.fromSingleUri(context, uri)
+            docFile?.lastModified() ?: 0L
+        } catch (e: Exception) {
+            e.printStackTrace()
+            0L
+        }
     }
 
 }

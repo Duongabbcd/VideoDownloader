@@ -88,7 +88,7 @@
     <TextView
         android:id="@+id/newTabBtn"
         android:layout_marginBottom="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         android:background="@drawable/background_radius_20"
         android:text="+"
         android:textSize="20sp"
@@ -97,5 +97,18 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toTopOf="@id/frBanner" />
+
+    <include
+        android:id="@+id/frBanner"
+        layout="@layout/ads_banner"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,10 +18,12 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
+import com.bumptech.glide.Glide
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.databinding.ActivityPlayerBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.util.Common.gone
+import com.ezt.video.downloader.util.Common.visible
 import com.ezt.video.downloader.work.CryptoConstants
 import java.io.File
 
@@ -33,11 +35,14 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
     private val videoNameStr by lazy {
         intent.getStringExtra("playerName") ?: ""
     }
+
+    private val isWhatsApp by lazy {
+        intent.getBooleanExtra("isWhatsApp", false)
+    }
     private var decryptedFile: File? = null
 
     private var player: ExoPlayer? = null
     private var hasInitialized = false
-    private var currentRotation = 0
 
     private val handler = Handler(Looper.getMainLooper())
     private val updateSeekBarRunnable = object : Runnable {
@@ -69,86 +74,116 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
         playWhenReadyState = savedInstanceState?.getBoolean("play_when_ready") ?: true
 
 
-        binding.apply {
-            Log.d(TAG, "PlayerActivity: $videoUrl and $videoNameStr")
-            videoName.text = videoNameStr
-            videoName.isSelected = true
-            playPause.setOnClickListener {
-                player?.let {exoPlayer ->
-                    when {
-                        exoPlayer.playbackState == Player.STATE_ENDED -> {
-                            // Restart from beginning
-                            exoPlayer.seekTo(0)
-                            exoPlayer.playWhenReady = true
-                        }
+        if (videoUrl.endsWith(".jpg", true) || videoUrl.endsWith(".png", true) || videoUrl.endsWith(
+                ".jpeg",
+                true
+            )
+        ) {
+            binding.apply {
+                statusImage.visible()
+                playerView.gone()
+                playerButtons.gone()
+                playerControls.gone()
+                iconRotation.gone()
+                iconVolume.gone()
+                Glide.with(this@PlayerActivity)
+                    .load(Uri.fromFile(File(videoUrl)))
+                    .into(binding.statusImage)
 
-                        exoPlayer.isPlaying -> {
-                            exoPlayer.pause()
-                        }
 
-                        else -> {
-                            exoPlayer.play()
-                        }
-                    }
+                iconHome.setOnClickListener {
+                    finish()
                 }
             }
-
-            playingSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    if (fromUser) {
-                        player?.seekTo(progress.toLong())
-                        binding.currentTime.text = formatTime(progress.toLong())
-                    }
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    player?.seekTo(seekBar?.progress?.toLong() ?: 0L)
-                }
-            })
-
-            forward10.setOnClickListener {
-                player?.seekTo((player?.currentPosition ?: 0) + 10_000)
-            }
-
-            rewind10.setOnClickListener {
-                player?.seekTo((player?.currentPosition ?: 0) - 10_000)
-            }
-
-            iconHome.setOnClickListener {
-                releasePlayer()
-                finish()
-            }
-
-            iconVolume.setOnClickListener {
-                toggleMute()
-            }
-
-            binding.iconRotation.setOnClickListener {
-                // Delay orientation change slightly to avoid crashes
-                binding.root.post {
-                    val currentOrientation = resources.configuration.orientation
-                    requestedOrientation = when (currentOrientation) {
-                        Configuration.ORIENTATION_PORTRAIT -> {
-                            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
-                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+        } else {
+            binding.apply {
+                statusImage.gone()
+                Log.d(TAG, "PlayerActivity: $videoUrl and $videoNameStr")
+                videoName.text = videoNameStr
+                videoName.isSelected = true
+                playPause.setOnClickListener {
+                    player?.let { exoPlayer ->
+                        when {
+                            exoPlayer.playbackState == Player.STATE_ENDED -> {
+                                // Restart from beginning
+                                exoPlayer.seekTo(0)
+                                exoPlayer.playWhenReady = true
                             }
 
-                        }
-                        Configuration.ORIENTATION_LANDSCAPE -> {
-                            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT.also {
-                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                            exoPlayer.isPlaying -> {
+                                exoPlayer.pause()
                             }
-                        }
-                        else -> {
-                            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
-                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+
+                            else -> {
+                                exoPlayer.play()
                             }
                         }
                     }
                 }
-            }
 
+                playingSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        if (fromUser) {
+                            player?.seekTo(progress.toLong())
+                            binding.currentTime.text = formatTime(progress.toLong())
+                        }
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                        player?.seekTo(seekBar?.progress?.toLong() ?: 0L)
+                    }
+                })
+
+                forward10.setOnClickListener {
+                    player?.seekTo((player?.currentPosition ?: 0) + 10_000)
+                }
+
+                rewind10.setOnClickListener {
+                    player?.seekTo((player?.currentPosition ?: 0) - 10_000)
+                }
+
+                iconHome.setOnClickListener {
+                    releasePlayer()
+                    finish()
+                }
+
+                iconVolume.setOnClickListener {
+                    toggleMute()
+                }
+
+                binding.iconRotation.setOnClickListener {
+                    // Delay orientation change slightly to avoid crashes
+                    binding.root.post {
+                        val currentOrientation = resources.configuration.orientation
+                        requestedOrientation = when (currentOrientation) {
+                            Configuration.ORIENTATION_PORTRAIT -> {
+                                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
+                                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                                }
+
+                            }
+
+                            Configuration.ORIENTATION_LANDSCAPE -> {
+                                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT.also {
+                                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                                }
+                            }
+
+                            else -> {
+                                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
+                                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -180,7 +215,7 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
         val isEncrypted = CryptoConstants.isFileEncryptedByUs(File(encryptedFilePath))
         println("initializePlayer: $encryptedFilePath and $isEncrypted")
         try {
-            decryptedFile =  CryptoConstants.decryptMediaHeader(File(encryptedFilePath), this)
+            decryptedFile = if(!isWhatsApp) CryptoConstants.decryptMediaHeader(File(encryptedFilePath), this) else File(encryptedFilePath)
             binding.apply {
                 playerView.visibility = PlayerView.VISIBLE
 
@@ -195,10 +230,11 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                     // Playback error listener
                     exoPlayer.addListener(object : Player.Listener {
                         override fun onPlaybackStateChanged(playbackState: Int) {
-                            if(playbackState == Player.STATE_ENDED) {
+                            if (playbackState == Player.STATE_ENDED) {
 
                             }
                         }
+
                         override fun onPlayerError(error: PlaybackException) {
                             Toast.makeText(
                                 this@PlayerActivity,
@@ -224,7 +260,7 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Failed to decrypt file: ${e.message}", Toast.LENGTH_LONG).show()
+            Log.d(TAG, "Failed to decrypt file: ${e.message}")
             return
         }
     }

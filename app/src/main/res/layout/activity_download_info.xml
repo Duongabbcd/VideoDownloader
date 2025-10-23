@@ -79,7 +79,7 @@
 
     <ScrollView
         app:layout_constraintTop_toBottomOf="@id/home_appbarlayout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp" >
 
@@ -300,6 +300,18 @@
         </LinearLayout>
     </ScrollView>
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toTopOf="@id/frBanner" />
+
+    <include
+        android:id="@+id/frBanner"
+        layout="@layout/ads_banner"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 <!--    <androidx.fragment.app.FragmentContainerView-->
 <!--        android:id="@+id/nav_host_fragment"-->

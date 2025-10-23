@@ -335,6 +335,20 @@ object Utils {
             retriever.release()
         }
     }
+
+    fun getNormalMediaDuration(filePath: String): Long {
+        try {
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(filePath)
+            val durationStr =
+                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            retriever.release()
+            return durationStr?.toLong() ?: 0L
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return 0L
+        }
+    }
 }
 
 data class DownloadResult(

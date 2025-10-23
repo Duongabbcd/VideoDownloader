@@ -29,6 +29,8 @@ import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.ads.type.NativeAds
 import com.ezt.video.downloader.ads.type.OpenAds
 import com.ezt.video.downloader.ui.BaseActivity3
+import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.language.LanguageActivity
 import com.ezt.video.downloader.util.Common.visible
 
 @AndroidEntryPoint
@@ -194,43 +196,45 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         }
 
         handler.postDelayed(runnable, 20000)
-        if (isNetworkConnected(this)) {
+        val x = 0
+//        isNetworkConnected(this)
+        if (x > 1) {
             FireBaseConfig.initRemoteConfig(
                 R.xml.remote_config_default,
                 object : FireBaseConfig.CompleteListener {
                     override fun onComplete() {
-                        RemoteConfig.AD_OPEN_APP = FireBaseConfig.getValue("AD_OPEN_APP")
-                        RemoteConfig.ADS_DISABLE_2 = FireBaseConfig.getValue("ADS_DISABLE_2")
-                        RemoteConfig.BANNER_ALL_2 = FireBaseConfig.getValue("BANNER_ALL_2")
-
-                        RemoteConfig.INTER_DOWNLOAD_2 = FireBaseConfig.getValue("INTER_DOWNLOAD_2")
-                        RemoteConfig.INTER_CALLSCREEN_2 =
-                            FireBaseConfig.getValue("INTER_CALLSCREEN_2")
-                        RemoteConfig.INTER_RINGTONE_2 = FireBaseConfig.getValue("INTER_RINGTONE_2")
-                        RemoteConfig.INTER_SPACE_TIME_2 =
-                            FireBaseConfig.getValue("INTER_SPACE_TIME_2")
-                        RemoteConfig.INTER_WALLPAPER_2 =
-                            FireBaseConfig.getValue("INTER_WALLPAPER_2")
-
-                        RemoteConfig.NATIVE_FAVOURITE = FireBaseConfig.getValue("NATIVE_FAVOURITE")
-                        RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO")
-                        RemoteConfig.NATIVE_LANGUAGE = FireBaseConfig.getValue("NATIVE_LANGUAGE")
-                        RemoteConfig.NATIVE_PERMISSION =
-                            FireBaseConfig.getValue("NATIVE_PERMISSION")
-
-                        RemoteConfig.OPEN_AD_RETURN_APP =
-                            FireBaseConfig.getValue("OPEN_AD_RETURN_APP")
-
-                        RemoteConfig.REWARD_RINGTONE = FireBaseConfig.getValue("REWARD_RINGTONE")
-                        RemoteConfig.REWARD_SLIDE = FireBaseConfig.getValue("REWARD_SLIDE")
-                        RemoteConfig.REWARD_VIDEO = FireBaseConfig.getValue("REWARD_VIDEO")
-
-                        RemoteConfig.isForcedToUpdate =
-                            FireBaseConfig.getValue("isForcedToUpdate")
-                        RemoteConfig.totalFreeRingtones =
-                            FireBaseConfig.getValue("totalFreeRingtones")
-                        RemoteConfig.totalFreeWallpapers =
-                            FireBaseConfig.getValue("totalFreeWallpapers")
+//                        RemoteConfig.AD_OPEN_APP = FireBaseConfig.getValue("AD_OPEN_APP")
+//                        RemoteConfig.ADS_DISABLE_2 = FireBaseConfig.getValue("ADS_DISABLE_2")
+//                        RemoteConfig.BANNER_ALL_2 = FireBaseConfig.getValue("BANNER_ALL_2")
+//
+//                        RemoteConfig.INTER_DOWNLOAD_2 = FireBaseConfig.getValue("INTER_DOWNLOAD_2")
+//                        RemoteConfig.INTER_CALLSCREEN_2 =
+//                            FireBaseConfig.getValue("INTER_CALLSCREEN_2")
+//                        RemoteConfig.INTER_RINGTONE_2 = FireBaseConfig.getValue("INTER_RINGTONE_2")
+//                        RemoteConfig.INTER_SPACE_TIME_2 =
+//                            FireBaseConfig.getValue("INTER_SPACE_TIME_2")
+//                        RemoteConfig.INTER_WALLPAPER_2 =
+//                            FireBaseConfig.getValue("INTER_WALLPAPER_2")
+//
+//                        RemoteConfig.NATIVE_FAVOURITE = FireBaseConfig.getValue("NATIVE_FAVOURITE")
+//                        RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO")
+//                        RemoteConfig.NATIVE_LANGUAGE = FireBaseConfig.getValue("NATIVE_LANGUAGE")
+//                        RemoteConfig.NATIVE_PERMISSION =
+//                            FireBaseConfig.getValue("NATIVE_PERMISSION")
+//
+//                        RemoteConfig.OPEN_AD_RETURN_APP =
+//                            FireBaseConfig.getValue("OPEN_AD_RETURN_APP")
+//
+//                        RemoteConfig.REWARD_RINGTONE = FireBaseConfig.getValue("REWARD_RINGTONE")
+//                        RemoteConfig.REWARD_SLIDE = FireBaseConfig.getValue("REWARD_SLIDE")
+//                        RemoteConfig.REWARD_VIDEO = FireBaseConfig.getValue("REWARD_VIDEO")
+//
+//                        RemoteConfig.isForcedToUpdate =
+//                            FireBaseConfig.getValue("isForcedToUpdate")
+//                        RemoteConfig.totalFreeRingtones =
+//                            FireBaseConfig.getValue("totalFreeRingtones")
+//                        RemoteConfig.totalFreeWallpapers =
+//                            FireBaseConfig.getValue("totalFreeWallpapers")
 
 //                        AdsManager.countClickRingtone = 0
 //                        AdsManager.countClickWallpaper = 0
@@ -247,7 +251,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 //                            initAds()
                             setupCMP()
                         } else {
-                            binding.tvStart.inVisible()
+                            binding.tvStart.visible()
                             Handler(Looper.getMainLooper()).postDelayed({
                                 nextScreen()
                             }, 3000)
@@ -255,7 +259,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
                     }
                 })
         } else {
-            binding.tvStart.inVisible()
+            binding.tvStart.visible()
             Handler(Looper.getMainLooper()).postDelayed({
                 nextScreen()
             }, 3000)
@@ -270,7 +274,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
 
         //Previous: countOpen <= 1
-        if (countOpen < 1) {
+        if (countOpen > 0) {
 //            analyticsLogger.updateUserProperties(
 //                this@SplashActivity,
 //                "splash_screen",
@@ -279,11 +283,16 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
             Common.setPreLanguage(this, "en")
 //            analyticsLogger.logScreenGo("language_screen", "splash_screen", duration)
 
-//            val intent = Intent(this@SplashActivity, LanguageActivity::class.java)
-//            intent.putExtra("fromSplash", true)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//            startActivity(intent)
+            val intent = Intent(this@SplashActivity, LanguageActivity::class.java)
+            intent.putExtra("fromSplash", true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         } else {
+
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            intent.putExtra("fromSplash", true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
 
 //            val isWritingGranted = hasLegacyWritePermission(this@SplashActivity)
 //            val isSystemModified = RingtoneHelper.hasWriteSettingsPermission(this@SplashActivity)
@@ -342,7 +351,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         showAdsIfAppRunning()
 
     }
-
 
 
     override fun onBackPressed() {

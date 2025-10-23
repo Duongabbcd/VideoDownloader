@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.ezt.video.downloader.R
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
@@ -45,13 +48,16 @@ import com.ezt.video.downloader.ui.downloadcard.DownloadVideoFragment
 import com.ezt.video.downloader.ui.downloadcard.DownloadsAlreadyExistDialog
 import com.ezt.video.downloader.ui.home.HomeFragment
 import com.ezt.video.downloader.ui.home.MainActivity
+import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.more.WebViewActivity
 import com.ezt.video.downloader.ui.social.FacebookInfoActivity
+import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.shadow.ShadowDrawableWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
@@ -139,6 +145,16 @@ class DownloadInfoActivity :
 
     override fun onResume() {
         super.onResume()
+        Log.d(
+           TAG,
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+        )
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+            binding.frBanner.root.gone()
+        } else {
+            loadBanner(this, BANNER_HOME)
+        }
+
         binding.backIcon.setOnClickListener {
             if(facebookURL.contains("BrowseActivity", true)) {
                 println("DownloadBottomSheetDialog 0: $facebookURL")
@@ -156,8 +172,8 @@ class DownloadInfoActivity :
                     resultViewModel.deleteAll(false)
                 }
 
-//                val targetActivity = if(isFromFB) FacebookInfoActivity::class.java else MainActivity::class.java
-                val targetActivity = MainActivity::class.java
+                val targetActivity = if(isFromFB) FacebookInfoActivity::class.java else MainActivity::class.java
+                FacebookInfoActivity.isDisabled = true
                 startActivity(Intent(this@DownloadInfoActivity, targetActivity).apply {
                     putExtra("facebookURL", facebookURL)
                 })
@@ -837,4 +853,8 @@ class DownloadInfoActivity :
         intent.putExtra("type", downloadItem.type)
     }
 
+
+    companion object {
+        private val TAG = DownloadInfoActivity::class.java.simpleName
+    }
 }

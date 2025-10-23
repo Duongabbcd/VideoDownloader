@@ -126,49 +126,41 @@ class WhatsAppViewModel(
 
     }
 
-    fun getSavedStatus(context: Context, folderUri: Uri?) {
-        if (folderUri == null) {
-            println("getSavedStatus: folderUri is null")
-            _savedWhatsAppStatus.postValue(emptyList())
+    fun getSavedStatus() {
+        val statusDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            "VideoDownloader/Status"
+        )
+
+        if (!statusDir.exists() || !statusDir.isDirectory) {
+            _savedWhatsAppStatus.postValue(emptyList<WhatsAppStatus>())
             return
         }
 
-        val documentFile = DocumentFile.fromTreeUri(context, folderUri)
-
-        if (documentFile == null || !documentFile.exists() || !documentFile.isDirectory) {
-            println("getSavedStatus: invalid DocumentFile")
-            _savedWhatsAppStatus.postValue(emptyList())
+        val allFiles = statusDir.listFiles()
+            ?.filter { it.isFile && it.extension in listOf("mp4", "jpeg", "png", "jpg") }
+            ?: emptyList()
+        if (allFiles.isEmpty()) {
+            _savedWhatsAppStatus.postValue(emptyList<WhatsAppStatus>())
             return
-        }
-
-        val supportedExts = listOf("jpg", "jpeg", "png", "mp4")
-
-        val allFiles = documentFile.listFiles()
-            .filter { file ->
-                file.isFile &&
-                        !file.name.isNullOrBlank() &&
-                        supportedExts.any { ext -> file.name!!.lowercase().endsWith(ext) }
+        } else {
+            val allImages = allFiles.map { currentFile ->
+                val lastModified = currentFile.lastModified()
+                WhatsAppStatus(
+                    id = null,
+                    path = currentFile.absolutePath,
+                    lastModifiedTime = lastModified,
+                    duration = if (currentFile.extension == "mp4") Utils.getNormalMediaDuration(
+                        currentFile.absolutePath
+                    ) else 0L,
+                    type = if (currentFile.extension == "mp4") STATUS_TYPE.VIDEO else STATUS_TYPE.IMAGE,
+                    isArchived = false,
+                    fileName = currentFile.name
+                )
             }
 
-        if (allFiles.isEmpty()) {
-            _savedWhatsAppStatus.postValue(emptyList())
-            return
+            _savedWhatsAppStatus.postValue(allImages)
         }
-
-        val result = allFiles.map { file ->
-            val isVideo = file.name!!.endsWith(".mp4", ignoreCase = true)
-            WhatsAppStatus(
-                id = null,
-                path = file.uri.toString(),
-                lastModifiedTime = 0L, // SAF doesn't give lastModified
-                duration = if (isVideo) Utils.getMediaDuration(context, file.uri) else 0L,
-                type = if (isVideo) STATUS_TYPE.VIDEO else STATUS_TYPE.IMAGE,
-                isArchived = false,
-                fileName = file.name ?: ""
-            )
-        }
-
-        _savedWhatsAppStatus.postValue(result)
     }
 
 

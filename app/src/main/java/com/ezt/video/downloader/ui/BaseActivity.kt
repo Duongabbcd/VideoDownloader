@@ -79,7 +79,7 @@ open class BaseActivity : AppCompatActivity() {
         val dialog = MaterialAlertDialogBuilder(this)
         dialog.setTitle(getString(R.string.warning))
         dialog.setMessage(getString(R.string.request_permission_desc))
-        dialog.setOnCancelListener { exit() }
+        dialog.setOnCancelListener { }
         dialog.setNegativeButton(getString(R.string.exit_app)) { _: DialogInterface?, _: Int -> exit() }
         dialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
             val intent = Intent(

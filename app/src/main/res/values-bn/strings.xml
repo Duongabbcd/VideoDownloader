@@ -490,4 +490,31 @@
     <string name="highlight_3">ভিডিও ডাউনলোড</string>
     <string name="intro_4">দাবী মওকুফ</string>
     <string name="highlight_4">দাবী মওকুফ</string>
+
+    <string name="disclaimer_1">ভিডিও বা ছবি পুনরায় পোস্ট করার আগে দয়া করে মালিকের অনুমতি নিন;</string>
+    <string name="disclaimer_2">কোনও অননুমোদিত কার্যক্রম (পুনরায় আপলোড বা ডাউনলোড) এবং/অথবা মেধাস্বত্ব লঙ্ঘনের দায় সম্পূর্ণরূপে ব্যবহারকারীর।</string>
+    <string name="instagram_stories">গল্প দেখুন এবং প্রাইভেট অ্যাকাউন্ট থেকে ডাউনলোড করুন</string>
+    <string name="open_instagram">ইনস্টাগ্রাম খুলুন</string>
+
+    <string name="browser">ব্রাউজার</string>
+    <string name="general_settings">সাধারণ সেটিংস</string>
+    <string name="help">সহায়তা</string>
+    <string name="clear_cache">ক্যাশ মুছুন</string>
+    <string name="clear_browser_history">ব্রাউজার ইতিহাস মুছুন</string>
+    <string name="clear_cookies">কুকিজ মুছুন</string>
+    <string name="download_with_wi_fi_only">শুধুমাত্র Wi-Fi দিয়ে ডাউনলোড করুন</string>
+    <string name="how_to_download">কিভাবে ডাউনলোড করবেন</string>
+    <string name="search_engine">সার্চ ইঞ্জিন</string>
+    <string name="feedback">মতামত</string>
+    <string name="privacy_policy">গোপনীয়তা নীতি</string>
+    <string name="share_with_friends">বন্ধুদের সাথে শেয়ার করুন</string>
+
+    <string name="got_it">বুঝেছি</string>
+    <string name="next">পরবর্তী</string>
+
+    <string name="intro_1_1">১. ওয়েবসাইটে যান</string>
+    <string name="intro_2_1">২. ভিডিওটি চালান</string>
+    <string name="intro_3_1">৩. ডাউনলোড বোতামে ক্লিক করুন</string>
+    <string name="paste">পেস্ট</string>
+
 </resources>

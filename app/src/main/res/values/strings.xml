@@ -562,12 +562,41 @@
     <string name="download_successfully">Downloaded file successfully!</string>
 
     <string name="intro_1">Download Any Video From Multiple Apps</string>
+
     <string name="highlight_1">Multiple Apps</string>
     <string name="intro_2">Quickly Download Videos From Your Browser</string>
+
     <string name="highlight_2">Quickly Download Videos</string>
     <string name="intro_3">Download Videos For Offline Viewing</string>
+
     <string name="highlight_3">Download Videos</string>
     <string name="intro_4">Disclaimer</string>
     <string name="highlight_4">Disclaimer</string>
 
+    <string name="disclaimer_1">Please get the PERMISSION from the owner before you repost videos or photo;</string>
+    <string name="disclaimer_2">Any unauthorized actions(re-uploading or downloading of contents) and/or violations of intellectual property rights is the sole responsibility of the user.</string>
+    <string name="instagram_stories">View stories and download from private account</string>
+    <string name="open_instagram">Open Instagram</string>
+
+    //Settings
+    <string name="browser">Browser</string>
+    <string name="general_settings">General Settings</string>
+    <string name="help">Help</string>
+    <string name="clear_cache">Clear cache</string>
+    <string name="clear_browser_history">Clear browser history</string>
+    <string name="clear_cookies">Clear cookies</string>
+    <string name="download_with_wi_fi_only">Download with Wi-Fi Only</string>
+    <string name="how_to_download">How to Download</string>
+    <string name="search_engine">Search engine</string>
+    <string name="feedback">Feedback</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="share_with_friends">Share with friends</string>
+
+    <string name="got_it">Got it</string>
+    <string name="next">Next</string>
+
+    <string name="intro_1_1">1. Go to website</string>
+    <string name="intro_2_1">2. Play the video</string>
+    <string name="intro_3_1">3. Click the download button</string>
+    <string name="paste">Paste</string>
 </resources>

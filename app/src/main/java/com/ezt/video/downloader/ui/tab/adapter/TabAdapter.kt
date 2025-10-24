@@ -1,14 +1,12 @@
 package com.ezt.video.downloader.ui.tab.adapter
 
 import android.content.Context
-import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.databinding.ItemTabBinding
-import com.ezt.video.downloader.ui.browse.BrowseActivity
-import com.ezt.video.downloader.ui.home.MainActivity
 
 class TabAdapter(private val onEditTabListener: OnEditTabListener) : RecyclerView.Adapter<TabAdapter.TabViewHolder>() {
     private val allTabs = mutableListOf<String>()
@@ -56,7 +54,7 @@ class TabAdapter(private val onEditTabListener: OnEditTabListener) : RecyclerVie
                         onEditTabListener.onEditTabListener(position)
                         onEditTabListener.onClickListener(tab)
                     }
-                    tabWeb.text = "(${context.resources.getString(R.string.blank_page)})"
+                    tabWeb.text = "( ${context.resources.getString(R.string.blank_page)} )"
                 } else {
                     root.setOnClickListener {
                         onEditTabListener.onEditTabListener(position)
@@ -66,7 +64,8 @@ class TabAdapter(private val onEditTabListener: OnEditTabListener) : RecyclerVie
                     if(tab.endsWith(".com", true)) {
                         tabWeb.text = context.resources.getString(R.string.blank_page)
                     } else {
-                        tabWeb.text = tab
+                        val url = Uri.parse(tab)
+                        tabWeb.text = "( ${url.host} )"
                     }
 
                 }

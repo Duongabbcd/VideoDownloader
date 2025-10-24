@@ -496,4 +496,31 @@
     <string name="highlight_3">वीडियो डाउनलोड करें</string>
     <string name="intro_4">अस्वीकरण</string>
     <string name="highlight_4">अस्वीकरण</string>
+
+    <string name="disclaimer_1">कृपया वीडियो या फोटो को दोबारा पोस्ट करने से पहले मालिक से अनुमति प्राप्त करें;</string>
+    <string name="disclaimer_2">किसी भी अनधिकृत कार्य (सामग्री को फिर से अपलोड या डाउनलोड करना) और/या बौद्धिक संपदा अधिकारों का उल्लंघन करने की पूरी जिम्मेदारी उपयोगकर्ता की है।</string>
+    <string name="instagram_stories">कहानियाँ देखें और निजी खाते से डाउनलोड करें</string>
+    <string name="open_instagram">इंस्टाग्राम खोलें</string>
+
+    <string name="browser">ब्राउज़र</string>
+    <string name="general_settings">सामान्य सेटिंग्स</string>
+    <string name="help">मदद</string>
+    <string name="clear_cache">कैश साफ करें</string>
+    <string name="clear_browser_history">ब्राउज़र इतिहास साफ करें</string>
+    <string name="clear_cookies">कुकीज़ साफ करें</string>
+    <string name="download_with_wi_fi_only">केवल Wi-Fi से डाउनलोड करें</string>
+    <string name="how_to_download">डाउनलोड कैसे करें</string>
+    <string name="search_engine">सर्च इंजन</string>
+    <string name="feedback">प्रतिक्रिया</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <string name="share_with_friends">दोस्तों के साथ साझा करें</string>
+
+    <string name="got_it">समझ गया</string>
+    <string name="next">अगला</string>
+
+    <string name="intro_1_1">1. वेबसाइट पर जाएं</string>
+    <string name="intro_2_1">2. वीडियो चलाएं</string>
+    <string name="intro_3_1">3. डाउनलोड बटन पर क्लिक करें</string>
+    <string name="paste">पेस्ट करें</string>
+
 </resources>

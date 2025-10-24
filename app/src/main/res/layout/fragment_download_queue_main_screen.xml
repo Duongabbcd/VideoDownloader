@@ -14,11 +14,14 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/downloads_toolbar"
             android:elevation="0dp"
+            style="@style/CustomTextStyleSemiBold17sp"
             app:title="@string/download_queue"
             app:menu="@menu/download_queue_menu"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
             app:navigationContentDescription="@string/back"
+            android:gravity="center_vertical"
+            app:titleTextAppearance="@style/CustomToolbarTitleTextAppearance"
             android:layout_height="match_parent"/>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -33,12 +36,15 @@
             android:id="@+id/download_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_36sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:backgroundTint="@android:color/transparent"
             app:tabGravity="start"
             app:tabMinWidth="0dp"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:tabIndicatorColor="@color/tab_select"
+            app:tabIndicatorHeight="3dp"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/download_viewpager"

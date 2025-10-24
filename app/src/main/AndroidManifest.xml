@@ -103,6 +103,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.more.guidance.GuidanceActivity"
+            android:exported="true"/>
+
      <!--        No use-->
         <activity
             android:name=".receiver.activities.ShareActivity"

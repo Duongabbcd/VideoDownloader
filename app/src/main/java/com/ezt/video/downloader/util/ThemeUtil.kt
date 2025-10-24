@@ -185,7 +185,10 @@ object ThemeUtil {
     fun getStyledAppName(context: Context): Spanned {
         val colorPrimary = getThemeColor(context, androidx.appcompat.R.attr.colorPrimaryDark)
         val hexColor = "#%06X".format(0xFFFFFF and colorPrimary)
-        return "<span  style='color:$hexColor';>Video</span>Downloader"
+//        return "<span  style='color:$hexColor';>Video</span>Downloader"
+//            .parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)
+
+        return "<span  style='color:$hexColor';></span>"
             .parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 }

@@ -165,9 +165,9 @@ class DownloadInfoActivity :
                 startActivity(intent)
                 finish()
             } else {
-                val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
-
+//                val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+//                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+                println("facebookURL: $facebookURL")
                 CoroutineScope(Dispatchers.IO).launch {
                     resultViewModel.deleteAll(false)
                 }

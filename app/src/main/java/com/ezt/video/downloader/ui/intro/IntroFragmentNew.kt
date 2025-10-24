@@ -16,8 +16,6 @@ import androidx.fragment.app.Fragment
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.AdmobUtils
-import com.ezt.video.downloader.ads.AdsManager
-import com.ezt.video.downloader.ads.AdsManager.isTestDevice
 import com.ezt.video.downloader.ads.type.NativeAds
 import com.ezt.video.downloader.databinding.ViewpagerIntroItempageBinding
 import com.ezt.video.downloader.ui.intro.IntroActivityNew.Companion.numberPage
@@ -25,7 +23,6 @@ import com.ezt.video.downloader.ui.language.LanguageActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import dagger.hilt.android.AndroidEntryPoint
-import jakarta.inject.Inject
 
 
 @AndroidEntryPoint
@@ -60,13 +57,7 @@ class IntroFragmentNew : Fragment() {
                 }
 
                 4 -> {
-                    if (RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625.contains("1") && !IntroActivityNew.isIntroFullFail1) {
-                        fragmentPosition41()
-                    } else if (RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625.contains("2") && !IntroActivityNew.isIntroFullFail1) {
-                        fragmentPosition42()
-                    } else {
-                        fragmentPosition3()
-                    }
+                    fragmentPosition4()
                 }
 
                 5 -> {
@@ -141,7 +132,7 @@ class IntroFragmentNew : Fragment() {
         }
     }
 
-    private fun fragmentPosition41() {
+    private fun fragmentPosition4() {
         showView(true)
 //        binding.lottieSlide.gone()
         when (position) {
@@ -151,15 +142,15 @@ class IntroFragmentNew : Fragment() {
             }
 
             1 -> {
-                showNativeFull()
-            }
-
-            2 -> {
                 setUiIntro2()
             }
 
-            3 -> {
+            2 -> {
                 setUiIntro3()
+            }
+
+            3 -> {
+                setUiIntro4()
             }
         }
     }
@@ -249,6 +240,7 @@ class IntroFragmentNew : Fragment() {
         binding.image2.setImageResource(R.drawable.bg_intro3)
         binding.introIcon.setImageResource(R.drawable.icon_intro3)
         binding.nextBtn.gone()
+        binding.disclaimer.gone()
 //        binding.skipBtn.gone()
 //        binding.intro2.visible()
 //     binding.intro3.gone()
@@ -263,7 +255,8 @@ class IntroFragmentNew : Fragment() {
         val third = getString(R.string.intro_4)
         val highlight3 = getString(R.string.highlight_4)
         setSpannableString(third, listOf(highlight3), binding.title)
-        binding.image2.setImageResource(R.drawable.bg_intro3)
+        binding.image2.gone()
+        binding.disclaimer.visible()
         binding.introIcon.setImageResource(R.drawable.icon_intro5)
         binding.nextBtn.visible()
 //        binding.skipBtn.gone()
@@ -271,7 +264,6 @@ class IntroFragmentNew : Fragment() {
 //     binding.intro3.gone()
 //        binding.intro4.gone()
     }
-
 
 
     private fun showView(isShow: Boolean) {
@@ -298,6 +290,35 @@ class IntroFragmentNew : Fragment() {
     private fun showNativeFull() {
 //        binding.lottieSlide.gone()
         showView(false)
+        activity?.let { it ->
+            LanguageActivity.showNative(it,
+                NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                binding.frNative,
+                fullScreen = true,
+                onLoadDone = {
+                    binding.mLoadingView.root.visibility = View.GONE
+                },
+                onLoadFailed = {
+                    if (RemoteConfig.NATIVE_INTRO == "0") {
+                        binding.rlNative.visibility = View.GONE
+                        return@showNative
+                    }
+                    NativeAds.preloadNativeAds(
+                        it,
+                        alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                        adId = NativeAds.NATIVE_INTRO_FULLSCREEN
+                    )
+                    LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                        binding.frNative, fullScreen = true, {
+                            binding.mLoadingView.root.visibility = View.GONE
+                        }, {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                binding.rlNative.visibility = View.GONE
+                            }, 1500) // Delay 1500 ms (1.5 seconds)
+                        })
+                }
+            )
+        }
     }
 
     override fun onResume() {
@@ -340,11 +361,19 @@ class IntroFragmentNew : Fragment() {
                             binding.mLoadingView.root.visibility = View.GONE
                         },
                         onLoadFailed = {
-                            NativeAds.preloadNativeAds(it, alias = NativeAds.ALIAS_NATIVE_INTRO_1, adId = NativeAds.NATIVE_INTRO_1  )
-                            LanguageActivity.showNative(it, alias =  NativeAds.ALIAS_NATIVE_INTRO_1,
-                                binding.frNative, {
+                            if (RemoteConfig.NATIVE_INTRO == "0") {
+                                binding.rlNative.visibility = View.GONE
+                                return@showNative
+                            }
+                            NativeAds.preloadNativeAds(
+                                it,
+                                alias = NativeAds.ALIAS_NATIVE_INTRO_1,
+                                adId = NativeAds.NATIVE_INTRO_1
+                            )
+                            LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_INTRO_1,
+                                binding.frNative, false, {
                                     binding.mLoadingView.root.visibility = View.GONE
-                                } , {
+                                }, {
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         binding.rlNative.visibility = View.GONE
                                     }, 1500) // Delay 1500 ms (1.5 seconds)
@@ -369,11 +398,19 @@ class IntroFragmentNew : Fragment() {
                             binding.mLoadingView.root.visibility = View.GONE
                         },
                         onLoadFailed = {
-                            NativeAds.preloadNativeAds(it, alias = NativeAds.ALIAS_NATIVE_INTRO_2, adId = NativeAds.NATIVE_INTRO_2  )
-                            LanguageActivity.showNative(it, alias =  NativeAds.ALIAS_NATIVE_INTRO_2,
-                                binding.frNative, {
+                            if (RemoteConfig.NATIVE_INTRO == "0") {
+                                binding.rlNative.visibility = View.GONE
+                                return@showNative
+                            }
+                            NativeAds.preloadNativeAds(
+                                it,
+                                alias = NativeAds.ALIAS_NATIVE_INTRO_2,
+                                adId = NativeAds.NATIVE_INTRO_2
+                            )
+                            LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_INTRO_2,
+                                binding.frNative, false, {
                                     binding.mLoadingView.root.visibility = View.GONE
-                                } , {
+                                }, {
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         binding.rlNative.visibility = View.GONE
                                     }, 1500) // Delay 1500 ms (1.5 seconds)
@@ -401,11 +438,19 @@ class IntroFragmentNew : Fragment() {
                             binding.mLoadingView.root.visibility = View.GONE
                         },
                         onLoadFailed = {
-                            NativeAds.preloadNativeAds(it, alias = NativeAds.ALIAS_NATIVE_INTRO_3, adId = NativeAds.NATIVE_INTRO_3  )
-                            LanguageActivity.showNative(it, alias =  NativeAds.ALIAS_NATIVE_INTRO_3,
-                                binding.frNative, {
+                            if (RemoteConfig.NATIVE_INTRO == "0") {
+                                binding.rlNative.visibility = View.GONE
+                                return@showNative
+                            }
+                            NativeAds.preloadNativeAds(
+                                it,
+                                alias = NativeAds.ALIAS_NATIVE_INTRO_3,
+                                adId = NativeAds.NATIVE_INTRO_3
+                            )
+                            LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_INTRO_3,
+                                binding.frNative, false, {
                                     binding.mLoadingView.root.visibility = View.GONE
-                                } , {
+                                }, {
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         binding.rlNative.visibility = View.GONE
                                     }, 1500) // Delay 1500 ms (1.5 seconds)

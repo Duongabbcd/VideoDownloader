@@ -1,11 +1,14 @@
 package com.ezt.video.downloader.ui.downloads
 
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -86,6 +89,18 @@ class DownloadQueueMainFragment : BaseFragment<FragmentDownloadQueueMainScreenBi
             downloadViewpager.adapter = fragmentAdapter
             downloadViewpager.isSaveFromParentEnabled = false
 
+            // Define a ColorStateList in code (optional, or you can load from resources)
+            val tabTextColor = ColorStateList(
+                arrayOf(
+                    intArrayOf(android.R.attr.state_selected), // selected
+                    intArrayOf(-android.R.attr.state_selected) // unselected
+                ),
+                intArrayOf(
+                    Color.parseColor("#15AD72"), // selected color
+                    Color.parseColor("#000000")  // unselected color
+                )
+            )
+
             TabLayoutMediator(downloadTablayout, downloadViewpager) { tab, position ->
                 when (position) {
                     0 -> tab.text = getString(R.string.running)
@@ -96,6 +111,18 @@ class DownloadQueueMainFragment : BaseFragment<FragmentDownloadQueueMainScreenBi
 //                5 -> tab.text = getString(R.string.saved)
                 }
             }.attach()
+
+            val textAppearanceResId = R.style.CustomTextStyleMedium14sp // your style
+            // Loop through tabs to disable all-caps
+            for (i in 0 until downloadTablayout.tabCount) {
+                val tab = downloadTablayout.getTabAt(i)
+                val tabTextView = (tab?.view?.getChildAt(1) as? TextView)
+                tabTextView?.apply {
+                    setTextAppearance(context, textAppearanceResId)
+                    isAllCaps = false // disable automatic capitalization
+                    setTextColor(tabTextColor) // apply selected/unselected colors
+                }
+            }
 
             downloadTablayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {

@@ -56,6 +56,7 @@ import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.FragmentHomeBinding
 import com.ezt.video.downloader.ui.BaseFragment
 import com.ezt.video.downloader.ui.adapter.SearchSuggestionsAdapter
+import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.home.adapter.BookmarkAdapter
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.more.WebViewActivity
@@ -64,6 +65,7 @@ import com.ezt.video.downloader.ui.social.FacebookInfoActivity
 import com.ezt.video.downloader.ui.tab.TabActivity
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
 import com.ezt.video.downloader.util.Common.gone
+import com.ezt.video.downloader.util.Common.visible
 import com.ezt.video.downloader.util.Extensions.enableFastScroll
 import com.ezt.video.downloader.util.Extensions.isURL
 import com.ezt.video.downloader.util.NotificationUtil
@@ -85,7 +87,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.schabi.newpipe.extractor.timeago.patterns.tr
 import java.net.URL
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import kotlin.sequences.forEach
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
@@ -525,6 +530,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.searchView.editText.doAfterTextChanged {
+            println("doAfterTextChanged")
             if (binding.searchView.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
             updateSearchViewItems(it.toString())
         }
@@ -569,7 +575,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Toast.makeText(requireContext(), resources.getString(R.string.youtube_desc), Toast.LENGTH_SHORT).show()
                 return@setOnEditorActionListener false // Exit early: prevent further execution
             }
-            initSearch(binding.searchView)
+
+            if(text.contains("http", true)) {
+                initSearch(binding.searchView)
+            } else {
+                val encodedKeyword = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
+                val urlNew = "https://www.google.com/search?q=$encodedKeyword&tbm=vid"
+                startActivity(Intent(requireContext(), BrowseActivity::class.java).apply {
+                    putExtra("receivedURL", urlNew)
+                })
+            }
+
             true
         }
 
@@ -623,7 +639,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }.map {
                 SearchSuggestionItem(it, SearchSuggestionType.HISTORY)
             }
-            val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
+            val suggestions = if (!sharedPreferences!!.getBoolean("search_suggestions", false)){
                 withContext(Dispatchers.IO){
                     resultViewModel.getSearchSuggestions(searchQuery)
                 }
@@ -721,7 +737,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun initSearch(searchView: SearchView){
-        binding.loading.visibility = VISIBLE
+        binding.loading.visible()
+        binding.root.isEnabled =false
+
         queryList = mutableListOf()
         if (queriesChipGroup!!.childCount > 0){
             queriesChipGroup!!.children.forEach {
@@ -732,8 +750,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
             queriesChipGroup!!.removeAllViews()
         }
+        val searchText = searchView.editText.text.toString()
         if (searchView.editText.text.isNotBlank()) {
-            queryList.add(searchView.editText.text.toString())
+            queryList.add(searchText)
         }
 
         if (queryList.isEmpty()) return
@@ -742,7 +761,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         searchView.hide()
-        if(!sharedPreferences!!.getBoolean("incognito", false)){
+        val checkIcognito = sharedPreferences!!.getBoolean("incognito", false)
+        println("checkIcognito: $checkIcognito")
+        if(!checkIcognito){
             queryList.forEach { q ->
                 resultViewModel.addSearchQueryToHistory(q)
             }
@@ -768,6 +789,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
                             binding.loading.gone()
+                            binding.root.isEnabled = true
                         }
                     } else {
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
@@ -777,6 +799,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                         withContext(Dispatchers.Main) {
                             binding.loading.gone()
+                            binding.root.isEnabled = true
                         }
                     }
 
@@ -785,6 +808,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         lifecycleScope.launch {
                             withContext(Dispatchers.Main) {
                                 binding.loading.gone()
+                                binding.root.isEnabled = true
                             }
                         }
                     }
@@ -795,6 +819,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             binding.loading.gone()
+                            binding.root.isEnabled = true
                         }
                     }
                 }
@@ -1108,8 +1133,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             showClipboardFab = false
             binding.copiedUrlFab?.isVisible = false
             binding.searchView.setText(text)
-            println("searchView 3")
-            initSearch(binding.searchView)
+            println("searchView 3: $text and $res")
+            if(text.contains("http", true)) {
+                initSearch(binding.searchView)
+            } else {
+                resultViewModel.addSearchQueryToHistory(text)
+                val encodedKeyword = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
+                val urlNew = "https://www.google.com/search?q=$encodedKeyword&tbm=vid"
+                startActivity(Intent(requireContext(), BrowseActivity::class.java).apply {
+                    putExtra("receivedURL", urlNew)
+                })
+            }
+
         }else{
             res.forEach {
                 onSearchSuggestionAdd(it)

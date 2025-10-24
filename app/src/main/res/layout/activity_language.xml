@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
-    android:paddingTop="@dimen/_40sdp">
+    android:paddingTop="@dimen/_36sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topController"
@@ -30,6 +30,7 @@
             android:id="@+id/appName"
             android:textSize="@dimen/_20sdp"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_height="@dimen/_27sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:ellipsize="marquee"
@@ -47,8 +48,9 @@
 
         <ImageView
             android:id="@+id/applyBtn"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_19sdp"
+            android:layout_width="@dimen/_32sdp"
+            android:padding="@dimen/_6sdp"
+            android:layout_height="@dimen/_32sdp"
             android:layout_marginEnd="@dimen/_21sdp"
             android:contentDescription="@string/imageView"
             android:src="@drawable/icon_language"

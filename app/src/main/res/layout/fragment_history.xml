@@ -21,6 +21,8 @@
             android:layout_height="?attr/actionBarSize"
             app:title="@string/downloads"
             app:menu="@menu/history_menu"
+            android:gravity="center_vertical"
+            app:titleTextAppearance="@style/CustomToolbarTitleTextAppearance"
             />
 
         <RelativeLayout

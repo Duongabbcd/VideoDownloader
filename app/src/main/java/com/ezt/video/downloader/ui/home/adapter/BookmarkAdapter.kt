@@ -81,15 +81,6 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
         }
 
 
-        private fun isAppInstalled(packageName: String): Boolean {
-            return try {
-                packageManager.getPackageInfo(packageName, 0)
-                true
-            } catch (e: PackageManager.NameNotFoundException) {
-                false
-            }
-        }
-
         private fun openInBrowseActivity(url: String) {
             when {
                 url.contains("facebook", true) ->    context.startActivity(Intent(context,

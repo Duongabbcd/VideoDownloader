@@ -271,16 +271,16 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         println("countOpen: $countOpen")
 
         val duration = System.currentTimeMillis() - now
-
+        Common.setPreLanguage(this, "en")
 
         //Previous: countOpen <= 1
-        if (countOpen > 0) {
+        if (countOpen == 0) {
 //            analyticsLogger.updateUserProperties(
 //                this@SplashActivity,
 //                "splash_screen",
 //                -1
 //            )
-            Common.setPreLanguage(this, "en")
+
 //            analyticsLogger.logScreenGo("language_screen", "splash_screen", duration)
 
             val intent = Intent(this@SplashActivity, LanguageActivity::class.java)

@@ -73,28 +73,6 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
         println("BrowseActivity 0")
-        resultViewModel.getFilteredList().observe(this) { items ->
-            kotlin.runCatching {
-//                recentlySearch?.isVisible = it.isNotEmpty()
-                items.onEach {
-                    println("showSingleDownloadSheet 4: $it")
-                }
-                if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                    println("It is here 123")
-                }else if (resultViewModel.repository.itemCount.value == 1){
-                    if (sharedPreferences!!.getBoolean("download_card", true)){
-                        if(items.size == 1 ){
-
-                            showSingleDownloadSheet(
-                                items[0],
-                                DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
 
         if (urlNew.isEmpty()) {
             Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show()
@@ -107,13 +85,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                 finish()
             }
             topSearchBar.setText(urlNew).also {
-                val position = MainActivity.currentTabPosition
-                println("currentTabPosition 1: $position")
-                if(position >= 0) {
-                    val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
-                    allTabs[position] = urlNew
-                    TabViewModel.addNewTab(this@BrowseActivity, allTabs)
-                }
+              updateTabValue(urlNew)
             }
             setupWebView()
             val result = formatUrl(urlNew)
@@ -125,6 +97,27 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
             }
 
             downloadBtn.setOnClickListener {
+                resultViewModel.getFilteredList().observe(this@BrowseActivity) { items ->
+                    kotlin.runCatching {
+//                recentlySearch?.isVisible = it.isNotEmpty()
+                        items.onEach {
+                            println("showSingleDownloadSheet 4: $it")
+                        }
+                        if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
+                            println("It is here 123")
+                        }else if (resultViewModel.repository.itemCount.value == 1){
+                            if (sharedPreferences!!.getBoolean("download_card", true)){
+                                if(items.size == 1 ){
+
+                                    showSingleDownloadSheet(
+                                        items[0],
+                                        DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
                 startSearchFacebookURL()
             }
 
@@ -137,14 +130,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                     if (query.isNotEmpty()) {
                         webView.loadUrl(result).also {
                             if(MainActivity.currentTabPosition >= 0) {
-                                val position = MainActivity.currentTabPosition
-                                println("currentTabPosition 2: $position")
-                                if(position >= 0) {
-                                    val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
-                                    allTabs[position] = urlNew
-                                    TabViewModel.addNewTab(this@BrowseActivity, allTabs)
-                                }
-
+                                updateTabValue(result)
                             }
                         }
                     }
@@ -157,6 +143,16 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
         }
     }
 
+    private fun updateTabValue(urlNew: String) {
+        val position = MainActivity.currentTabPosition
+        println("currentTabPosition 1: $position")
+        if(position >= 0) {
+            val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
+            allTabs[position] = urlNew
+            TabViewModel.addNewTab(this@BrowseActivity, allTabs)
+        }
+    }
+
     private fun startSearchFacebookURL() {
         binding.loading.visible()
         lifecycleScope.launch(Dispatchers.IO){
@@ -164,7 +160,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
 
             val check1 = sharedPreferences!!.getBoolean("quick_download", false)
             val check2 = sharedPreferences!!.getString("preferred_download_type", "video") == "command"
-            println("downloadBtn is ${queryList}")
+            println("startSearchFacebookURL is ${queryList}")
             val check3 = Patterns.WEB_URL.matcher(queryList.first()).matches()
             val check4 = sharedPreferences!!.getBoolean("download_card", true)
             println("startSearch 1: $check1 and $check2 and $check3 and ${queryList.size}")
@@ -284,6 +280,17 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                 Log.e("WebViewError", "Error loading page: ${error?.description}")
 //                Toast.makeText(context, "Failed to load page", Toast.LENGTH_SHORT).show()
             }
+
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                val newUrl = request?.url.toString()
+                binding.topSearchBar.setText(newUrl)   // 🔥 Update your TextView with the new URL
+                updateTabValue(newUrl)
+                view?.loadUrl(newUrl)
+                return true
+            }
         }
 
         // Enable fullscreen video support
@@ -402,9 +409,9 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
             binding.webView.addJavascriptInterface(object {
                 @JavascriptInterface
                 fun onVideoDetected(url: String) {
+                    println("addJavascriptInterface: $url")
                     runOnUiThread {
                         if (!videoDetected) {
-                            videoDetected = true
                             showVideoDetectedAnimation()
                         }
 

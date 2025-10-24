@@ -52,11 +52,9 @@ class IntroActivityNew : BaseActivity2<ActivityIntroBinding>(ActivityIntroBindin
         numberPage = if (isTestDevice) {
             5
         } else {
-            if (RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625 == "12" && !isIntroFullFail1) {
-                5
-            } else if (((RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625 == "1" || RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625 == "2")) && !isIntroFullFail1) {
-               5
-            } else {
+            if (RemoteConfig.ADS_DISABLE_2 == "0" || RemoteConfig.NATIVE_INTRO == "0") {
+                4
+            }  else {
                5
             }
         }

@@ -1,0 +1,62 @@
+package com.ezt.video.downloader.ui.more.guidance
+
+import android.os.Bundle
+import com.ezt.video.downloader.ads.RemoteConfig
+import com.ezt.video.downloader.databinding.ActivityGuidanceBinding
+import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.intro.IntroFragmentNew
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidanceBinding::inflate), IntroFragmentNew.CallbackIntro {
+    private lateinit var guidanceAdapter: GuidanceAdapter
+    var position: Int = 0
+    private var now = 0L
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        now = System.currentTimeMillis()
+        binding.apply {
+            closeBtn.setOnClickListener {
+                finish()
+            }
+        }
+        viewPager()
+    }
+
+    private fun viewPager() {
+
+        println("isIntroFullFail:${RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625}")
+       numberPage =4
+
+        if (binding.viewpager.adapter == null) {
+            guidanceAdapter = GuidanceAdapter(this)
+            binding.viewpager.adapter = guidanceAdapter
+            binding.viewpager.setOffscreenPageLimit(numberPage)
+            binding.viewpager.isUserInputEnabled = false
+        }
+    }
+
+    override fun onNext(position: Int, introPos: Int) {
+        println("onNext: $position and $introPos")
+        showAfterIntro1 {
+            binding.viewpager.currentItem++
+        }
+    }
+
+    private fun showAfterIntro1(callback : () -> Unit){
+        callback.invoke()
+    }
+
+    override fun closeAds() {
+        //DO NOTHING
+    }
+
+    override fun disableSwip() {
+        //DO NOTHING
+    }
+
+    companion object {
+        private val TAG = GuidanceActivity::class.java.simpleName
+        var numberPage = 4
+    }
+}

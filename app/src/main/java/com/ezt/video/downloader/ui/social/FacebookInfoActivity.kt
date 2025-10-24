@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -32,9 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(ActivityFacebookInfoBinding::inflate){
-    private val facebookURL by lazy {
-        intent.getStringExtra("facebookURL") ?: ""
-    }
+    private var facebookURL  =""
 
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
@@ -49,6 +48,8 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+
+        facebookURL = intent.getStringExtra("facebookURL") ?: ""
 
         resultViewModel.getFilteredList().observe(this) { items ->
             kotlin.runCatching {
@@ -76,6 +77,7 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
             appIcon.isVisible = facebookURL.isNotEmpty()
 
             isFacebook = facebookURL.contains("facebook", true)
+            igGuidance.isVisible = !isFacebook
             val appImage = if(isFacebook) R.drawable.icon_facebook else R.drawable.icon_instagram
             val appName = if(isFacebook) "Facebook" else "Instagram"
             currentAppName.text = appName
@@ -85,7 +87,19 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                 val clipboard = this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
 
-               finish()
+                startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
+                finish()
+            }
+
+            appIcon.setOnClickListener {
+                val packageName = if (isFacebook) "com.facebook.katana" else "com.instagram.android"
+                if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
+                    val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+                    if (launchIntent != null) {
+                        startActivity(launchIntent)
+                    }
+                }
+
             }
 
             if(facebookURL.contains("www.facebook.com", true) || facebookURL.contains("www.instagram.com", true)) {
@@ -100,12 +114,25 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
 
             }
 
+            openInstagram.setOnClickListener {
+                val packageName = "com.instagram.android"
+                if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
+                    val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+                    if (launchIntent != null) {
+                        startActivity(launchIntent)
+                    }
+                }
+            }
+
 
         }
     }
 
     private fun startSearchFacebookURL() {
-        binding.loading.visible()
+        binding.loading.visible().also {
+            binding.root.isEnabled = false
+        }
+
         lifecycleScope.launch(Dispatchers.IO){
             resultViewModel.deleteAll()
 
@@ -124,7 +151,9 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
                                 type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
-                            binding.loading.gone()
+                            binding.loading.gone().also {
+                                binding.root.isEnabled = true
+                            }
                         }
                     } else {
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
@@ -133,7 +162,9 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                         )
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                         withContext(Dispatchers.Main) {
-                            binding.loading.gone()
+                            binding.loading.gone().also {
+                                binding.root.isEnabled = true
+                            }
                         }
                     }
 
@@ -141,7 +172,9 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                     resultViewModel.parseQueries(queryList){
                         lifecycleScope.launch {
                             withContext(Dispatchers.Main) {
-                                binding.loading.gone()
+                                binding.loading.gone().also {
+                                    binding.root.isEnabled = true
+                                }
                             }
                         }
                     }
@@ -151,7 +184,9 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                 resultViewModel.parseQueries(queryList){
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            binding.loading.gone()
+                            binding.loading.gone().also {
+                                binding.root.isEnabled = true
+                            }
                         }
                     }
                 }
@@ -176,6 +211,7 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                     application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 
                 var clip = clipboard.primaryClip!!.getItemAt(0).text
+                facebookURL = clip.toString()
                 searchBar.setText(clip)
             }
 
@@ -207,6 +243,16 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
         }
 
         startActivity(intent)
+    }
+
+
+    private fun isAppInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
     }
 
     companion object {

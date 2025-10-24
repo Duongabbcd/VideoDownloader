@@ -543,4 +543,30 @@
     <string name="intro_4">Descargo de responsabilidad</string>
     <string name="highlight_4">Descargo de responsabilidad</string>
 
+    <string name="disclaimer_1">Obtén el PERMISO del propietario antes de volver a publicar videos o fotos;</string>
+    <string name="disclaimer_2">Cualquier acción no autorizada (volver a subir o descargar contenido) y/o violación de derechos de propiedad intelectual es responsabilidad exclusiva del usuario.</string>
+    <string name="instagram_stories">Ver historias y descargar desde cuenta privada</string>
+    <string name="open_instagram">Abrir Instagram</string>
+
+    <string name="browser">Navegador</string>
+    <string name="general_settings">Configuración general</string>
+    <string name="help">Ayuda</string>
+    <string name="clear_cache">Borrar caché</string>
+    <string name="clear_browser_history">Borrar historial del navegador</string>
+    <string name="clear_cookies">Borrar cookies</string>
+    <string name="download_with_wi_fi_only">Descargar solo con Wi-Fi</string>
+    <string name="how_to_download">Cómo descargar</string>
+    <string name="search_engine">Motor de búsqueda</string>
+    <string name="feedback">Comentarios</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="share_with_friends">Compartir con amigos</string>
+
+    <string name="got_it">Entendido</string>
+    <string name="next">Siguiente</string>
+
+    <string name="intro_1_1">1. Ve al sitio web</string>
+    <string name="intro_2_1">2. Reproduce el video</string>
+    <string name="intro_3_1">3. Haz clic en el botón de descarga</string>
+    <string name="paste">Pegar</string>
+
 </resources>

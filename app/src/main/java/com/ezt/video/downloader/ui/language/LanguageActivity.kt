@@ -50,10 +50,24 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
             )
         }
 
+         if (RemoteConfig.NATIVE_INTRO.contains("2") && RemoteConfig.ADS_DISABLE_2 != "0") {
+            NativeAds.preloadNativeAds(
+                this@LanguageActivity, NativeAds.ALIAS_NATIVE_INTRO_2,
+                NativeAds.NATIVE_INTRO_2
+            )
+        }
+
         if (RemoteConfig.NATIVE_INTRO.contains("3") && RemoteConfig.ADS_DISABLE_2 != "0") {
             NativeAds.preloadNativeAds(
                 this@LanguageActivity, NativeAds.ALIAS_NATIVE_INTRO_3,
                 NativeAds.NATIVE_INTRO_3
+            )
+        }
+
+        if (RemoteConfig.NATIVE_INTRO != "0" && RemoteConfig.ADS_DISABLE_2 != "0") {
+            NativeAds.preloadNativeAds(
+                this@LanguageActivity, NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                NativeAds.NATIVE_INTRO_FULLSCREEN
             )
         }
 
@@ -232,6 +246,7 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
             activity: FragmentActivity,
             alias: String,
             frNative: ViewGroup,
+            fullScreen: Boolean = false,
             onLoadDone: (() -> Unit)? = null,
             onLoadFailed: (() -> Unit)? = null,
         ) {
@@ -241,7 +256,7 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
                 frNative,
                 onLoadDone,
                 onLoadFailed,
-                layoutResId = R.layout.native_large_screen
+                layoutResId = if(fullScreen) R.layout.native_fullscreen else R.layout.native_large_screen
             )
         }
     }

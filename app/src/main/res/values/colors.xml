@@ -430,6 +430,7 @@
     <color name="un_select">#EFEFEF</color>
     <color name="no_result">#989FB0</color>
     <color name="tab_select">#15AD72</color>
+    <color name="tab_select_0_2">#3315AD72</color>
     <color name="text_display">@color/black</color>
     <color name="text_color">#101010</color>
     <color name="ad_btn">#00C377</color>

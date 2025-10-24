@@ -520,4 +520,31 @@
     <string name="highlight_3">Video-Download</string>
     <string name="intro_4">Haftungsausschluss</string>
     <string name="highlight_4">Haftungsausschluss</string>
+
+    <string name="disclaimer_1">Bitte holen Sie die ERLAUBNIS des Eigentümers ein, bevor Sie Videos oder Fotos erneut posten;</string>
+    <string name="disclaimer_2">Jegliche unbefugten Handlungen (erneutes Hochladen oder Herunterladen von Inhalten) und/oder Verstöße gegen geistige Eigentumsrechte liegen in der alleinigen Verantwortung des Benutzers.</string>
+    <string name="instagram_stories">Stories anzeigen und von privatem Konto herunterladen</string>
+    <string name="open_instagram">Instagram öffnen</string>
+
+    <string name="browser">Browser</string>
+    <string name="general_settings">Allgemeine Einstellungen</string>
+    <string name="help">Hilfe</string>
+    <string name="clear_cache">Cache löschen</string>
+    <string name="clear_browser_history">Browserverlauf löschen</string>
+    <string name="clear_cookies">Cookies löschen</string>
+    <string name="download_with_wi_fi_only">Nur mit WLAN herunterladen</string>
+    <string name="how_to_download">So laden Sie herunter</string>
+    <string name="search_engine">Suchmaschine</string>
+    <string name="feedback">Feedback</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="share_with_friends">Mit Freunden teilen</string>
+
+    <string name="got_it">Verstanden</string>
+    <string name="next">Weiter</string>
+
+    <string name="intro_1_1">1. Gehe zur Website</string>
+    <string name="intro_2_1">2. Spiele das Video ab</string>
+    <string name="intro_3_1">3. Klicke auf die Download-Schaltfläche</string>
+    <string name="paste">Einfügen</string>
+
 </resources>

@@ -554,4 +554,30 @@
     <string name="intro_4">Отказ от ответственности</string>
     <string name="highlight_4">Отказ от ответственности</string>
 
+    <string name="disclaimer_1">Пожалуйста, получите РАЗРЕШЕНИЕ от владельца перед повторной публикацией видео или фото;</string>
+    <string name="disclaimer_2">Любые несанкционированные действия (повторная загрузка или скачивание контента) и/или нарушения авторских прав являются исключительной ответственностью пользователя.</string>
+    <string name="instagram_stories">Просматривать истории и загружать из приватного аккаунта</string>
+    <string name="open_instagram">Открыть Instagram</string>
+
+    <string name="browser">Браузер</string>
+    <string name="general_settings">Основные настройки</string>
+    <string name="help">Помощь</string>
+    <string name="clear_cache">Очистить кэш</string>
+    <string name="clear_browser_history">Очистить историю браузера</string>
+    <string name="clear_cookies">Очистить куки</string>
+    <string name="download_with_wi_fi_only">Загружать только через Wi-Fi</string>
+    <string name="how_to_download">Как скачать</string>
+    <string name="search_engine">Поисковая система</string>
+    <string name="feedback">Обратная связь</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="share_with_friends">Поделиться с друзьями</string>
+
+    <string name="got_it">Понятно</string>
+    <string name="next">Далее</string>
+
+    <string name="intro_1_1">1. Перейдите на сайт</string>
+    <string name="intro_2_1">2. Воспроизведите видео</string>
+    <string name="intro_3_1">3. Нажмите кнопку загрузки</string>
+    <string name="paste">Вставить</string>
+
 </resources>

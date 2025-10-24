@@ -51,6 +51,10 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
 
         displayByCondition(0)
         binding.apply {
+            appIcon.setOnClickListener {
+                openWhatsApp(this@WhatsAppActivity)
+            }
+
             allStatuses.adapter =statusAdapter
             allStatuses.layoutManager = GridLayoutManager(this@WhatsAppActivity, 2)
 

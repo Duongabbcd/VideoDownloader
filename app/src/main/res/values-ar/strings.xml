@@ -553,4 +553,31 @@
     <string name="highlight_3">تنزيل الفيديوهات</string>
     <string name="intro_4">إخلاء المسؤولية</string>
     <string name="highlight_4">إخلاء المسؤولية</string>
+
+    <string name="disclaimer_1">يرجى الحصول على الإذن من المالك قبل إعادة نشر مقاطع الفيديو أو الصور؛</string>
+    <string name="disclaimer_2">أي أفعال غير مصرح بها (إعادة تحميل أو تنزيل المحتوى) و/أو انتهاكات حقوق الملكية الفكرية تقع على عاتق المستخدم وحده.</string>
+    <string name="instagram_stories">عرض القصص وتنزيلها من حساب خاص</string>
+    <string name="open_instagram">افتح إنستغرام</string>
+
+    <string name="browser">المتصفح</string>
+    <string name="general_settings">الإعدادات العامة</string>
+    <string name="help">مساعدة</string>
+    <string name="clear_cache">مسح ذاكرة التخزين المؤقت</string>
+    <string name="clear_browser_history">مسح سجل المتصفح</string>
+    <string name="clear_cookies">مسح ملفات تعريف الارتباط</string>
+    <string name="download_with_wi_fi_only">التنزيل عبر Wi-Fi فقط</string>
+    <string name="how_to_download">كيفية التنزيل</string>
+    <string name="search_engine">محرك البحث</string>
+    <string name="feedback">ملاحظات</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="share_with_friends">شارك مع الأصدقاء</string>
+
+    <string name="got_it">فهمت</string>
+    <string name="next">التالي</string>
+
+    <string name="intro_1_1">1. انتقل إلى الموقع</string>
+    <string name="intro_2_1">2. قم بتشغيل الفيديو</string>
+    <string name="intro_3_1">3. اضغط على زر التنزيل</string>
+    <string name="paste">لصق</string>
+
 </resources>

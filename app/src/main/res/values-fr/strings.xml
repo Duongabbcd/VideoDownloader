@@ -544,4 +544,31 @@
     <string name="highlight_3">Télécharger des vidéos</string>
     <string name="intro_4">Clause de non-responsabilité</string>
     <string name="highlight_4">Clause de non-responsabilité</string>
+
+    <string name="disclaimer_1">Veuillez obtenir l’AUTORISATION du propriétaire avant de republier des vidéos ou des photos ;</string>
+    <string name="disclaimer_2">Toute action non autorisée (rechargement ou téléchargement de contenu) et/ou violation des droits de propriété intellectuelle relève de la seule responsabilité de l’utilisateur.</string>
+    <string name="instagram_stories">Voir les stories et télécharger depuis un compte privé</string>
+    <string name="open_instagram">Ouvrir Instagram</string>
+
+    <string name="browser">Navigateur</string>
+    <string name="general_settings">Paramètres généraux</string>
+    <string name="help">Aide</string>
+    <string name="clear_cache">Vider le cache</string>
+    <string name="clear_browser_history">Effacer l’historique du navigateur</string>
+    <string name="clear_cookies">Effacer les cookies</string>
+    <string name="download_with_wi_fi_only">Télécharger uniquement via Wi-Fi</string>
+    <string name="how_to_download">Comment télécharger</string>
+    <string name="search_engine">Moteur de recherche</string>
+    <string name="feedback">Retour</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="share_with_friends">Partager avec des amis</string>
+
+    <string name="got_it">Compris</string>
+    <string name="next">Suivant</string>
+
+    <string name="intro_1_1">1. Allez sur le site web</string>
+    <string name="intro_2_1">2. Lisez la vidéo</string>
+    <string name="intro_3_1">3. Cliquez sur le bouton de téléchargement</string>
+    <string name="paste">Coller</string>
+
 </resources>

@@ -27,7 +27,7 @@ object RemoteConfig {
 
 
     var NATIVE_FAVOURITE = "1"
-    var NATIVE_INTRO = "13"
+    var NATIVE_INTRO = "123"
     var NATIVE_LANGUAGE = "12"
     var NATIVE_PERMISSION = "1"
     var OPEN_AD_RETURN_APP = "1"

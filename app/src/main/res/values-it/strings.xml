@@ -549,4 +549,30 @@
     <string name="intro_4">Dichiarazione di non responsabilità</string>
     <string name="highlight_4">Dichiarazione di non responsabilità</string>
 
+    <string name="disclaimer_1">Harap dapatkan IZIN dari pemilik sebelum memposting ulang video atau foto;</string>
+    <string name="disclaimer_2">Setiap tindakan yang tidak sah (mengunggah ulang atau mengunduh konten) dan/atau pelanggaran hak kekayaan intelektual sepenuhnya menjadi tanggung jawab pengguna.</string>
+    <string name="instagram_stories">Lihat cerita dan unduh dari akun pribadi</string>
+    <string name="open_instagram">Buka Instagram</string>
+
+    <string name="browser">Peramban</string>
+    <string name="general_settings">Pengaturan Umum</string>
+    <string name="help">Bantuan</string>
+    <string name="clear_cache">Hapus cache</string>
+    <string name="clear_browser_history">Hapus riwayat peramban</string>
+    <string name="clear_cookies">Hapus cookie</string>
+    <string name="download_with_wi_fi_only">Unduh hanya dengan Wi-Fi</string>
+    <string name="how_to_download">Cara mengunduh</string>
+    <string name="search_engine">Mesin pencari</string>
+    <string name="feedback">Masukan</string>
+    <string name="privacy_policy">Kebijakan privasi</string>
+    <string name="share_with_friends">Bagikan dengan teman</string>
+
+    <string name="got_it">Capito</string>
+    <string name="next">Avanti</string>
+
+    <string name="intro_1_1">1. Vai al sito web</string>
+    <string name="intro_2_1">2. Riproduci il video</string>
+    <string name="intro_3_1">3. Clicca sul pulsante di download</string>
+    <string name="paste">Incolla</string>
+
 </resources>

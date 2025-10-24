@@ -58,12 +58,14 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_search, 0, 0, 0)
 
                 textView.setOnClickListener {
+                    println("${item.type} as 1")
                     onItemClickListener.onSearchSuggestionClick(item.text)
                 }
                 textView.setOnLongClickListener { true }
                 val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
                 mb.setImageResource(R.drawable.ic_arrow_outward)
                 mb.setOnClickListener {
+                    println("${item.type} as 2")
                     onItemClickListener.onSearchSuggestionAddToSearchBar(item.text)
                 }
             }
@@ -73,9 +75,11 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 textView.text = item.text
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
                 textView.setOnClickListener {
+                    println("${item.type} as 3")
                     onItemClickListener.onSearchSuggestionClick(item.text)
                 }
                 textView.setOnLongClickListener {
+                    println("${item.type} as 4")
                     onItemClickListener.onSearchSuggestionLongClick(item.text, position)
                     true
                 }
@@ -83,6 +87,7 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
                 mb.setImageResource(R.drawable.ic_arrow_outward)
                 mb.setOnClickListener {
+                    println("${item.type} as 5")
                     onItemClickListener.onSearchSuggestionAddToSearchBar(item.text)
                 }
             }
@@ -95,10 +100,12 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 mb.setImageResource(R.drawable.ic_plus)
 
                 mb.setOnClickListener {
+                    println("${item.type} as 6")
                     onItemClickListener.onSearchSuggestionAdd(item.text)
                 }
 
                 textView.setOnClickListener {
+                    println("${item.type} as 7")
                     onItemClickListener.onSearchSuggestionClick(item.text)
                 }
                 textView.setOnLongClickListener { true }

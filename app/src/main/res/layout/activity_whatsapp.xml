@@ -30,6 +30,20 @@
         android:layout_height="wrap_content" />
 
 
+    <!-- Add an ImageView here -->
+    <ImageView
+        android:id="@+id/appIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/backIcon"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:contentDescription="@string/imageView"
+        android:padding="@dimen/_2sdp"
+        android:src="@drawable/icon_whatsapp" />
+
     <LinearLayout
         android:id="@+id/allMediaOptions"
         android:layout_width="match_parent"

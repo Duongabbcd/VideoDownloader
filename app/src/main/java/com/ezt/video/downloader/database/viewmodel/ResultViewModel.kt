@@ -8,9 +8,11 @@ import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
@@ -52,6 +54,15 @@ import kotlin.onFailure
 import kotlin.text.insert
 import kotlin.text.isNullOrBlank
 import kotlin.toString
+
+fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: (T) -> Unit) {
+    observe(owner, object : Observer<T> {
+        override fun onChanged(t: T) {
+            observer(t)
+            removeObserver(this)
+        }
+    })
+}
 
 
 class ResultViewModel(private val application: Application) : AndroidViewModel(application) {

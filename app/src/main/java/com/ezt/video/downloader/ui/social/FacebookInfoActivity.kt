@@ -102,7 +102,7 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
 
             }
 
-            if(facebookURL.contains("www.facebook.com", true) || facebookURL.contains("www.instagram.com", true)) {
+            if(facebookURL.equals("https://www.facebook.com/", true) || facebookURL.equals("https://www.instagram.com/", true)) {
                 println("facebookURL: $facebookURL")
             } else {
                 searchBar.setText(facebookURL)

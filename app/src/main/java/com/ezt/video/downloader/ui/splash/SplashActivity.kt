@@ -291,7 +291,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             intent.putExtra("fromSplash", true)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
 
 //            val isWritingGranted = hasLegacyWritePermission(this@SplashActivity)

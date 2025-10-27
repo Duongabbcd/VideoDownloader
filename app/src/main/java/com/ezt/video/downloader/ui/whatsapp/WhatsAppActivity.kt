@@ -17,11 +17,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.database.models.expand.non_table.WhatsAppStatus
 import com.ezt.video.downloader.databinding.ActivityWhatsappBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
+import com.ezt.video.downloader.ui.social.FacebookInfoActivity
+import com.ezt.video.downloader.ui.tab.TabActivity
 import com.ezt.video.downloader.ui.whatsapp.adapter.OnEditWhatsAppListener
 import com.ezt.video.downloader.ui.whatsapp.adapter.StatusAdapter
 import com.ezt.video.downloader.ui.whatsapp.viewmodel.WhatsAppViewModel
@@ -48,6 +51,11 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
         whatsAppViewModel = ViewModelProvider(this)[WhatsAppViewModel::class.java]
 
         statusAdapter = StatusAdapter(this)
+        InterAds.preloadInterAds(
+            this@WhatsAppActivity,
+            alias = InterAds.ALIAS_INTER_DOWNLOAD,
+            adUnit = InterAds.INTER_AD1
+        )
 
         displayByCondition(0)
         binding.apply {
@@ -63,7 +71,11 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
             }
 
             backIcon.setOnClickListener {
-                finish()
+                InterAds.showPreloadInter(this@WhatsAppActivity, alias = InterAds.ALIAS_INTER_DOWNLOAD, {
+                    finish()
+                }, {
+                    finish()
+                })
             }
 
             imageStatus.setOnClickListener {

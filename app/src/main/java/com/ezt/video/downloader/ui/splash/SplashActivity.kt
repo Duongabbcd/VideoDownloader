@@ -84,6 +84,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
 
     private fun initAds() {
+        println("RemoteConfig.ADS_DISABLE: ${RemoteConfig.ADS_DISABLE_2} and ${RemoteConfig.AD_OPEN_APP}")
         if (RemoteConfig.AD_OPEN_APP == "0") {
             showAds()
             return
@@ -197,7 +198,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
         handler.postDelayed(runnable, 20000)
         val x = 0
-//        isNetworkConnected(this)
+
         if (x > 1) {
             FireBaseConfig.initRemoteConfig(
                 R.xml.remote_config_default,
@@ -248,7 +249,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
                         println("RemoteConfig.ADS_DISABLE: ${RemoteConfig.ADS_DISABLE_2}")
                         if (RemoteConfig.ADS_DISABLE_2 != "0") {
-//                            initAds()
                             setupCMP()
                         } else {
                             binding.tvStart.visible()

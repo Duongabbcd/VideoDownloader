@@ -29,6 +29,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
@@ -156,29 +157,11 @@ class DownloadInfoActivity :
         }
 
         binding.backIcon.setOnClickListener {
-            if(facebookURL.contains("BrowseActivity", true)) {
-                println("DownloadBottomSheetDialog 0: $facebookURL")
-                val intent = Intent(this@DownloadInfoActivity, BrowseActivity::class.java).apply {
-                    // Optional: clear back stack
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                }
-                startActivity(intent)
-                finish()
-            } else {
-//                val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-//                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
-                println("facebookURL: $facebookURL")
-                CoroutineScope(Dispatchers.IO).launch {
-                    resultViewModel.deleteAll(false)
-                }
-
-                val targetActivity = if(isFromFB) FacebookInfoActivity::class.java else MainActivity::class.java
-                FacebookInfoActivity.isDisabled = true
-                startActivity(Intent(this@DownloadInfoActivity, targetActivity).apply {
-                    putExtra("facebookURL", facebookURL)
-                })
-                finish()
-            }
+            InterAds.showPreloadInter(this, alias = InterAds.ALIAS_INTER_DOWNLOAD, {
+                executeBackScreen()
+            } , {
+                executeBackScreen()
+            })
         }
 
         tabLayout = findViewById(R.id.download_tablayout)
@@ -770,6 +753,32 @@ class DownloadInfoActivity :
                     }
                 }
             }
+        }
+    }
+
+    private fun executeBackScreen() {
+        if(facebookURL.contains("BrowseActivity", true)) {
+            println("DownloadBottomSheetDialog 0: $facebookURL")
+            val intent = Intent(this@DownloadInfoActivity, BrowseActivity::class.java).apply {
+                // Optional: clear back stack
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
+        } else {
+//                val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+//                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+            println("facebookURL: $facebookURL")
+            CoroutineScope(Dispatchers.IO).launch {
+                resultViewModel.deleteAll(false)
+            }
+
+            val targetActivity = if(isFromFB) FacebookInfoActivity::class.java else MainActivity::class.java
+            FacebookInfoActivity.isDisabled = true
+            startActivity(Intent(this@DownloadInfoActivity, targetActivity).apply {
+                putExtra("facebookURL", facebookURL)
+            })
+            finish()
         }
     }
 

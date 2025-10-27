@@ -6,12 +6,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.databinding.ActivityTabBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.ui.home.MainActivity.Companion.currentTabPosition
 import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
+import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.tab.adapter.OnEditTabListener
 import com.ezt.video.downloader.ui.tab.adapter.TabAdapter
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
@@ -29,10 +31,21 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
         super.onCreate(savedInstanceState)
         tabAdapter = TabAdapter(this)
         tabViewModel = ViewModelProvider(this)[TabViewModel::class.java]
+        InterAds.preloadInterAds(
+            this@TabActivity,
+            alias = InterAds.ALIAS_INTER_DOWNLOAD,
+            adUnit = InterAds.INTER_AD1
+        )
+
         binding.apply {
             backIcon.setOnClickListener {
-                finish()
+                InterAds.showPreloadInter(this@TabActivity, alias = InterAds.ALIAS_INTER_DOWNLOAD, {
+                    finish()
+                } , {
+                    finish()
+                })
             }
+
             allTabs.adapter = tabAdapter
             tabViewModel.tabs.observe(this@TabActivity) { list ->
                 println("onCreate: $list")

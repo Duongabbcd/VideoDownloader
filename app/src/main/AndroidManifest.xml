@@ -44,14 +44,6 @@
         <profileable
             android:shell="true"
             tools:targetApi="29" />
-        <activity android:name=".ui.browse.BrowseActivity"
-            android:exported="true"/>
-
-        <activity android:name=".ui.player.PlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="sensor"
-            android:exported="true"/>
-
         <activity android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -59,6 +51,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.browse.BrowseActivity"
+            android:exported="true"/>
+
+        <activity android:name=".ui.player.PlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="sensor"
+            android:exported="true"/>
 
         <activity android:name=".ui.social.FacebookInfoActivity"
             android:exported="true"/>

@@ -60,22 +60,26 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
             }
         }
 
+//        private fun openBookmark(bookmark: Bookmark) {
+//            val packageName = bookmark.packageName
+//
+//            if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
+//                // Open the installed app
+//                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+//                if (launchIntent != null) {
+//                    context.startActivity(launchIntent)
+//                } else {
+//                    // fallback in rare cases
+//                    openInBrowseActivity(bookmark.url)
+//                }
+//            } else {
+//                openInBrowseActivity(bookmark.url)
+//            }
+//
+//        }
+
         private fun openBookmark(bookmark: Bookmark) {
-            val packageName = bookmark.packageName
-
-            if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
-                // Open the installed app
-                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
-                if (launchIntent != null) {
-                    context.startActivity(launchIntent)
-                } else {
-                    // fallback in rare cases
-                    openInBrowseActivity(bookmark.url)
-                }
-            } else {
-                openInBrowseActivity(bookmark.url)
-            }
-
+            openInBrowseActivity(bookmark.url)
         }
 
         private fun isAppInstalled(packageName: String): Boolean {

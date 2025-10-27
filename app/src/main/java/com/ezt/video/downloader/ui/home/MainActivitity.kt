@@ -39,6 +39,7 @@ import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.repository.DownloadRepository
 import com.ezt.video.downloader.database.viewmodel.CookieViewModel
@@ -128,7 +129,11 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
             }
         }
 
-
+        InterAds.preloadInterAds(
+            this@MainActivity,
+            alias = InterAds.ALIAS_INTER_DOWNLOAD,
+            adUnit = InterAds.INTER_AD1
+        )
 
         askPermissions()
 //        checkUpdate()
@@ -611,6 +616,29 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                     }
 
                 }
+            }
+
+        }
+
+        fun backToScreen(activity: AppCompatActivity, title: String = "INTER_AD1") {
+            val inter = InterAds.ALIAS_INTER_DOWNLOAD
+
+            val condition = RemoteConfig.INTER_DOWNLOAD_2
+            if (condition != "0") {
+                InterAds.showPreloadInter(
+                    activity = activity,
+                    alias = inter,
+                    onLoadDone = {
+                        Log.d(TAG, "onLoadDone")
+                        activity.finish()
+                    },
+                    onLoadFailed = {
+                        Log.d(TAG, "onLoadFailed")
+                        InterAds.preloadInterAds(activity, inter, condition)
+                        activity.finish()
+                    })
+            } else {
+                activity.finish()
             }
 
         }

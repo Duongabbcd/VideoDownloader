@@ -31,6 +31,7 @@ import androidx.preference.PreferenceManager
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
@@ -41,6 +42,7 @@ import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
 import com.ezt.video.downloader.ui.tab.TabActivity
 import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
+import com.ezt.video.downloader.ui.whatsapp.WhatsAppActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import kotlinx.coroutines.Dispatchers
@@ -73,6 +75,12 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
         println("BrowseActivity 0")
+        InterAds.preloadInterAds(
+            this@BrowseActivity,
+            alias = InterAds.ALIAS_INTER_DOWNLOAD,
+            adUnit = InterAds.INTER_AD1
+        )
+
 
         if (urlNew.isEmpty()) {
             Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show()
@@ -82,7 +90,11 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
 
         binding.apply {
             homePage.setOnClickListener {
-                finish()
+                InterAds.showPreloadInter(this@BrowseActivity, alias = InterAds.ALIAS_INTER_DOWNLOAD, {
+                    finish()
+                }, {
+                    finish()
+                })
             }
             topSearchBar.setText(urlNew).also {
               updateTabValue(urlNew)

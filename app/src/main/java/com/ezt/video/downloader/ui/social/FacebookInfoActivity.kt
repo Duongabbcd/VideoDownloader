@@ -20,12 +20,15 @@ import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
+import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
+import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
+import com.ezt.video.downloader.ui.tab.TabActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
 import kotlinx.coroutines.Dispatchers
@@ -73,6 +76,12 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
             }
         }
 
+        InterAds.preloadInterAds(
+            this@FacebookInfoActivity,
+            alias = InterAds.ALIAS_INTER_DOWNLOAD,
+            adUnit = InterAds.INTER_AD1
+        )
+
         binding.apply {
             appIcon.isVisible = facebookURL.isNotEmpty()
 
@@ -86,9 +95,13 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                 isDisabled = false
                 val clipboard = this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
-
-                startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
-                finish()
+                InterAds.showPreloadInter(this@FacebookInfoActivity, alias = InterAds.ALIAS_INTER_DOWNLOAD, {
+                    startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
+                    finish()
+                }, {
+                    startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
+                    finish()
+                })
             }
 
             appIcon.setOnClickListener {

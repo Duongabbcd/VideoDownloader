@@ -32,8 +32,7 @@ import java.util.Date
 
 
 object InterAds {
-
-    val TIME_DELAY = if (BuildConfig.DEBUG) 10_000L else 40_000L
+    val TIME_DELAY = if (BuildConfig.DEBUG) 10_000L else 10_000L
     const val INTER_AD1 = "ca-app-pub-3940256099942544/1033173712"
     const val INTER_AD2 = "ca-app-pub-3940256099942544/1033173712"
     const val INTER_AD3 = "ca-app-pub-3940256099942544/1033173712"

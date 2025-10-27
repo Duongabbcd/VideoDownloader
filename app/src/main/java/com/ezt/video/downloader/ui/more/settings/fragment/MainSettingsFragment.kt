@@ -34,7 +34,7 @@ import com.ezt.video.downloader.database.models.main.HistoryItem
 import com.ezt.video.downloader.database.models.main.SearchHistoryItem
 import com.ezt.video.downloader.database.models.main.TemplateShortcut
 import com.ezt.video.downloader.database.models.observeSources.ObserveSourcesItem
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
 import com.ezt.video.downloader.util.FileUtil
 import com.ezt.video.downloader.util.ThemeUtil

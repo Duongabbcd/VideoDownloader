@@ -19,7 +19,7 @@ import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.repository.ObserveSourcesRepository
 import com.ezt.video.downloader.database.repository.ResultRepository
 import com.ezt.video.downloader.util.Extensions.calculateNextTimeForObserving
@@ -44,7 +44,7 @@ class ObserveSourceWorker(
         val workManager = WorkManager.getInstance(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val repo = ObserveSourcesRepository(dbManager.observeSourcesDao, workManager, sharedPreferences)
-        val historyRepo = HistoryRepository(dbManager.historyDao)
+        val historyRepo = HistoryRepository2(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val commandTemplateDao = dbManager.commandTemplateDao
         val resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, context)

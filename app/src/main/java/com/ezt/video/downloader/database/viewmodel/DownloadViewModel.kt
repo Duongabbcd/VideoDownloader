@@ -33,7 +33,7 @@ import com.ezt.video.downloader.database.models.main.DownloadItem
 import com.ezt.video.downloader.database.models.main.HistoryItem
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.repository.ResultRepository
 import com.ezt.video.downloader.ui.downloadcard.MultipleItemFormatTuple
 import com.ezt.video.downloader.util.Extensions.needsDataUpdating
@@ -111,7 +111,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     private var extraCommandsForVideo: List<CommandTemplate> = listOf()
 
     private val dao: DownloadDao
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository2
     private val resultRepository: ResultRepository
 
     enum class Type {
@@ -133,7 +133,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         dao = dbManager.downloadDao
         commandTemplateDao = VideoDownloadDB.getInstance(application).commandTemplateDao
         repository = DownloadRepository(dao)
-        historyRepository = HistoryRepository(dbManager.historyDao)
+        historyRepository = HistoryRepository2(dbManager.historyDao)
         resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, application)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         ytdlpUtil = YTDLPUtil(application, commandTemplateDao)

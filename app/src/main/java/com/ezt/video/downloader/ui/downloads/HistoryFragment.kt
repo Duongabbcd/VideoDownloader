@@ -42,7 +42,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.database.VideoDownloadDB
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.ui.adapter.HistoryPaginatedAdapter
@@ -182,10 +182,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         lifecycleScope.launch {
             historyViewModel.sortType.collectLatest {
                 when(it){
-                    HistoryRepository.HistorySortType.AUTHOR -> sortChip.text = getString(R.string.author)
-                    HistoryRepository.HistorySortType.DATE -> sortChip.text = getString(R.string.date_added)
-                    HistoryRepository.HistorySortType.TITLE -> sortChip.text = getString(R.string.title)
-                    HistoryRepository.HistorySortType.FILESIZE -> sortChip.text = getString(R.string.file_size)
+                    HistoryRepository2.HistorySortType.AUTHOR -> sortChip.text = getString(R.string.author)
+                    HistoryRepository2.HistorySortType.DATE -> sortChip.text = getString(R.string.date_added)
+                    HistoryRepository2.HistorySortType.TITLE -> sortChip.text = getString(R.string.title)
+                    HistoryRepository2.HistorySortType.FILESIZE -> sortChip.text = getString(R.string.file_size)
                 }
             }
         }
@@ -433,30 +433,30 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
             val sortOptions = listOf(date!!, title!!, author!!, filesize!!)
             sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
             when(historyViewModel.sortType.value!!) {
-                HistoryRepository.HistorySortType.DATE -> changeSortIcon(date, historyViewModel.sortOrder.value!!)
-                HistoryRepository.HistorySortType.TITLE -> changeSortIcon(title, historyViewModel.sortOrder.value!!)
-                HistoryRepository.HistorySortType.AUTHOR -> changeSortIcon(author, historyViewModel.sortOrder.value!!)
-                HistoryRepository.HistorySortType.FILESIZE -> changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
+                HistoryRepository2.HistorySortType.DATE -> changeSortIcon(date, historyViewModel.sortOrder.value!!)
+                HistoryRepository2.HistorySortType.TITLE -> changeSortIcon(title, historyViewModel.sortOrder.value!!)
+                HistoryRepository2.HistorySortType.AUTHOR -> changeSortIcon(author, historyViewModel.sortOrder.value!!)
+                HistoryRepository2.HistorySortType.FILESIZE -> changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
 
             date.setOnClickListener {
                 sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
-                historyViewModel.setSorting(HistoryRepository.HistorySortType.DATE)
+                historyViewModel.setSorting(HistoryRepository2.HistorySortType.DATE)
                 changeSortIcon(date, historyViewModel.sortOrder.value!!)
             }
             title.setOnClickListener {
                 sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
-                historyViewModel.setSorting(HistoryRepository.HistorySortType.TITLE)
+                historyViewModel.setSorting(HistoryRepository2.HistorySortType.TITLE)
                 changeSortIcon(title, historyViewModel.sortOrder.value!!)
             }
             author.setOnClickListener {
                 sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
-                historyViewModel.setSorting(HistoryRepository.HistorySortType.AUTHOR)
+                historyViewModel.setSorting(HistoryRepository2.HistorySortType.AUTHOR)
                 changeSortIcon(author, historyViewModel.sortOrder.value!!)
             }
             filesize.setOnClickListener {
                 sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
-                historyViewModel.setSorting(HistoryRepository.HistorySortType.FILESIZE)
+                historyViewModel.setSorting(HistoryRepository2.HistorySortType.FILESIZE)
                 changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
             val displayMetrics = DisplayMetrics()

@@ -10,7 +10,7 @@ import androidx.work.WorkManager
 import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.models.expand.non_table.RestoreAppDataItem
 import com.ezt.video.downloader.database.repository.DownloadRepository
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.repository.CookieRepository
 import com.ezt.video.downloader.database.repository.CommandTemplateRepository
 import com.ezt.video.downloader.database.repository.SearchHistoryRepository
@@ -29,7 +29,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
     private val workManager : WorkManager = WorkManager.getInstance(application)
     private val preferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
 
-    private val historyRepository : HistoryRepository
+    private val historyRepository : HistoryRepository2
     private val downloadRepository : DownloadRepository
     private val cookieRepository : CookieRepository
     private val commandTemplateRepository : CommandTemplateRepository
@@ -38,7 +38,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
 
     init {
         val dbManager = VideoDownloadDB.getInstance(application)
-        historyRepository = HistoryRepository(dbManager.historyDao)
+        historyRepository = HistoryRepository2(dbManager.historyDao)
         downloadRepository = DownloadRepository(dbManager.downloadDao)
         cookieRepository = CookieRepository(dbManager.cookieDao)
         commandTemplateRepository = CommandTemplateRepository(dbManager.commandTemplateDao)

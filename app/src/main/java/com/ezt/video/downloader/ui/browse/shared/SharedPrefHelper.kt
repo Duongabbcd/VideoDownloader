@@ -5,12 +5,13 @@ import android.content.SharedPreferences
 import android.os.Build
 import com.ezt.video.downloader.ui.browse.qualifier.Proxy
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SharedPrefHelper @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) {
     companion object {
         const val PREF_KEY = "settings_prefs"

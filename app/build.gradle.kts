@@ -227,4 +227,6 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
     implementation ("io.reactivex.rxjava3:rxjava:3.1.10")
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:2.6.1")
 }

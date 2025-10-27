@@ -25,6 +25,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -35,12 +39,15 @@ import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.ads.type.InterAds
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
+import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.ResultViewModel
-import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
 import com.ezt.video.downloader.databinding.ActivityBrowseBinding
 import com.ezt.video.downloader.ui.BaseActivity2
+import com.ezt.video.downloader.ui.browse.detector.SingleLiveEvent
+import com.ezt.video.downloader.ui.browse.viewmodel.DownloadButtonState
 import com.ezt.video.downloader.ui.browse.viewmodel.MainViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.SettingViewModel
+import com.ezt.video.downloader.ui.browse.webtab.WebTab
 import com.ezt.video.downloader.ui.home.MainActivity
 import com.ezt.video.downloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.video.downloader.ui.info.DownloadInfoActivity
@@ -55,7 +62,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBinding::inflate) {
+class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBinding::inflate), BrowserServicesProvider {
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     lateinit var mainViewModel: MainViewModel
@@ -76,7 +83,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
 
 //    lateinit var proxiesViewModel: ProxiesViewModel
 
-    lateinit var settingsViewModel: SettingViewModel
+    val settingsViewModel: SettingViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +93,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
+        sendURL = urlNew
         println("BrowseActivity 0")
         InterAds.preloadInterAds(
             this@BrowseActivity,
@@ -160,7 +167,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
         val DESKTOP_URGENT =  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.90 Safari/537.36"
         val MOBILE_URGENT =   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.90 Mobile Safari/537.36"
         private val TAG = BrowseActivity::class.java.simpleName
-
+        var sendURL = ""
         fun formatUrl(url: String): String {
             return when {
                 URLUtil.isValidUrl(url) -> url
@@ -168,5 +175,41 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                 else -> "https://www.google.com/search?q=$url"
             }
         }
+    }
+
+    override fun getOpenTabEvent(): SingleLiveEvent<WebTab> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCloseTabEvent(): SingleLiveEvent<WebTab> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getUpdateTabEvent(): SingleLiveEvent<WebTab> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getTabsListChangeEvent(): ObservableField<List<WebTab>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPageTab(position: Int): WebTab {
+        TODO("Not yet implemented")
+    }
+
+    override fun getHistoryVModel(): HistoryViewModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getWorkerM3u8MpdEvent(): MutableLiveData<DownloadButtonState> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getWorkerMP4Event(): MutableLiveData<DownloadButtonState> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCurrentTabIndex(): ObservableInt {
+        TODO("Not yet implemented")
     }
 }

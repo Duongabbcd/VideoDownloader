@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import java.net.InetSocketAddress
 import javax.inject.Inject
 import java.net.Proxy
+
 class OkHttpProxyClient @Inject constructor(
     private val okHttpClient: OkHttpClient?,
     private val proxyController: CustomProxyController

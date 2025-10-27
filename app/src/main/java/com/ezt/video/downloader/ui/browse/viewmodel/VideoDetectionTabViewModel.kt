@@ -18,11 +18,13 @@ import com.ezt.video.downloader.ui.browse.proxy_utils.OkHttpProxyClient
 import com.ezt.video.downloader.ui.browse.qualifier.VideFormatEntityList
 import com.ezt.video.downloader.ui.browse.qualifier.VideoFormatEntity
 import com.ezt.video.downloader.ui.browse.qualifier.VideoInfo
+import com.ezt.video.downloader.ui.browse.qualifier.data.RemoteData
 import com.ezt.video.downloader.ui.browse.scheduler.BaseSchedulers
 import com.ezt.video.downloader.ui.browse.scheduler.BaseViewModel
 import com.ezt.video.downloader.ui.browse.repository.VideoRepository
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
@@ -40,9 +42,10 @@ import kotlin.collections.isNotEmpty
 import kotlin.collections.toMutableSet
 import kotlin.text.contains
 
+@HiltViewModel
 open class VideoDetectionTabViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val videoRepository: VideoRepository,
+    @RemoteData private val videoRepository: VideoRepository,
     private val baseSchedulers: BaseSchedulers,
     private val okHttpProxyClient: OkHttpProxyClient,
 ) : BaseViewModel(), IVideoDetector {

@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 abstract class BaseWebTabFragment : Fragment() {
-    @Inject
-    lateinit var browseActivity: BrowseActivity
+    protected val browseActivity: BrowseActivity
+        get() = requireActivity() as BrowseActivity
 
     @Inject
     lateinit var sharedPrefHelper: SharedPrefHelper

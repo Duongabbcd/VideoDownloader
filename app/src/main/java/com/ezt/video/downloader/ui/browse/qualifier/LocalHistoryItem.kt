@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 import java.util.Date
 import java.util.UUID
 
-@Entity(tableName = "HistoryItem")
-data class HistoryItem(
+@Entity(tableName = "LocalHistoryItem")
+data class LocalHistoryItem(
     @PrimaryKey
     var id: String = UUID.randomUUID().toString(),
     var title: String? = null,
@@ -28,7 +28,7 @@ data class HistoryItem(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as HistoryItem
+        other as LocalHistoryItem
 
         if (id != other.id) return false
         if (url != other.url) return false

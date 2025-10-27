@@ -8,12 +8,13 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.viewModelScope
 import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ui.browse.detector.SingleLiveEvent
-import com.ezt.video.downloader.ui.browse.qualifier.HistoryItem
+import com.ezt.video.downloader.ui.browse.qualifier.LocalHistoryItem
 import com.ezt.video.downloader.ui.browse.repository.HistoryRepository
 import com.ezt.video.downloader.ui.browse.scheduler.BaseSchedulers
 import com.ezt.video.downloader.ui.browse.scheduler.BaseViewModel
 import com.ezt.video.downloader.ui.browse.webtab.WebTab
 import com.ezt.video.downloader.ui.browse.webtab.WebTabFactory
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -24,6 +25,7 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@HiltViewModel
 class WebTabViewModel @Inject constructor(
     private val historyRepository: HistoryRepository,
     private val baseSchedulers: BaseSchedulers,
@@ -33,7 +35,7 @@ class WebTabViewModel @Inject constructor(
     val thisTabIndex = ObservableInt(-1)
     val isDownloadDialogShown = ObservableBoolean(false)
     lateinit var tabPublishSubject: PublishSubject<String>
-    var listTabSuggestions: ObservableField<MutableList<HistoryItem>> = ObservableField(
+    var listTabSuggestions: ObservableField<MutableList<LocalHistoryItem>> = ObservableField(
         mutableListOf()
     )
     val isShowProgress = ObservableBoolean(true)
@@ -110,7 +112,7 @@ class WebTabViewModel @Inject constructor(
         }
     }
 
-    private fun getListTabSuggestions(): Flowable<List<HistoryItem>> {
+    private fun getListTabSuggestions(): Flowable<List<LocalHistoryItem>> {
         return Flowable.combineLatest(
             tabPublishSubject.debounce(300, TimeUnit.MILLISECONDS)
                 .toFlowable(BackpressureStrategy.LATEST), historyRepository.getAllHistory().take(1)

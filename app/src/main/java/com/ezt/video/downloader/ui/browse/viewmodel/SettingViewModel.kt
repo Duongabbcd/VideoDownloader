@@ -9,6 +9,7 @@ import com.ezt.video.downloader.ui.browse.detector.SingleLiveEvent
 import com.ezt.video.downloader.ui.browse.scheduler.BaseViewModel
 import com.ezt.video.downloader.ui.browse.shared.SharedPrefHelper
 import com.ezt.video.downloader.util.FileUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ enum class StorageType {
 }
 
 //@OpenForTesting
+@HiltViewModel
 class SettingViewModel @Inject constructor(
     private val sharedPrefHelper: SharedPrefHelper,
 ) :

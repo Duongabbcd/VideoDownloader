@@ -36,7 +36,6 @@ class CustomWebViewClient(
     private val tabViewModel: WebTabViewModel,
     private val settingsModel: SettingViewModel,
     private val videoDetectionModel: IVideoDetector,
-    private val historyModel: HistoryViewModel,
     private val okHttpProxyClient: OkHttpProxyClient,
     private val updateTabEvent: SingleLiveEvent<WebTab>,
     private val pageTabProvider: PageTabProvider,

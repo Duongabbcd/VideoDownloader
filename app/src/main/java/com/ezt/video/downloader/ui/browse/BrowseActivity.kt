@@ -37,6 +37,8 @@ import com.ezt.video.downloader.R
 import com.ezt.video.downloader.ads.RemoteConfig
 import com.ezt.video.downloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.video.downloader.ads.type.InterAds
+import com.ezt.video.downloader.database.models.expand.table.ChapterItem
+import com.ezt.video.downloader.database.models.expand.table.Format
 import com.ezt.video.downloader.database.models.main.ResultItem
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
@@ -44,6 +46,10 @@ import com.ezt.video.downloader.database.viewmodel.ResultViewModel
 import com.ezt.video.downloader.databinding.ActivityBrowseBinding
 import com.ezt.video.downloader.ui.BaseActivity2
 import com.ezt.video.downloader.ui.browse.detector.SingleLiveEvent
+import com.ezt.video.downloader.ui.browse.qualifier.VideFormatEntityList
+import com.ezt.video.downloader.ui.browse.qualifier.VideoFormatEntity
+import com.ezt.video.downloader.ui.browse.qualifier.VideoInfo
+import com.ezt.video.downloader.ui.browse.viewmodel.BrowserViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.DownloadButtonState
 import com.ezt.video.downloader.ui.browse.viewmodel.MainViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.SettingViewModel
@@ -56,13 +62,14 @@ import com.ezt.video.downloader.ui.tab.viewmodel.TabViewModel
 import com.ezt.video.downloader.ui.whatsapp.WhatsAppActivity
 import com.ezt.video.downloader.util.Common.gone
 import com.ezt.video.downloader.util.Common.visible
+import com.ezt.video.downloader.util.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBinding::inflate), BrowserServicesProvider {
+class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBinding::inflate), BrowserServicesProvider,OnDownloadMediaFileListener {
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     lateinit var mainViewModel: MainViewModel
@@ -72,6 +79,8 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
     private val urlNew by lazy {
         intent.getStringExtra("receivedURL") ?: ""
     }
+
+    private lateinit var browserViewModel: BrowserViewModel
 
     private var customView: View? = null
     private var customViewCallback: CustomViewCallback? = null
@@ -93,6 +102,8 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        browserViewModel = ViewModelProvider(this)[BrowserViewModel::class.java]
+
         sendURL = urlNew
         println("BrowseActivity 0")
         InterAds.preloadInterAds(
@@ -163,6 +174,60 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
     }
 
 
+
+    override fun getOpenTabEvent(): SingleLiveEvent<WebTab> {
+        return browserViewModel.openPageEvent
+    }
+
+    override fun getCloseTabEvent(): SingleLiveEvent<WebTab> {
+        return browserViewModel.closePageEvent
+    }
+
+    override fun getUpdateTabEvent(): SingleLiveEvent<WebTab> {
+        return browserViewModel.updateWebTabEvent
+    }
+
+    override fun getTabsListChangeEvent(): ObservableField<List<WebTab>> {
+        return browserViewModel.tabs
+    }
+
+    override fun getPageTab(position: Int): WebTab {
+        val list = browserViewModel.tabs.get() ?: listOf(WebTab.HOME_TAB)
+        return if (position in list.indices) list[position] else WebTab("error", "error")
+    }
+
+    override fun getHistoryVModel(): HistoryViewModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun getWorkerM3u8MpdEvent(): MutableLiveData<DownloadButtonState> {
+        return browserViewModel.workerM3u8MpdEvent
+    }
+
+    override fun getWorkerMP4Event(): MutableLiveData<DownloadButtonState> {
+        return browserViewModel.workerMP4Event
+    }
+
+    override fun getCurrentTabIndex(): ObservableInt {
+        return browserViewModel.currentTab
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        browserViewModel.start()
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        browserViewModel.stop()
+    }
+
+    override fun onDownloadMediaFile(resultItem: ResultItem) {
+        showSingleDownloadSheet(resultItem, type = DownloadViewModel.Type.video)
+    }
+
     companion object {
         val DESKTOP_URGENT =  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.90 Safari/537.36"
         val MOBILE_URGENT =   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.90 Mobile Safari/537.36"
@@ -175,41 +240,44 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                 else -> "https://www.google.com/search?q=$url"
             }
         }
+
+        fun VideoInfo.toResultItem() : ResultItem {
+            return ResultItem(
+                id = 0L,
+                url = downloadUrls.first().url.toString(),
+                title = title,
+                author = downloadUrls.first().url.host,
+                duration = Utils.formatDuration(duration),
+                thumb = thumbnail,
+                website = downloadUrls.first().url.host,
+                playlistTitle = "",
+                formats = formats.toDownloadableFormats(),
+                urls = "",
+                chapters = mutableListOf<ChapterItem>(),
+                playlistURL = "",
+                playlistIndex = 0,
+                creationTime = 0L,
+                availableSubtitles = listOf()
+            )
+        }
+
+        fun VideFormatEntityList.toDownloadableFormats() : MutableList<Format> {
+            return this.formats.map { it ->
+                Format(
+                    format_id = it.formatId.toString(),
+                    container = it.ext ?: "mp4",
+                    vcodec = it.vcodec ?: "",
+                    acodec = it.acodec ?: "",
+                    encoding = "",
+                    filesize = it.fileSize,
+                    tbr = it.tbr.toString(),
+                    fps = it.fps.toString(),
+                    asr = it.asr.toString(),
+                    format_note = "${it.width}x${it.height}",
+                    url = it.url
+                )
+            }.toMutableList()
+        }
     }
 
-    override fun getOpenTabEvent(): SingleLiveEvent<WebTab> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCloseTabEvent(): SingleLiveEvent<WebTab> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getUpdateTabEvent(): SingleLiveEvent<WebTab> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getTabsListChangeEvent(): ObservableField<List<WebTab>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getPageTab(position: Int): WebTab {
-        TODO("Not yet implemented")
-    }
-
-    override fun getHistoryVModel(): HistoryViewModel {
-        TODO("Not yet implemented")
-    }
-
-    override fun getWorkerM3u8MpdEvent(): MutableLiveData<DownloadButtonState> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getWorkerMP4Event(): MutableLiveData<DownloadButtonState> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCurrentTabIndex(): ObservableInt {
-        TODO("Not yet implemented")
-    }
 }

@@ -2,6 +2,7 @@ package com.ezt.video.downloader.ui.browse
 
 import android.graphics.Bitmap
 import android.os.Build
+import android.util.Log
 import android.webkit.HttpAuthHandler
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
@@ -17,12 +18,14 @@ import com.ezt.video.downloader.ui.browse.proxy_utils.CookieUtils
 import com.ezt.video.downloader.ui.browse.proxy_utils.CustomProxyController
 import com.ezt.video.downloader.ui.browse.proxy_utils.OkHttpProxyClient
 import com.ezt.video.downloader.ui.browse.viewmodel.SettingViewModel
+import com.ezt.video.downloader.ui.browse.viewmodel.VideoDetectionTabViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.WebTabViewModel
 import com.ezt.video.downloader.ui.browse.webtab.WebTab
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
+import kotlin.text.get
 
 enum class ContentType {
     M3U8,
@@ -51,6 +54,20 @@ class CustomWebViewClient(
         val viewTitle = view?.title
         val title = tabViewModel.currentTitle.get()
         val userAgent = view?.settings?.userAgentString ?: tabViewModel.userAgent.get()
+
+        if (url != null && lastSavedHistoryUrl != url) {
+                videoDetectionModel.onStartPage(
+                    url,
+                    userAgent
+                        ?: BrowseActivity.MOBILE_URGENT
+                )
+                tabViewModel.onUpdateVisitedHistory(
+                    url,
+                    title,
+                    userAgent
+                )
+
+        }
 
         super.doUpdateVisitedHistory(view, url, isReload)
     }
@@ -99,6 +116,7 @@ class CustomWebViewClient(
 
                 else -> {
                     if ((isCheckOnMp4 || isCheckOnAudio) && contentType != ContentType.OTHER) {
+                        Log.d(VideoDetectionTabViewModel.TAG, "contentType:$contentType $isCheckOnMp4 and $isCheckOnAudio")
                         val disposable = videoDetectionModel.checkRegularVideoOrAudio(
                             requestWithCookies,
                             isCheckOnAudio,

@@ -74,8 +74,8 @@
                             <com.google.android.material.imageview.ShapeableImageView
                                 android:id="@+id/ivCloseTab"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="@dimen/_36sdp"
+                                android:layout_height="@dimen/_36sdp"
                                 android:adjustViewBounds="true"
                                 android:contentDescription="@string/home"
                                 android:foreground="?android:attr/selectableItemBackground"
@@ -120,7 +120,7 @@
                         </LinearLayout>
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@id/et_search"
+                            android:id="@+id/et_search"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             android:layout_weight="1"
@@ -134,21 +134,22 @@
                             android:singleLine="true"
                             android:text="@{viewModel.getTabTextInput()}"
                             android:textSize="12sp"
-                            app:layout_constraintEnd_toStartOf="@+id/browser_menu_container"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_close_refresh"
                             app:layout_constraintStart_toEndOf="@+id/buttons_block"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/iv_close_refresh"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
                             android:adjustViewBounds="true"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:onClick="@{() -> viewModel.isShowProgress() ? browserMenuListener.onBrowserStopClicked() : browserMenuListener.onBrowserReloadClicked()}"
-                            android:padding="@dimen/_8sdp"
+                            android:padding="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
                             android:scaleType="centerCrop"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/et_search"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.466"
                             app:srcCompat="@{viewModel.progressIcon}"
@@ -173,6 +174,7 @@
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/browser_menu_button"
                                 android:layout_width="49dp"
+                                android:visibility="gone"
                                 android:layout_height="49dp"
                                 android:background="?attr/selectableItemBackground"
                                 android:contentDescription="@string/imageView"
@@ -201,15 +203,15 @@
                     android:orientation="horizontal" />
 
                 <FrameLayout
-                    android:layout_width="3dp"
-                    android:layout_height="700dp"
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="match_parent"
                     android:visibility="@{(videoTabVModel.hasCheckLoadingsM3u8() || videoTabVModel.hasCheckLoadingsRegular()) ? View.VISIBLE : View.GONE }"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <ProgressBar
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="700dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:indeterminate="true"
                         android:indeterminateDrawable="@drawable/progress_load_data"

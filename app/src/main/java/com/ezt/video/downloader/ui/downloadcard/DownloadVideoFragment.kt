@@ -182,6 +182,8 @@ class DownloadVideoFragment(
                 }
             }
 
+            binding.moreOption.isVisible = downloadItem.allFormats.size > 1
+
 //            formatViewModel.setItem(downloadItem, !nonSpecific)
 //            formatViewModel.formats.collectLatest {
 //                if (it.isEmpty()) {
@@ -239,10 +241,7 @@ class DownloadVideoFragment(
                 }
 
                 binding.titleTextinput.setEndIconOnClickListener {
-                    if (resultItem != null){
-                        binding.titleTextinput.editText?.setText(resultItem?.title)
-                    }
-                    binding.titleTextinput.endIconMode = END_ICON_NONE
+                    binding.titleTextinput.editText!!.setText("")
                 }
 
                 binding.authorTextinput.setEndIconOnClickListener {

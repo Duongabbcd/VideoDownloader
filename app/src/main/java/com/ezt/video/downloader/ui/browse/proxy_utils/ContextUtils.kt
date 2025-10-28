@@ -1,20 +1,18 @@
-package com.ezt.video.downloader.ui.browse.proxy_utils;
+package com.ezt.video.downloader.ui.browse.proxy_utils
 
+import android.content.Context
 
-import android.content.Context;
+object ContextUtils {
 
-public class ContextUtils {
+    private var sApplicationContext: Context? = null
 
-    private static Context sApplicationContext;
-
-    public static void initApplicationContext(Context appContext) {
-        if (appContext == null) {
-            throw new RuntimeException("Global application context set error");
-        }
-        sApplicationContext = appContext.getApplicationContext();
+    fun initApplicationContext(appContext: Context?) {
+        requireNotNull(appContext) { "Global application context set error" }
+        sApplicationContext = appContext.applicationContext
     }
 
-    public static Context getApplicationContext() {
-        return sApplicationContext;
+    fun getApplicationContext(): Context {
+        return sApplicationContext
+            ?: throw IllegalStateException("ContextUtils not initialized. Call initApplicationContext() first.")
     }
 }

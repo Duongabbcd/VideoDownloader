@@ -12,6 +12,8 @@ import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import com.yausername.youtubedl_android.mapper.VideoFormat
 import okhttp3.Request
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -123,6 +125,7 @@ open class VideoServiceLocal @Inject constructor(
     }
 
     private fun videoEntityFromFormat(videoFormat: VideoFormat): VideoFormatEntity {
+        val size = if(videoFormat.url != null) getFileSizeFromUrl(videoFormat.url) else 0
         return VideoFormatEntity(
             asr = videoFormat.asr,
             tbr = videoFormat.tbr,
@@ -136,7 +139,7 @@ open class VideoServiceLocal @Inject constructor(
             acodec = videoFormat.acodec,
             width = videoFormat.width,
             height = videoFormat.height,
-            fileSize = videoFormat.fileSize,
+            fileSize = if(size > 0) size else videoFormat.fileSize,
             fileSizeApproximate = videoFormat.fileSizeApproximate,
             fps = videoFormat.fps,
             url = videoFormat.url,
@@ -144,4 +147,18 @@ open class VideoServiceLocal @Inject constructor(
             httpHeaders = videoFormat.httpHeaders
         )
     }
+
+    fun getFileSizeFromUrl(url: String?): Long {
+        return try {
+            if(url.isNullOrEmpty()) {
+                return -1
+            }
+            val connection = URL(url).openConnection() as HttpURLConnection
+            connection.requestMethod = "HEAD"
+            connection.getHeaderFieldLong("Content-Length", -1)
+        } catch (e: Exception) {
+            -1
+        }
+    }
+
 }

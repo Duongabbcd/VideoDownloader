@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
+import com.ezt.video.downloader.database.models.expand.table.Format
 import com.google.gson.Gson
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -292,3 +293,4 @@ data class VideoFormatEntity(
     @Expose
     val httpHeaders: Map<String, String>? = null
 )
+

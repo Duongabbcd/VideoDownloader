@@ -1,6 +1,8 @@
 package com.ezt.video.downloader.ui.browse
 
+import android.util.Log
 import com.ezt.video.downloader.ui.browse.proxy_utils.OkHttpProxyClient
+import com.ezt.video.downloader.ui.browse.viewmodel.VideoDetectionTabViewModel
 import okhttp3.Headers
 import okhttp3.Request
 
@@ -11,8 +13,10 @@ class VideoUtils {
             headers: Headers?,
             okHttpProxyClient: OkHttpProxyClient
         ): ContentType {
+
             val regex = Regex("\\.(js|css|m4s|ts)$|^blob:")
-            if (regex.containsMatchIn(url)) {
+            val check = regex.containsMatchIn(url)
+            if (check) {
                 return ContentType.OTHER
             }
 
@@ -30,7 +34,10 @@ class VideoUtils {
                         when {
                             contentTypeStr?.contains("mpegurl") == true -> ContentType.M3U8
                             contentTypeStr?.contains("dash") == true -> ContentType.MPD
-                            contentTypeStr?.contains("video") == true -> ContentType.VIDEO
+                            contentTypeStr?.contains("video") == true ->{
+                                Log.d(VideoDetectionTabViewModel.TAG, "contentTypeStr 1: $contentTypeStr")
+                                ContentType.VIDEO
+                            }
                             contentTypeStr?.contains(
                                 "audio",
                                 ignoreCase = true

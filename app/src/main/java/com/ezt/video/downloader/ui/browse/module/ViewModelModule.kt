@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ezt.video.downloader.database.viewmodel.HistoryViewModel
 import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
 import com.ezt.video.downloader.ui.browse.qualifier.data.ViewModelKey
+import com.ezt.video.downloader.ui.browse.viewmodel.BrowserViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.MainViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.VideoDetectionTabViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.WebTabViewModel
@@ -33,10 +34,10 @@ abstract class ViewModelModule {
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(BrowserViewModel::class)
-//    abstract fun bindBrowserViewModel(viewModel: BrowserViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(BrowserViewModel::class)
+    abstract fun bindBrowserViewModel(viewModel: BrowserViewModel): ViewModel
 //
 //    @Binds
 //    @IntoMap

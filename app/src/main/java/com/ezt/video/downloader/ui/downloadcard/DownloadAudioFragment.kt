@@ -114,6 +114,8 @@ class DownloadAudioFragment(
                     downloadViewModel.createDownloadItemFromResult(resultItem, url, Type.audio)
                 }
             }
+            binding.moreOption.isVisible = downloadItem.allFormats.size > 1
+
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
             try {
@@ -170,13 +172,11 @@ class DownloadAudioFragment(
                 }
 
                 binding.titleTextinput.setEndIconOnClickListener {
-                    if (resultItem != null) {
-                        binding.titleTextinput.editText?.setText(resultItem?.title)
-                    }
-                    binding.titleTextinput.endIconMode = END_ICON_NONE
+                    binding.titleTextinput.editText!!.setText("")
                 }
 
-                 binding.authorTextinput.setEndIconOnClickListener {
+
+                binding.authorTextinput.setEndIconOnClickListener {
                     if (resultItem != null) {
                          binding.authorTextinput.editText?.setText(resultItem?.author)
                     }

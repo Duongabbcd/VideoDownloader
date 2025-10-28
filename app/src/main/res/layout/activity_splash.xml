@@ -103,18 +103,16 @@
         android:background="@color/white"
         android:visibility="gone" />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_16sdp"
+        android:layout_height="@dimen/_6sdp"
         app:layout_constraintBottom_toTopOf="@id/tvStart"
         android:layout_marginBottom="@dimen/_8sdp"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:progress="10"
-        android:progressDrawable="@drawable/custom_progress_drawable"
-        android:max="100"
         android:indeterminate="true"
-        style="?android:attr/progressBarStyleHorizontal" />
+        app:trackColor="#DFF0D8"
+        app:indicatorColor="#4CAF50" />
 
     <TextView
         android:id="@+id/tvStart"

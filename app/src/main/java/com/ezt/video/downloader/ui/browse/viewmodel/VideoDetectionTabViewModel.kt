@@ -299,6 +299,7 @@ open class VideoDetectionTabViewModel @Inject constructor(
         isCheckOnAudio: Boolean,
         isCheckOnVideo: Boolean
     ): Disposable? {
+        Log.d(TAG, "checkRegularVideoOrAudio:$request $isCheckOnAudio and $isCheckOnVideo")
         if (request == null) {
             return null
         }
@@ -619,7 +620,7 @@ open class VideoDetectionTabViewModel @Inject constructor(
     }
 
     companion object {
-        private val TAG = VideoDetectionTabViewModel::class.java.simpleName
+         val TAG = VideoDetectionTabViewModel::class.java.simpleName
     }
 }
 

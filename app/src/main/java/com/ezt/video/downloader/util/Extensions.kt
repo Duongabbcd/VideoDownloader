@@ -346,7 +346,7 @@ object Extensions {
         }.joinToString("\n")
     }
 
-    fun ImageView.loadThumbnail(hideThumb: Boolean, imageURL: String){
+    fun ImageView.loadThumbnail(hideThumb: Boolean, imageURL: String) : Boolean{
         if(!hideThumb){
             if (imageURL.isNotEmpty()) {
                 Picasso.get()
@@ -354,18 +354,22 @@ object Extensions {
                     .resize(1280, 0)
                     .onlyScaleDown()
                     .into(this)
-
+                return true
             } else {
                 println("loadThumbnail: $hideThumb and $imageURL")
                 Picasso.get()
-                    .load(R.drawable.background_radius_10_gray)
+                    .load(R.drawable.background_radius_10_no_image)
                     .resize(1280, 0)
                     .onlyScaleDown()
-                    .placeholder(R.drawable.background_radius_10_gray)
-                    .error(R.drawable.background_radius_10_gray)
+                    .placeholder(R.drawable.background_radius_10_no_image)
+                    .error(R.drawable.background_radius_10_no_image)
                     .into(this)
+
+                return false
             }
         }
+
+        return true
     }
 
     fun ImageView.loadBlurryThumbnail(context: Context, hideThumb: Boolean, imageURL: String) {

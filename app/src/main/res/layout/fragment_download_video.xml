@@ -19,12 +19,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/title"
-            android:paddingHorizontal="@dimen/_10sdp">
+            android:paddingHorizontal="@dimen/_10sdp"
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
+
 
         </com.google.android.material.textfield.TextInputLayout>
 

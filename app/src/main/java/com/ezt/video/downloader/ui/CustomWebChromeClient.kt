@@ -9,12 +9,10 @@ import android.view.WindowManager
 import android.webkit.WebChromeClient
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView
-import com.ezt.video.downloader.database.viewmodel.SettingsViewModel
 import com.ezt.video.downloader.databinding.FragmentWebTabBinding
 import com.ezt.video.downloader.ui.browse.BrowseActivity
 import com.ezt.video.downloader.ui.browse.PageTabProvider
 import com.ezt.video.downloader.ui.browse.detector.SingleLiveEvent
-import com.ezt.video.downloader.ui.browse.viewmodel.SettingViewModel
 import com.ezt.video.downloader.ui.browse.viewmodel.WebTabViewModel
 import com.ezt.video.downloader.ui.browse.webtab.WebTab
 

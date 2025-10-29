@@ -596,4 +596,7 @@
     <string name="clear_all_browser">Riwayat browser telah dihapus</string>
     <string name="welcome_back">Selamat datang kembali!</string>
 
+    <string name="permission_requrired">Izin Diperlukan</string>
+    <string name="open_folder_desc">Karena pembatasan sistem, Anda perlu memberikan izin kepada .Statuses untuk mengunduh file.</string>
+
 </resources>

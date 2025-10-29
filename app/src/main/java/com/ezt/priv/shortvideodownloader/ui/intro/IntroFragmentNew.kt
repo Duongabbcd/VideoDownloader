@@ -476,7 +476,7 @@ class IntroFragmentNew : Fragment() {
             return fragment
         }
 
-        fun setSpannableString(fullText: String, target: List<String>, textView: TextView) {
+        fun setSpannableString(fullText: String, target: List<String>, textView: TextView, colorCode: String = "#15AD72") {
             val spannable = SpannableString(fullText)
 
             // Set all text to black (optional if default is black)
@@ -491,7 +491,7 @@ class IntroFragmentNew : Fragment() {
                 val start = fullText.indexOf(item)
                 if (start >= 0) {
                     spannable.setSpan(
-                        ForegroundColorSpan(Color.parseColor("#15AD72")),
+                        ForegroundColorSpan(Color.parseColor(colorCode)),
                         start,
                         start + item.length,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

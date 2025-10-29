@@ -617,4 +617,7 @@
     <string name="cache_2">Failed to clear cache</string>
     <string name="clear_all_browser">The browser history is cleared</string>
     <string name="welcome_back">Welcome back!</string>
+
+    <string name="permission_requrired">Permission Requrired</string>
+    <string name="open_folder_desc">Due to system restrictions, we need you to authorize .Statuses to download files.</string>
 </resources>

@@ -535,5 +535,6 @@
     <string name="clear_all_browser">ব্রাউজারের ইতিহাস মুছে ফেলা হয়েছে</string>
     <string name="welcome_back">আবার স্বাগতম!</string>
 
-
+    <string name="permission_requrired">অনুমতি প্রয়োজন</string>
+    <string name="open_folder_desc">সিস্টেম সীমাবদ্ধতার কারণে, ফাইল ডাউনলোডের জন্য .Statuses-কে অনুমোদন করতে হবে।</string>
 </resources>

@@ -564,4 +564,7 @@
     <string name="cache_2">Cache konnte nicht gelöscht werden</string>
     <string name="clear_all_browser">Der Browserverlauf wurde gelöscht</string>
     <string name="welcome_back">Willkommen zurück!</string>
+    <string name="permission_requrired">Berechtigung erforderlich</string>
+    <string name="open_folder_desc">Aufgrund von Systemeinschränkungen müssen Sie .Statuses autorisieren, um Dateien herunterzuladen.</string>
+
 </resources>

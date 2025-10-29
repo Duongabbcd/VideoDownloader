@@ -597,4 +597,7 @@
     <string name="clear_all_browser">O histórico do navegador foi limpo</string>
     <string name="welcome_back">Bem‑vindo de volta!</string>
 
+    <string name="permission_requrired">Permissão necessária</string>
+    <string name="open_folder_desc">Devido a restrições do sistema, precisamos que você autorize o .Statuses a baixar arquivos.</string>
+
 </resources>

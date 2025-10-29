@@ -587,4 +587,7 @@
     <string name="clear_all_browser">El historial del navegador se ha borrado</string>
     <string name="welcome_back"> ¡Ich bin noch nicht fertig!</string>
 
+    <string name="permission_requrired">Permiso requerido</string>
+    <string name="open_folder_desc">Debido a las restricciones del sistema, necesitamos que autorices a .Statuses para descargar archivos.</string>
+
 </resources>

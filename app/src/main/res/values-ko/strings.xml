@@ -586,4 +586,7 @@
     <string name="clear_all_browser">브라우저 기록이 삭제되었습니다</string>
     <string name="welcome_back">다시 오신 걸 환영합니다!</string>
 
+    <string name="permission_requrired">권한이 필요합니다</string>
+    <string name="open_folder_desc">시스템 제한으로 인해 파일을 다운로드하려면 .Statuses에 권한을 부여해야 합니다.</string>
+
 </resources>

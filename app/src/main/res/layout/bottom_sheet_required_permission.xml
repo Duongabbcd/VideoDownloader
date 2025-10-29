@@ -18,11 +18,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             style="@style/CustomTextStyleSemiBold22sp"
-            android:text="Permission Requrired"
+            android:text="@string/permission_requrired"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/requiredPerDesc"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="@dimen/_16sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +31,7 @@
             android:textColor="@color/text_color"
             android:textSize="16sp"
             android:gravity="start"
-            android:text="Due to system restrictions, we need you to authorize .Statuses to download files."
+            android:text="@string/open_folder_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         

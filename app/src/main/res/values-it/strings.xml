@@ -593,4 +593,7 @@
     <string name="clear_all_browser">La cronologia del browser è stata cancellata</string>
     <string name="welcome_back">Bentornato!</string>
 
+    <string name="permission_requrired">Autorizzazione richiesta</string>
+    <string name="open_folder_desc">A causa delle restrizioni di sistema, è necessario autorizzare .Statuses a scaricare i file.</string>
+
 </resources>

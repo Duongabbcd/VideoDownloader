@@ -541,4 +541,7 @@
     <string name="clear_all_browser">ब्राउज़र इतिहास साफ़ कर दिया गया है</string>
     <string name="welcome_back">वापस स्वागत है!</string>
 
+    <string name="permission_requrired">अनुमति आवश्यक है</string>
+    <string name="open_folder_desc">सिस्टम प्रतिबंधों के कारण, हमें फ़ाइलें डाउनलोड करने के लिए .Statuses को अनुमति देनी होगी।</string>
+
 </resources>

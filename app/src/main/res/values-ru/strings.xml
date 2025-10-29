@@ -598,4 +598,7 @@
     <string name="clear_all_browser">История браузера была очищена</string>
     <string name="welcome_back">С возвращением!</string>
 
+    <string name="permission_requrired">Требуется разрешение</string>
+    <string name="open_folder_desc">Из-за системных ограничений необходимо разрешить .Statuses загружать файлы.</string>
+
 </resources>

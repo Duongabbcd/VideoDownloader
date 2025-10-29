@@ -8,23 +8,23 @@
 
         <import type="android.view.View" />
 
-        <import type="com.ezt.video.downloader.R" />
+        <import type="com.ezt.priv.shortvideodownloader.R" />
 
         <variable
             name="viewModel"
-            type="com.ezt.video.downloader.ui.browse.viewmodel.WebTabViewModel" />
+            type="com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.WebTabViewModel" />
 
         <variable
             name="videoTabVModel"
-            type="com.ezt.video.downloader.ui.browse.detector.IVideoDetector" />
+            type="com.ezt.priv.shortvideodownloader.ui.browse.detector.IVideoDetector" />
 
         <variable
             name="browserMenuListener"
-            type="com.ezt.video.downloader.ui.browse.BrowserListener" />
+            type="com.ezt.priv.shortvideodownloader.ui.browse.BrowserListener" />
 
         <variable
             name="settingsViewModel"
-            type="com.ezt.video.downloader.ui.browse.viewmodel.SettingViewModel" />
+            type="com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.SettingViewModel" />
     </data>
 
     <FrameLayout
@@ -238,7 +238,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.ezt.video.downloader.ui.browse.widget.MovableContainer
+            <com.ezt.priv.shortvideodownloader.ui.browse.widget.MovableContainer
                 android:id="@+id/floating_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -284,7 +284,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/fab"
                     app:layout_constraintStart_toStartOf="@+id/fab"
                     app:layout_constraintTop_toTopOf="@+id/fab" />
-            </com.ezt.video.downloader.ui.browse.widget.MovableContainer>
+            </com.ezt.priv.shortvideodownloader.ui.browse.widget.MovableContainer>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </FrameLayout>
 

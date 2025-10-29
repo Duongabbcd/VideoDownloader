@@ -7,31 +7,22 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
     id("dagger.hilt.android.plugin")
     id ("kotlin-kapt")
-//    id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
 
 android {
-    namespace = "com.ezt.video.downloader"
+    namespace = "com.ezt.priv.shortvideodownloader"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.ezt.video.downloader"
+        applicationId = "com.ezt.priv.shortvideodownloader"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    splits {
-        abi {
-            isEnable = true
-            reset()
-            include("armeabi-v7a", "arm64-v8a")
-            isUniversalApk  =  false
-        }
     }
 
     //    signingConfigs {
@@ -42,23 +33,6 @@ android {
 //            keyPassword = "12345678"
 //        }
 //    }
-
-    base {
-        archivesName.set("VideoDownloader_${defaultConfig.versionName}")
-    }
-
-    flavorDimensions("default")
-    productFlavors {
-
-        create("develop") {
-            applicationIdSuffix = ".dev"
-        }
-
-
-        create("production") {
-
-        }
-    }
 
     buildTypes {
         release {
@@ -71,6 +45,7 @@ android {
 //            signingConfig = signingConfigs.getByName("release")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -93,6 +68,32 @@ android {
             enableSplit = false
         }
     }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk  =  false
+        }
+    }
+
+    base {
+        archivesName.set("VideoDownloader_${defaultConfig.versionName}")
+    }
+
+//    flavorDimensions("default")
+//    productFlavors {
+//
+//        create("develop") {
+//            applicationIdSuffix = ".dev"
+//        }
+//
+//
+//        create("production") {
+//
+//        }
+//    }
 
     packagingOptions {
         jniLibs {
@@ -210,17 +211,17 @@ dependencies {
     implementation(libs.adjust.android)
     implementation("com.android.installreferrer:installreferrer:2.2")
 
-//    implementation("com.google.ads.mediation:pangle:7.2.0.6.0")
-//    implementation("com.google.ads.mediation:applovin:13.4.0.0")
-//    implementation("com.google.ads.mediation:facebook:6.20.0.0")
-//    implementation("com.google.ads.mediation:vungle:7.5.1.0")
-//    implementation("com.google.ads.mediation:mintegral:16.9.91.1")
-//
+    implementation("com.google.ads.mediation:pangle:7.2.0.6.0")
+    implementation("com.google.ads.mediation:applovin:13.5.0.0")
+    implementation("com.google.ads.mediation:facebook:6.20.0.2")
+    implementation("com.google.ads.mediation:vungle:7.6.0.0")
+    implementation("com.google.ads.mediation:mintegral:16.9.91.2")
+
     implementation("com.google.android.gms:play-services-ads:24.7.0") // or latest
     implementation ("com.airbnb.android:lottie:6.4.0")
     //check update
-//    implementation("com.google.android.play:app-update:2.1.0")
-//    implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation("com.google.android.play:app-update:2.1.0")
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     // Because RxAndroid releases are few and far between, it is recommended you also

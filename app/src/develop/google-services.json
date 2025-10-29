@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "922386450901",
+    "project_id": "videodownloader-43bcf",
+    "storage_bucket": "videodownloader-43bcf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922386450901:android:24051471cf49ee39cd155c",
+        "android_client_info": {
+          "package_name": "com.ezt.priv.shortvideodownloader.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3jbw-kSGgwMBjTSKDDDHE9hhjh0p8sfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

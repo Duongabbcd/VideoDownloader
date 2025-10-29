@@ -7,9 +7,14 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
-        maven("https://jitpack.io") // ✅ Add JitPack here
         mavenCentral()
+        maven("https://jitpack.io") // ✅ Add JitPack here
+        maven(url = "https://android-sdk.is.com/")
+        maven(url = "https://maven.google.com")
+        maven(url = "https://artifact.bytedance.com/repository/pangle/")
+        maven(url = "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea")
         gradlePluginPortal()
+        jcenter()
     }
 }
 dependencyResolutionManagement {
@@ -18,6 +23,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://jitpack.io") // ✅ Add JitPack here
+        maven(url = "https://android-sdk.is.com/")
+        maven(url = "https://maven.google.com")
+        maven(url = "https://artifact.bytedance.com/repository/pangle/")
+        maven(url = "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea")
     }
 }
 

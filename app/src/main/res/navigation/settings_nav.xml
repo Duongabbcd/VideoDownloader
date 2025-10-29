@@ -4,19 +4,19 @@
     app:startDestination="@id/mainSettingsFragment">
     <fragment
         android:id="@+id/appearanceSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.GeneralSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.GeneralSettingsFragment"
         android:label="AppearanceSettingsFragment" />
     <fragment
         android:id="@+id/processingSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.ProcessingSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.ProcessingSettingsFragment"
         android:label="ProcessingSettingsFragment" />
     <fragment
         android:id="@+id/folderSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.FolderSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.FolderSettingsFragment"
         android:label="FolderSettingsFragment" />
     <fragment
         android:id="@+id/updateSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.updating.UpdateSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.updating.UpdateSettingsFragment"
         android:label="UpdateSettingsFragment" >
         <action
             android:id="@+id/action_updateSettingsFragment_to_changeLogFragment"
@@ -24,11 +24,11 @@
     </fragment>
     <fragment
         android:id="@+id/downloadSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.DownloadSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.DownloadSettingsFragment"
         android:label="DownloadSettingsFragment" />
     <fragment
         android:id="@+id/mainSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.MainSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.MainSettingsFragment"
         android:label="MainSettingsFragment" >
         <action
             android:id="@+id/action_mainSettingsFragment_to_appearanceSettingsFragment"
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/advancedSettingsFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.advanced.AdvancedSettingsFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.advanced.AdvancedSettingsFragment"
         android:label="AdvancedSettingsFragment" >
         <action
             android:id="@+id/action_advancedSettingsFragment_to_youtubePlayerClientFragment"
@@ -62,14 +62,14 @@
     </fragment>
     <fragment
         android:id="@+id/youtubePlayerClientFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.advanced.YoutubePlayerClientFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.advanced.YoutubePlayerClientFragment"
         android:label="YoutubePlayerClientFragment" />
     <fragment
         android:id="@+id/changeLogFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.updating.ChangeLogFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.updating.ChangeLogFragment"
         android:label="ChangeLogFragment" />
     <fragment
         android:id="@+id/generateYoutubePoTokensFragment"
-        android:name="com.ezt.video.downloader.ui.more.settings.fragment.advanced.generateyoutubepotokens.GenerateYoutubePoTokensFragment"
+        android:name="com.ezt.priv.shortvideodownloader.ui.more.settings.fragment.advanced.generateyoutubepotokens.GenerateYoutubePoTokensFragment"
         android:label="GenerateYoutubePoTokensFragment" />
 </navigation>

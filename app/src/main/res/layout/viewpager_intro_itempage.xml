@@ -33,13 +33,15 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="@dimen/_8sdp"
         app:layout_constraintTop_toBottomOf="@id/topController"
         app:layout_constraintBottom_toTopOf="@id/bottomControlLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_8sdp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
             <ImageView
                 android:id="@+id/image2"
                 android:layout_width="match_parent"
@@ -69,7 +71,7 @@
                     android:gravity="center"
                     android:padding="@dimen/_20sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
 
                     <ImageView

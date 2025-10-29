@@ -22,10 +22,10 @@
 -if @kotlinx.serialization.Serializable class **
 -keep class androidx.lifecycle.LiveData { *; }
 -keep class com.google.gson.** { *; }
--keep class com.ezt.video.downloader.database.models.expand.table.AudioPreferences
--keep class com.ezt.video.downloader.database.models.expand.table.VideoPreferences
--keep class com.ezt.video.downloader.database.models.expand.non_table.GithubRelease
--keep class com.ezt.video.downloader.database.models.expand.non_table.GithubReleaseAsset
+-keep class com.ezt.priv.shortvideodownloader.database.models.expand.table.AudioPreferences
+-keep class com.ezt.priv.shortvideodownloader.database.models.expand.table.VideoPreferences
+-keep class com.ezt.priv.shortvideodownloader.database.models.expand.non_table.GithubRelease
+-keep class com.ezt.priv.shortvideodownloader.database.models.expand.non_table.GithubReleaseAsset
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }

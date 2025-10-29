@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import java.io.File
 
-class HistoryRepository(private val historyDao: HistoryDao) {
+class HistoryRepository2(private val historyDao: HistoryDao) {
     val items : Flow<List<HistoryItem>> = historyDao.getAllHistory()
     val websites : Flow<List<String>> = historyDao.getWebsites()
     val count : Flow<Int> = historyDao.getCount()

@@ -1,7 +1,5 @@
 package com.ezt.video.downloader.ui.info
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -130,12 +128,18 @@ class DownloadInfoActivity :
         ignoreDuplicates = intent.getBooleanExtra("ignore_duplicates", false) == true
 
 
-        println("DownloadBottomSheetDialog 1: $res")
-        println("DownloadBottomSheetDialog 2: $dwl")
-        println("DownloadBottomSheetDialog 3: ${HomeFragment.latestURL}")
+
         if (res == null) {
             return
         }
+        println("DownloadBottomSheetDialog 1: $res")
+        println("DownloadBottomSheetDialog 2: $dwl")
+        println("DownloadBottomSheetDialog 3: ${HomeFragment.latestURL}")
+        res.formats.onEach {
+            println("DownloadBottomSheetDialog 4: $it")
+        }
+
+
 
         result = res
         currentDownloadItem = dwl

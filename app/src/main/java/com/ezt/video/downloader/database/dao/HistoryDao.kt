@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.ezt.video.downloader.database.models.main.HistoryItem
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.viewmodel.DownloadViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -42,25 +42,25 @@ interface HistoryDao {
             "CASE WHEN :sort = 'ASC' THEN id END ASC," +
             "CASE WHEN :sort = 'DESC' THEN id END DESC," +
             "CASE WHEN :sort = '' THEN id END DESC ")
-    fun getHistoryIDsSortedByID(query : String, type : String, site : String, sort : String) : List<HistoryRepository.HistoryIDsAndPaths>
+    fun getHistoryIDsSortedByID(query : String, type : String, site : String, sort : String) : List<HistoryRepository2.HistoryIDsAndPaths>
 
     @Query("SELECT id, downloadPath FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN title END ASC," +
             "CASE WHEN :sort = 'DESC' THEN title END DESC," +
             "CASE WHEN :sort = '' THEN title END DESC ")
-    fun getHistoryIDsSortedByTitle(query : String, type : String, site : String, sort : String) : List<HistoryRepository.HistoryIDsAndPaths>
+    fun getHistoryIDsSortedByTitle(query : String, type : String, site : String, sort : String) : List<HistoryRepository2.HistoryIDsAndPaths>
 
     @Query("SELECT id, downloadPath FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN author END ASC," +
             "CASE WHEN :sort = 'DESC' THEN author END DESC," +
             "CASE WHEN :sort = '' THEN author END DESC ")
-    fun getHistoryIDsSortedByAuthor(query : String, type : String, site : String, sort : String) : List<HistoryRepository.HistoryIDsAndPaths>
+    fun getHistoryIDsSortedByAuthor(query : String, type : String, site : String, sort : String) : List<HistoryRepository2.HistoryIDsAndPaths>
 
     @Query("SELECT id, downloadPath FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN filesize END ASC," +
             "CASE WHEN :sort = 'DESC' THEN filesize END DESC," +
             "CASE WHEN :sort = '' THEN filesize END DESC ")
-    fun getHistoryIDsSortedByFilesize(query : String, type : String, site : String, sort : String) : List<HistoryRepository.HistoryIDsAndPaths>
+    fun getHistoryIDsSortedByFilesize(query : String, type : String, site : String, sort : String) : List<HistoryRepository2.HistoryIDsAndPaths>
 
     @Query("SELECT * FROM history")
     fun getAllHistory() : Flow<List<HistoryItem>>
@@ -90,7 +90,7 @@ interface HistoryDao {
     fun getAllHistoryByIDs(ids: List<Long>) : List<HistoryItem>
 
     @Query("SELECT downloadPath FROM history WHERE id in (:ids)")
-    fun getDownloadPathsFromIDs(ids: List<Long>) : List<HistoryRepository.HistoryItemDownloadPaths>
+    fun getDownloadPathsFromIDs(ids: List<Long>) : List<HistoryRepository2.HistoryItemDownloadPaths>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: HistoryItem)

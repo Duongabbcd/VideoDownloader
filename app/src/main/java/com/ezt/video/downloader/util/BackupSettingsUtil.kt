@@ -5,7 +5,7 @@ import com.ezt.video.downloader.database.models.expand.non_table.BackupSettingsI
 import com.ezt.video.downloader.database.repository.CommandTemplateRepository
 import com.ezt.video.downloader.database.repository.CookieRepository
 import com.ezt.video.downloader.database.repository.DownloadRepository
-import com.ezt.video.downloader.database.repository.HistoryRepository
+import com.ezt.video.downloader.database.repository.HistoryRepository2
 import com.ezt.video.downloader.database.repository.ObserveSourcesRepository
 import com.ezt.video.downloader.database.repository.SearchHistoryRepository
 import com.google.gson.Gson
@@ -35,7 +35,7 @@ object BackupSettingsUtil {
         return JsonArray()
     }
 
-    suspend fun backupHistory(historyRepository: HistoryRepository) : JsonArray {
+    suspend fun backupHistory(historyRepository: HistoryRepository2) : JsonArray {
         runCatching {
             val historyItems = withContext(Dispatchers.IO) {
                 historyRepository.getAll()

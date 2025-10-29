@@ -14,8 +14,8 @@ import androidx.paging.filter
 import com.ezt.video.downloader.database.VideoDownloadDB
 import com.ezt.video.downloader.database.VideoDownloadDB.SORTING
 import com.ezt.video.downloader.database.models.main.HistoryItem
-import com.ezt.video.downloader.database.repository.HistoryRepository
-import com.ezt.video.downloader.database.repository.HistoryRepository.HistorySortType
+import com.ezt.video.downloader.database.repository.HistoryRepository2
+import com.ezt.video.downloader.database.repository.HistoryRepository2.HistorySortType
 import com.ezt.video.downloader.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository : HistoryRepository
+    private val repository : HistoryRepository2
     val sortOrder = MutableStateFlow(SORTING.DESC)
     val sortType = MutableStateFlow(HistorySortType.DATE)
     val websiteFilter = MutableStateFlow("")
@@ -60,7 +60,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         val dao = VideoDownloadDB.getInstance(application).historyDao
-        repository = HistoryRepository(dao)
+        repository = HistoryRepository2(dao)
         websites = repository.websites
 
         val filters = listOf(dao.getAllHistory(), sortOrder, sortType, websiteFilter, statusFilter, queryFilter, typeFilter)

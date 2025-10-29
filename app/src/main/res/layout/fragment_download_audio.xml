@@ -29,6 +29,13 @@
                     android:layout_height="wrap_content"
                     />
 
+                <ImageView
+                    android:id="@+id/clearAllText"
+                    android:contentDescription="@string/imageView"
+                    android:src="@drawable/baseline_close_24"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"/>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

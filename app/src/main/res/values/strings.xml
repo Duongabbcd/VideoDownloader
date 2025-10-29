@@ -4,10 +4,9 @@
 
     <string name="contact_email" translatable="false"></string>
     <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="adjust_token_key" translatable="false"></string>
+    <string name="adjust_token_key" translatable="false">aqsu0n4s6kn4</string>
     <string name="facebook_id" translatable="false"></string>
     <string name="facebook_client_token" translatable="false"></string>
-
 
     <string name="worst_quality">Worst quality</string>
     <string name="best_quality">Best quality</string>
@@ -599,4 +598,14 @@
     <string name="intro_2_1">2. Play the video</string>
     <string name="intro_3_1">3. Click the download button</string>
     <string name="paste">Paste</string>
+
+
+    <string name="player_resolution" translatable="false">video resolution as in the player</string>
+    <string name="download_started" translatable="false">Video Download Started Successfully!!!</string>
+    <string name="video_found" translatable="false">Video found</string>
+    <string name="whatshould" translatable="false">What should we do?</string>
+    <string name="view" translatable="false">View</string>
+    <string name="dontshow" translatable="false">Don\'t show</string>
+
+
 </resources>

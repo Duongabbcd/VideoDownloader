@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.parcelize)
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
     id("dagger.hilt.android.plugin")
+    id ("kotlin-kapt")
 //    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -24,14 +25,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    splits {
-//        abi {
-//            isEnable = true
-//            reset()
-//            include("armeabi-v7a", "arm64-v8a")
-//            isUniversalApk  =  false
-//        }
-//    }
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk  =  false
+        }
+    }
 
     //    signingConfigs {
 //        create("release") {
@@ -83,7 +84,9 @@ android {
         viewBinding { enable = true }
         buildConfig = true
         compose = true
+        dataBinding = true
     }
+
 
     bundle {
         language {
@@ -127,7 +130,7 @@ dependencies {
     implementation(libs.media3.exoplayer)
 
     implementation("com.google.dagger:hilt-android:2.55")
-    ksp("com.google.dagger:hilt-compiler:2.55")
+    kapt ("com.google.dagger:hilt-compiler:2.55")
 
     // Kotlin / Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${libs.versions.coroutines.get()}")
@@ -218,4 +221,12 @@ dependencies {
     //check update
 //    implementation("com.google.android.play:app-update:2.1.0")
 //    implementation("com.google.android.play:app-update-ktx:2.1.0")
+
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
+    implementation ("io.reactivex.rxjava3:rxjava:3.1.10")
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:2.6.1")
 }

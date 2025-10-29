@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import com.ezt.video.downloader.ui.browse.proxy_utils.ContextUtils
 
 @HiltAndroidApp
 class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
@@ -37,6 +38,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        ContextUtils.initApplicationContext(applicationContext)
         FirebaseApp.initializeApp(this)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@MyApplication)

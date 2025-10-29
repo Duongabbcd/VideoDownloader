@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ezt.video.downloader.database.dao.ResultDao
 import com.ezt.video.downloader.database.dao.HistoryDao
 import com.ezt.video.downloader.database.dao.DownloadDao
@@ -25,6 +27,8 @@ import com.ezt.video.downloader.database.models.main.SearchHistoryItem
 import com.ezt.video.downloader.database.models.main.TemplateShortcut
 import com.ezt.video.downloader.database.models.main.TerminalItem
 import com.ezt.video.downloader.database.models.observeSources.ObserveSourcesItem
+import com.ezt.video.downloader.ui.browse.qualifier.LocalHistoryItem
+import com.ezt.video.downloader.ui.browse.repository.LocalHistoryDao
 
 @TypeConverters(Converters::class)
 @Database(
@@ -38,9 +42,10 @@ import com.ezt.video.downloader.database.models.observeSources.ObserveSourcesIte
         CookieItem::class,
         LogItem::class,
         TerminalItem::class,
-        ObserveSourcesItem::class
+        ObserveSourcesItem::class,
+        LocalHistoryItem::class
     ],
-    version = 1,
+    version = 2,
     autoMigrations = [], exportSchema = true
 )
 abstract class VideoDownloadDB : RoomDatabase() {
@@ -53,6 +58,7 @@ abstract class VideoDownloadDB : RoomDatabase() {
     abstract val logDao: LogDao
     abstract val terminalDao: TerminalDao
     abstract val observeSourcesDao: ObserveSourcesDao
+    abstract val localHistoryDao: LocalHistoryDao
 
     enum class SORTING{
         DESC, ASC
@@ -70,12 +76,29 @@ abstract class VideoDownloadDB : RoomDatabase() {
                     VideoDownloadDB::class.java,
                     "VideoDownloaderDB"
                 )
-                    .addMigrations(*Migrations.migrationList)
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 instance = dbInstance
                 dbInstance
             }
         }
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS LocalHistoryItem (
+                id TEXT NOT NULL PRIMARY KEY,
+                title TEXT,
+                url TEXT NOT NULL,
+                datetime INTEGER NOT NULL,
+                favicon BLOB
+            )
+            """.trimIndent()
+                )
+            }
+        }
+
 
     }
 }

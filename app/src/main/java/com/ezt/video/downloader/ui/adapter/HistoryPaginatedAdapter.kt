@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -103,10 +104,13 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
 
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
+        val noImage = card.findViewById<ImageView>(R.id.noImage)
 
         // THUMBNAIL ----------------------------------
         val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("downloads")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item!!.thumb) }
+        uiHandler.post { val check = thumbnail.loadThumbnail(hideThumb, item!!.thumb)
+            noImage.isVisible = !check
+        }
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.downloads_title)

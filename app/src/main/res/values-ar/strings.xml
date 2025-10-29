@@ -580,4 +580,22 @@
     <string name="intro_3_1">3. اضغط على زر التنزيل</string>
     <string name="paste">لصق</string>
 
+    <string name="player_resolution">دقة الفيديو كما في المشغل</string>
+    <string name="download_started">تم بدء تنزيل الفيديو بنجاح!!!</string>
+    <string name="video_found">تم العثور على الفيديو</string>
+    <string name="whatshould">ماذا يجب أن نفعل؟</string>
+    <string name="view">عرض</string>
+    <string name="dontshow">لا تُظهر</string>
+    <string name="continue_str">متابعة</string>
+    <string name="no_internet_desc">يرجى الاتصال بشبكة Wi-Fi أو شبكة الجوال لعرض هذا المحتوى</string>
+    <string name="no_internet_title">لا يوجد اتصال</string>
+    <string name="try_again">حاول مرة أخرى</string>
+    <string name="no_connection">لا يوجد اتصال بالإنترنت حتى الآن. يجب عليك التحقق من ذلك في إعدادات الجهاز.</string>
+    <string name="can_not_download">لقد قمت بضبط التنزيل عبر Wi-Fi فقط، لذا تأكد من تشغيله للمتابعة</string>
+    <string name="cache_1">تم مسح ذاكرة التخزين المؤقت بنجاح</string>
+    <string name="cache_2">فشل في مسح ذاكرة التخزين المؤقت</string>
+    <string name="clear_all_browser">تم مسح سجل المتصفح</string>
+
+    <string name="welcome_back">مرحبا بكم من جديد!</string>
+
 </resources>

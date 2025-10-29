@@ -579,4 +579,22 @@
     <string name="intro_3_1">3. Clique no botão de download</string>
     <string name="paste">Colar</string>
 
+    <string name="player_resolution">Resolução de vídeo como no reprodutor</string>
+    <string name="download_started">Download de vídeo iniciado com sucesso!!!</string>
+    <string name="video_found">Vídeo encontrado</string>
+    <string name="whatshould">O que devemos fazer?</string>
+    <string name="view">Ver</string>
+    <string name="dontshow">Não mostrar</string>
+    <string name="continue_str">Continuar</string>
+    <string name="no_internet_desc">Conecte-se ao Wi-Fi ou à rede móvel para ver este conteúdo</string>
+    <string name="no_internet_title">Sem conexão</string>
+    <string name="try_again">Tentar novamente</string>
+    <string name="no_connection">Ainda sem conexão com a Internet. Você deve verificá-la nas configurações do dispositivo.</string>
+    <string name="can_not_download">Você configurou para baixar apenas por Wi-Fi, certifique-se de que ele está ativado para continuar</string>
+
+    <string name="cache_1">Cache limpa com sucesso</string>
+    <string name="cache_2">Falha ao limpar cache</string>
+    <string name="clear_all_browser">O histórico do navegador foi limpo</string>
+    <string name="welcome_back">Bem‑vindo de volta!</string>
+
 </resources>

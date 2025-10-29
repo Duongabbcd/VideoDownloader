@@ -578,4 +578,22 @@
     <string name="intro_3_1">3. Klik tombol unduh</string>
     <string name="paste">Tempel</string>
 
+    <string name="player_resolution">Resolusi video seperti di pemutar</string>
+    <string name="download_started">Unduhan video berhasil dimulai!!!</string>
+    <string name="video_found">Video ditemukan</string>
+    <string name="whatshould">Apa yang harus kita lakukan?</string>
+    <string name="view">Lihat</string>
+    <string name="dontshow">Jangan tampilkan</string>
+    <string name="continue_str">Lanjutkan</string>
+    <string name="no_internet_desc">Hubungkan ke Wi-Fi atau jaringan seluler untuk melihat konten ini</string>
+    <string name="no_internet_title">Tidak ada koneksi</string>
+    <string name="try_again">Coba lagi</string>
+    <string name="no_connection">Masih belum ada koneksi internet. Anda harus memeriksanya di pengaturan perangkat.</string>
+    <string name="can_not_download">Kamu mengatur agar hanya bisa mengunduh melalui Wi-Fi, pastikan Wi-Fi aktif untuk melanjutkan</string>
+
+    <string name="cache_1">Cache berhasil dibersihkan</string>
+    <string name="cache_2">Gagal membersihkan cache</string>
+    <string name="clear_all_browser">Riwayat browser telah dihapus</string>
+    <string name="welcome_back">Selamat datang kembali!</string>
+
 </resources>

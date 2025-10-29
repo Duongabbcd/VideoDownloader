@@ -580,4 +580,22 @@
     <string name="intro_3_1">3. Нажмите кнопку загрузки</string>
     <string name="paste">Вставить</string>
 
+    <string name="player_resolution">Разрешение видео как в плеере</string>
+    <string name="download_started">Загрузка видео успешно начата!!!</string>
+    <string name="video_found">Видео найдено</string>
+    <string name="whatshould">Что нам делать?</string>
+    <string name="view">Просмотр</string>
+    <string name="dontshow">Не показывать</string>
+    <string name="continue_str">Продолжить</string>
+    <string name="no_internet_desc">Подключитесь к Wi-Fi или мобильной сети, чтобы просмотреть этот контент</string>
+    <string name="no_internet_title">Нет соединения</string>
+    <string name="try_again">Попробовать снова</string>
+    <string name="no_connection">Все еще нет подключения к интернету. Проверьте это в настройках устройства.</string>
+    <string name="can_not_download">Вы настроили загрузку только через Wi-Fi, убедитесь, что он включён, чтобы продолжить</string>
+
+    <string name="cache_1">Кэш успешно очищен</string>
+    <string name="cache_2">Не удалось очистить кэш</string>
+    <string name="clear_all_browser">История браузера была очищена</string>
+    <string name="welcome_back">С возвращением!</string>
+
 </resources>

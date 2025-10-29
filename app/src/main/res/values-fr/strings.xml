@@ -571,4 +571,22 @@
     <string name="intro_3_1">3. Cliquez sur le bouton de téléchargement</string>
     <string name="paste">Coller</string>
 
+    <string name="player_resolution">Résolution vidéo comme dans le lecteur</string>
+    <string name="download_started">Téléchargement de la vidéo démarré avec succès !!!</string>
+    <string name="video_found">Vidéo trouvée</string>
+    <string name="whatshould">Que devons-nous faire ?</string>
+    <string name="view">Voir</string>
+    <string name="dontshow">Ne pas afficher</string>
+    <string name="continue_str">Continuer</string>
+    <string name="no_internet_desc">Veuillez vous connecter au Wi-Fi ou au réseau mobile pour voir ce contenu</string>
+    <string name="no_internet_title">Aucune connexion</string>
+    <string name="try_again">Réessayer</string>
+    <string name="no_connection">Toujours aucune connexion Internet. Vous devriez vérifier cela dans les paramètres de l’appareil.</string>
+    <string name="can_not_download">Vous avez défini le téléchargement uniquement via le Wi-Fi, assurez-vous qu’il est activé pour continuer</string>
+
+    <string name="cache_1">Cache effacée avec succès</string>
+    <string name="cache_2">Échec de l\'effacement du cache</string>
+    <string name="clear_all_browser">L’historique du navigateur a été effacé</string>
+    <string name="welcome_back">Bon retour !</string>
+
 </resources>

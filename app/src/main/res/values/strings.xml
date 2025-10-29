@@ -600,12 +600,21 @@
     <string name="paste">Paste</string>
 
 
-    <string name="player_resolution" translatable="false">video resolution as in the player</string>
-    <string name="download_started" translatable="false">Video Download Started Successfully!!!</string>
-    <string name="video_found" translatable="false">Video found</string>
-    <string name="whatshould" translatable="false">What should we do?</string>
-    <string name="view" translatable="false">View</string>
-    <string name="dontshow" translatable="false">Don\'t show</string>
+    <string name="player_resolution">video resolution as in the player</string>
+    <string name="download_started">Video Download Started Successfully!!!</string>
+    <string name="video_found" >Video found</string>
+    <string name="whatshould">What should we do?</string>
+    <string name="view" >View</string>
+    <string name="dontshow" >Don\'t show</string>
+    <string name="continue_str">Continue</string>
+    <string name="no_internet_desc">Please connect to Wi-Fi or a mobile network to view this content</string>
+    <string name="no_internet_title">No connection</string>
+    <string name="try_again">Try again</string>
+    <string name="no_connection">Still no internet connection. You should check it in device setting.</string>
+    <string name="can_not_download">You set up to only download by Wifi, so make sure it is turned on to continue</string>
 
-
+    <string name="cache_1">Clear cache successfully</string>
+    <string name="cache_2">Failed to clear cache</string>
+    <string name="clear_all_browser">The browser history is cleared</string>
+    <string name="welcome_back">Welcome back!</string>
 </resources>

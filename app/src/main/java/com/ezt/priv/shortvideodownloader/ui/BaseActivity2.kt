@@ -15,7 +15,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
@@ -34,6 +33,8 @@ import kotlinx.coroutines.launch
 import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.player.PlayerActivity.Companion.returnedFromSettings
+import com.ezt.priv.shortvideodownloader.ui.splash.SplashActivity
+import com.ezt.priv.shortvideodownloader.ui.welcome.WelcomeActivity
 import com.ezt.priv.shortvideodownloader.util.Common
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.system.exitProcess
@@ -46,6 +47,18 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
     val binding: T by lazy { inflater(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            Log.d(TAG, "Activity created fresh")
+        } else {
+            Log.d(TAG, "Activity recreated with savedInstanceState")
+            val intent = Intent(this, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            finish()
+            return
+        }
+
         val isDarkMode = false
         val flag: Int
         Log.d(TAG, "isDarkMode $isDarkMode")
@@ -67,7 +80,6 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
         // Initialize lastKnownUiMode
         lastKnownUiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
-        super.onCreate(savedInstanceState)
         MyApplication.instance.registerAppStateListener(this)
 
         window.decorView.systemUiVisibility = flag
@@ -141,11 +153,13 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
                 return@post
             }
 
-
-//            if (totalTime >= 10 && isHomeActivity) {
-//                println("${this::class.java.simpleName}: launching WelcomeActivity")
-//                startActivity(Intent(this, WelcomeActivity::class.java))
-//            }
+            if(totalTime >= 60 * 30 || MyApplication.isUnderMemory) {
+                // App was in background too long
+                MyApplication.isUnderMemory = false
+            } else if (totalTime >= 10 && isHomeActivity) {
+                println("${this::class.java.simpleName}: launching WelcomeActivity")
+                startActivity(Intent(this, WelcomeActivity::class.java))
+            }
         }
     }
 
@@ -218,6 +232,7 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
     companion object {
         private var now = 0L
         var isHomeActivity = false
+
         private var TAG = BaseActivity::class.java.simpleName
         var lastKnownUiMode = Configuration.UI_MODE_NIGHT_NO // default light mode
     }

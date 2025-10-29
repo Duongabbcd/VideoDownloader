@@ -547,4 +547,21 @@
     <string name="intro_3_1">3. Klicke auf die Download-Schaltfläche</string>
     <string name="paste">Einfügen</string>
 
+    <string name="player_resolution">Videoauflösung wie im Player</string>
+    <string name="download_started">Video-Download erfolgreich gestartet!!!</string>
+    <string name="video_found">Video gefunden</string>
+    <string name="whatshould">Was sollen wir tun?</string>
+    <string name="view">Ansehen</string>
+    <string name="dontshow">Nicht anzeigen</string>
+    <string name="continue_str">Weiter</string>
+    <string name="no_internet_desc">Bitte verbinde dich mit WLAN oder einem Mobilnetz, um diesen Inhalt anzuzeigen</string>
+    <string name="no_internet_title">Keine Verbindung</string>
+    <string name="try_again">Erneut versuchen</string>
+    <string name="no_connection">Noch keine Internetverbindung. Bitte überprüfe dies in den Geräteeinstellungen.</string>
+    <string name="can_not_download">Du hast festgelegt, nur über WLAN herunterzuladen. Stelle sicher, dass es eingeschaltet ist, um fortzufahren</string>
+
+    <string name="cache_1">Cache erfolgreich gelöscht</string>
+    <string name="cache_2">Cache konnte nicht gelöscht werden</string>
+    <string name="clear_all_browser">Der Browserverlauf wurde gelöscht</string>
+    <string name="welcome_back">Willkommen zurück!</string>
 </resources>

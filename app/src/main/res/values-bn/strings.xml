@@ -517,4 +517,23 @@
     <string name="intro_3_1">৩. ডাউনলোড বোতামে ক্লিক করুন</string>
     <string name="paste">পেস্ট</string>
 
+    <string name="player_resolution">প্লেয়ারের মতো ভিডিও রেজোলিউশন</string>
+    <string name="download_started">ভিডিও ডাউনলোড সফলভাবে শুরু হয়েছে!!!</string>
+    <string name="video_found">ভিডিও পাওয়া গেছে</string>
+    <string name="whatshould">আমরা কী করব?</string>
+    <string name="view">দেখুন</string>
+    <string name="dontshow">দেখাবেন না</string>
+    <string name="continue_str">চালিয়ে যান</string>
+    <string name="no_internet_desc">এই বিষয়বস্তু দেখতে Wi-Fi বা মোবাইল নেটওয়ার্কে সংযোগ করুন</string>
+    <string name="no_internet_title">কোন সংযোগ নেই</string>
+    <string name="try_again">আবার চেষ্টা করুন</string>
+    <string name="no_connection">এখনও ইন্টারনেট সংযোগ নেই। আপনাকে ডিভাইস সেটিংসে এটি পরীক্ষা করা উচিত।</string>
+    <string name="can_not_download">আপনি শুধুমাত্র Wi-Fi দিয়ে ডাউনলোড করার জন্য সেট করেছেন, তাই চালিয়ে যেতে Wi-Fi চালু আছে কিনা নিশ্চিত করুন</string>
+
+    <string name="cache_1">ক্যাশ সফলভাবে মুছে ফেলা হয়েছে</string>
+    <string name="cache_2">ক্যাশ মুছে ফেলতে ব্যর্থ</string>
+    <string name="clear_all_browser">ব্রাউজারের ইতিহাস মুছে ফেলা হয়েছে</string>
+    <string name="welcome_back">আবার স্বাগতম!</string>
+
+
 </resources>

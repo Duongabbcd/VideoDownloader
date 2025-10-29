@@ -208,6 +208,7 @@ object NativeAds {
         val adLoader =
             AdLoader.Builder(activity, if (BuildConfig.DEBUG) ADMOB_AD_UNIT_ID_TEST else adId)
                 .forNativeAd { nativeAd ->
+                    println("preloadNativeAds 123: ${nativeAd.mediaContent?.hasVideoContent()}")
                     adapterClassName = nativeAd.responseInfo?.mediationAdapterClassName ?: ""
                     nativeAd.setOnPaidEventListener { adValue ->
                         try {

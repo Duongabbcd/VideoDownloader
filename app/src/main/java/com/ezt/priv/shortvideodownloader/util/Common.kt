@@ -372,17 +372,6 @@ object Common {
     }
 
 
-    fun setFirstUse(context: Context, isFistUse: Boolean) {
-        val preferences = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        preferences.edit().putBoolean("KEY_IS_FIRST_USE", isFistUse).apply()
-    }
-
-    fun getFirstUse(context: Context): Boolean {
-        val preferences = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        return preferences.getBoolean("KEY_IS_FIRST_USE", false)
-    }
-
-
     fun setFavRingtone(context: Context, favRingtones: List<Int>) {
         val prefs = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
         val editor = prefs.edit()
@@ -401,69 +390,17 @@ object Common {
         }
     }
 
-    fun setFavSingleWpp(context: Context, favSingleWpp: List<Int>) {
+    fun setAllowWifiDownloadOnly(context: Context, isAllowed: Boolean = false) {
         val prefs = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
         val editor = prefs.edit()
-        editor.putString("Key_FavSingleWpp", favSingleWpp.joinToString(","))
+        editor.putBoolean("Key_AllowWifiDownloadOnly", isAllowed)
         editor.apply()
     }
 
-    fun getFavSingleWpp(context: Context): List<Int> {
+    fun getAllowWifiDownloadOnly(context: Context) : Boolean {
         val preferences = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val origin = preferences.getString("Key_FavSingleWpp", "") ?: ""
-        return if (origin.isNotEmpty()) {
-            origin.split(",").map { it.toInt() }
-        } else {
-            emptyList()
-        }
+        val origin = preferences.getBoolean("Key_AllowWifiDownloadOnly", false)
+        return origin
     }
-
-    fun setFavSlideWpp(context: Context, favSingleWpp: List<Int>) {
-        val prefs = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString("Key_FavSlideWpp", favSingleWpp.joinToString(","))
-        editor.apply()
-    }
-
-    fun getFavSlideWpp(context: Context): List<Int> {
-        val preferences = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val origin = preferences.getString("Key_FavSlideWpp", "") ?: ""
-        return if (origin.isNotEmpty()) {
-            origin.split(",").map { it.toInt() }
-        } else {
-            emptyList()
-        }
-    }
-
-    fun setFavShortVideoWpp(context: Context, favSingleWpp: List<Int>) {
-        val prefs = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString("Key_FavShortVideoWpp", favSingleWpp.joinToString(","))
-        editor.apply()
-    }
-
-    fun getFavShortVideoWpp(context: Context): List<Int> {
-        val preferences = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val origin = preferences.getString("Key_FavShortVideoWpp", "") ?: ""
-        return if (origin.isNotEmpty()) {
-            origin.split(",").map { it.toInt() }
-        } else {
-            emptyList()
-        }
-    }
-
-    fun setAllPreviousClickValue(context: Context, value: Double) {
-        val prefs = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString("KEY_AD_LTV", value.toString())
-        editor.apply()
-    }
-
-    fun getAllPreviousClickValue(context: Context) : Double {
-        val preferences = context.getSharedPreferences(context.packageName, MODE_PRIVATE)
-        val defaultValue : String = "0.0"
-        return preferences.getString("KEY_AD_LTV", defaultValue)?.toDouble() ?: 0.0
-    }
-
 
 }

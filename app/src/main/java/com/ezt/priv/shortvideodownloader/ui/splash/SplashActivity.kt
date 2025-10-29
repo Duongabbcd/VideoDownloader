@@ -275,7 +275,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         Common.setPreLanguage(this, "en")
 
         //Previous: countOpen <= 1
-        if (countOpen == 0) {
+        if (countOpen >= 1) {
 //            analyticsLogger.updateUserProperties(
 //                this@SplashActivity,
 //                "splash_screen",

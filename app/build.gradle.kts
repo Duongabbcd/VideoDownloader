@@ -202,7 +202,9 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     //advertisement
+    implementation("com.github.thienlp201097:DktechLib:2.1.5")
     implementation("com.facebook.android:facebook-android-sdk:18.0.2")
+    implementation("com.github.thienlp201097:smart-app-rate:1.0.7")
 
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")

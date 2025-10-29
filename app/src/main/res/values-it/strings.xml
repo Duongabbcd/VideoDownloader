@@ -575,4 +575,22 @@
     <string name="intro_3_1">3. Clicca sul pulsante di download</string>
     <string name="paste">Incolla</string>
 
+    <string name="player_resolution">Risoluzione video come nel lettore</string>
+    <string name="download_started">Download video avviato con successo!!!</string>
+    <string name="video_found">Video trovato</string>
+    <string name="whatshould">Cosa dovremmo fare?</string>
+    <string name="view">Visualizza</string>
+    <string name="dontshow">Non mostrare</string>
+    <string name="continue_str">Continua</string>
+    <string name="no_internet_desc">Connettiti al Wi-Fi o a una rete mobile per visualizzare questo contenuto</string>
+    <string name="no_internet_title">Nessuna connessione</string>
+    <string name="try_again">Riprova</string>
+    <string name="no_connection">Ancora nessuna connessione a Internet. Dovresti controllarla nelle impostazioni del dispositivo.</string>
+    <string name="can_not_download">Hai impostato il download solo tramite Wi-Fi, assicurati che sia attivo per continuare</string>
+
+    <string name="cache_1">Cache cancellata con successo</string>
+    <string name="cache_2">Impossibile cancellare la cache</string>
+    <string name="clear_all_browser">La cronologia del browser è stata cancellata</string>
+    <string name="welcome_back">Bentornato!</string>
+
 </resources>

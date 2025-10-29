@@ -3,6 +3,7 @@ package com.ezt.priv.shortvideodownloader.ui.more.settings
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,6 +14,7 @@ import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
 import com.ezt.priv.shortvideodownloader.ui.more.guidance.GuidanceActivity
+import com.ezt.priv.shortvideodownloader.ui.tab.viewmodel.TabViewModel
 import com.ezt.priv.shortvideodownloader.util.Common
 
 class SettingsActivity : BaseActivity2<ActivitySettingsBinding>(ActivitySettingsBinding::inflate) {
@@ -67,6 +69,48 @@ class SettingsActivity : BaseActivity2<ActivitySettingsBinding>(ActivitySettings
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 })
+            }
+
+            val isAllowedWifiOnly = Common.getAllowWifiDownloadOnly(this@SettingsActivity)
+            wifiSwitch.isChecked = isAllowedWifiOnly
+
+            wifiSwitch.setOnCheckedChangeListener {_, isChecked ->
+                if(isChecked) {
+                    Common.setAllowWifiDownloadOnly(this@SettingsActivity, true)
+                } else {
+                    Common.setAllowWifiDownloadOnly(this@SettingsActivity, false)
+                }
+
+            }
+
+            clearCache.setOnClickListener {
+               try {
+                   val cacheDir = this@SettingsActivity.cacheDir
+                   if (cacheDir != null && cacheDir.isDirectory) {
+                       cacheDir.deleteRecursively()
+                   }
+                   Toast.makeText(
+                       this@SettingsActivity,
+                       resources.getString(R.string.cache_1),
+                       Toast.LENGTH_SHORT
+                   ).show()
+               } catch (e: Exception) {
+                   e.printStackTrace()
+                   Toast.makeText(
+                       this@SettingsActivity,
+                       resources.getString(R.string.cache_2),
+                       Toast.LENGTH_SHORT
+                   ).show()
+               }
+            }
+
+            clearBrowserHistory.setOnClickListener {
+                TabViewModel.addNewTab(this@SettingsActivity, listOf())
+                Toast.makeText(
+                    this@SettingsActivity,
+                    resources.getString(R.string.cache_2),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

@@ -10,6 +10,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +28,7 @@ import com.ezt.priv.shortvideodownloader.database.models.main.ResultItem
 import com.ezt.priv.shortvideodownloader.database.viewmodel.DownloadViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.ResultViewModel
 import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
+import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.priv.shortvideodownloader.ui.info.DownloadInfoActivity
@@ -34,6 +38,7 @@ import com.ezt.priv.shortvideodownloader.util.Common.visible
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.getValue
 
 class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(ActivityFacebookInfoBinding::inflate){
     private var facebookURL  =""
@@ -46,11 +51,18 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
     private var isFacebook = false
     private var queryList = mutableListOf<String>()
 
+    private val connectionViewModel: InternetConnectionViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+
+        connectionViewModel.isConnectedLiveData.observe(this) { isConnected ->
+            checkInternetConnected(isConnected)
+        }
+
 
         facebookURL = intent.getStringExtra("facebookURL") ?: ""
 
@@ -138,6 +150,31 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
             }
 
 
+        }
+    }
+
+    private fun checkInternetConnected(isConnected: Boolean) {
+        if (!isConnected) {
+            binding.origin.gone()
+            binding.noInternet.root.visible()
+            binding.noInternet.tryAgain.setOnClickListener {
+                val connected = connectionViewModel.isConnectedLiveData.value == true
+                if (connected) {
+                    binding.origin.visible()
+                    binding.noInternet.root.visibility = View.VISIBLE
+                    // Maybe reload your data
+                } else {
+                    Toast.makeText(
+                        this,
+                        R.string.no_connection,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        } else {
+            binding.origin.visible()
+            binding.noInternet.root.gone()
         }
     }
 

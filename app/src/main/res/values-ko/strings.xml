@@ -568,4 +568,22 @@
     <string name="intro_3_1">3. 다운로드 버튼을 클릭하세요</string>
     <string name="paste">붙여넣기</string>
 
+    <string name="player_resolution">플레이어와 동일한 비디오 해상도</string>
+    <string name="download_started">비디오 다운로드가 성공적으로 시작되었습니다!!!</string>
+    <string name="video_found">비디오를 찾았습니다</string>
+    <string name="whatshould">무엇을 해야 할까요?</string>
+    <string name="view">보기</string>
+    <string name="dontshow">표시하지 않기</string>
+    <string name="continue_str">계속</string>
+    <string name="no_internet_desc">이 콘텐츠를 보려면 Wi-Fi 또는 모바일 네트워크에 연결하세요</string>
+    <string name="no_internet_title">연결 없음</string>
+    <string name="try_again">다시 시도</string>
+    <string name="no_connection">아직 인터넷 연결이 없습니다. 기기 설정에서 확인하세요.</string>
+    <string name="can_not_download">Wi-Fi로만 다운로드하도록 설정했습니다. 계속하려면 Wi-Fi가 켜져 있는지 확인하세요</string>
+
+    <string name="cache_1">캐시가 성공적으로 삭제되었습니다</string>
+    <string name="cache_2">캐시 삭제 실패</string>
+    <string name="clear_all_browser">브라우저 기록이 삭제되었습니다</string>
+    <string name="welcome_back">다시 오신 걸 환영합니다!</string>
+
 </resources>

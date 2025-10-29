@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import androidx.preference.PreferenceManager
 import android.widget.Toast
 import androidx.core.content.edit
@@ -65,7 +66,10 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
             }
         }
         ThemeUtil.init(this)
+
+        registerActivityLifecycleCallbacks(this)
     }
+
     @Throws(YoutubeDLException::class)
     private fun initLibraries() {
         YoutubeDL.getInstance().init(this)
@@ -134,6 +138,8 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun onActivityStarted(activity: Activity) {
         activityReferences++
+
+        println("onActivityStarted: $activityReferences and $isActivityChangingConfigurations")
         if (activityReferences == 1 && !isActivityChangingConfigurations) {
             // App enters foreground
             onAppForegrounded()
@@ -181,6 +187,26 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 //            // Optionally, send to Firebase:
 //            analyticsLogger.logScreenExit(screenName, durationMs)
 //        }
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        when (level) {
+            TRIM_MEMORY_UI_HIDDEN -> {
+                Log.w("MyApplication", "UI is hidden. Level: $level")
+            }
+            TRIM_MEMORY_COMPLETE -> {
+                // System is critically low on memory.
+                // This is a big warning — clear large caches or save important data here.
+                Log.e("MyApplication", "Severe memory pressure. System may kill the app.")
+                isUnderMemory = true
+            }
+            else -> {
+                // System is low on memory, and might start killing background processes.
+                Log.w("MyApplication", "Memory is low. Level: $level")
+               isUnderMemory = true
+            }
+        }
     }
 
     companion object {

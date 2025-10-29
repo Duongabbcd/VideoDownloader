@@ -1,8 +1,11 @@
 package com.ezt.priv.shortvideodownloader.ui.info
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -40,6 +44,7 @@ import com.ezt.priv.shortvideodownloader.databinding.ActivityDownloadInfoBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
+import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.BackgroundToForegroundPageTransformer
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadAudioFragment
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadFragmentAdapter
@@ -50,7 +55,9 @@ import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.priv.shortvideodownloader.ui.more.WebViewActivity
 import com.ezt.priv.shortvideodownloader.ui.social.FacebookInfoActivity
+import com.ezt.priv.shortvideodownloader.util.Common
 import com.ezt.priv.shortvideodownloader.util.Common.gone
+import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -70,6 +77,7 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 import kotlin.collections.isNotEmpty
 import kotlin.collections.none
+import kotlin.getValue
 
 class DownloadInfoActivity :
     BaseActivity2<ActivityDownloadInfoBinding>(ActivityDownloadInfoBinding::inflate) {
@@ -88,7 +96,7 @@ class DownloadInfoActivity :
     private lateinit var shimmerLoadingSubtitle: ShimmerFrameLayout
     private lateinit var subtitle: View
     private lateinit var parentActivity: BaseActivity
-
+    private val connectionViewModel: InternetConnectionViewModel by viewModels()
 
     private lateinit var result: ResultItem
     private lateinit var type: Type
@@ -114,6 +122,11 @@ class DownloadInfoActivity :
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+
+        connectionViewModel.isConnectedLiveData.observe(this) { isConnected ->
+            checkInternetConnected(isConnected)
+        }
 
 
         if (Build.VERSION.SDK_INT >= 33) {
@@ -146,6 +159,31 @@ class DownloadInfoActivity :
         incognito =
             currentDownloadItem?.incognito ?: sharedPreferences.getBoolean("incognito", false)
 
+    }
+
+    private fun checkInternetConnected(isConnected: Boolean) {
+        if (!isConnected) {
+            binding.origin.gone()
+            binding.noInternet.root.visible()
+            binding.noInternet.tryAgain.setOnClickListener {
+                val connected = connectionViewModel.isConnectedLiveData.value == true
+                if (connected) {
+                    binding.origin.visible()
+                    binding.noInternet.root.visibility = View.VISIBLE
+                    // Maybe reload your data
+                } else {
+                    Toast.makeText(
+                        this,
+                        R.string.no_connection,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        } else {
+            binding.origin.visible()
+            binding.noInternet.root.gone()
+        }
     }
 
     override fun onResume() {
@@ -420,6 +458,14 @@ class DownloadInfoActivity :
             }
         }
         download!!.setOnClickListener {
+            val isWifiOnly = Common.getAllowWifiDownloadOnly(this@DownloadInfoActivity)
+
+            if(isWifiOnly && !isConnectedToWifi(this@DownloadInfoActivity)) {
+                Toast.makeText(this, resources.getString(R.string.cancel), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
             lifecycleScope.launch {
                 resultViewModel.cancelUpdateItemData()
                 resultViewModel.cancelUpdateFormatsItemData()
@@ -758,6 +804,13 @@ class DownloadInfoActivity :
                 }
             }
         }
+    }
+
+    private fun isConnectedToWifi(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
     }
 
     private fun executeBackScreen() {

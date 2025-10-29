@@ -13,9 +13,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.admob.max.dktlibrary.utils.admod.NativeHolderAdmob
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.ads.AdmobUtils
+import com.ezt.priv.shortvideodownloader.ads.AdsManager
 import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.databinding.ViewpagerIntroItempageBinding
 import com.ezt.priv.shortvideodownloader.ui.intro.IntroActivityNew.Companion.numberPage
@@ -291,9 +293,10 @@ class IntroFragmentNew : Fragment() {
 //        binding.lottieSlide.gone()
         showView(false)
         activity?.let { it ->
+            binding.rlNative.visibility = View.GONE
             LanguageActivity.showNative(it,
                 NativeAds.ALIAS_NATIVE_FULLSCREEN,
-                binding.frNative,
+                binding.frNativeFull,
                 fullScreen = true,
                 onLoadDone = {
                     binding.mLoadingView.root.visibility = View.GONE
@@ -309,7 +312,7 @@ class IntroFragmentNew : Fragment() {
                         adId = NativeAds.NATIVE_INTRO_FULLSCREEN
                     )
                     LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
-                        binding.frNative, fullScreen = true, {
+                        binding.frNativeFull, fullScreen = true, {
                             binding.mLoadingView.root.visibility = View.GONE
                         }, {
                             Handler(Looper.getMainLooper()).postDelayed({

@@ -10,8 +10,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ezt.priv.shortvideodownloader.R
@@ -21,18 +23,20 @@ import com.ezt.priv.shortvideodownloader.ads.type.InterAds
 import com.ezt.priv.shortvideodownloader.database.models.expand.non_table.WhatsAppStatus
 import com.ezt.priv.shortvideodownloader.databinding.ActivityWhatsappBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
+import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
-import com.ezt.priv.shortvideodownloader.ui.social.FacebookInfoActivity
-import com.ezt.priv.shortvideodownloader.ui.tab.TabActivity
+import com.ezt.priv.shortvideodownloader.ui.welcome.WelcomeActivity
 import com.ezt.priv.shortvideodownloader.ui.whatsapp.adapter.OnEditWhatsAppListener
 import com.ezt.priv.shortvideodownloader.ui.whatsapp.adapter.StatusAdapter
+import com.ezt.priv.shortvideodownloader.ui.whatsapp.bottomsheet.RequiredPermissionBottomSheet
 import com.ezt.priv.shortvideodownloader.ui.whatsapp.viewmodel.WhatsAppViewModel
 import com.ezt.priv.shortvideodownloader.util.Common.gone
 import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.FileUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
+import kotlin.getValue
 
 class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsappBinding::inflate), OnEditWhatsAppListener {
     private val REQUEST_CODE_OPEN_DIRECTORY = 1001
@@ -44,11 +48,16 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
     private lateinit var statusAdapter: StatusAdapter
 
     private lateinit var whatsAppViewModel: WhatsAppViewModel
+    private val connectionViewModel: InternetConnectionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
         whatsAppViewModel = ViewModelProvider(this)[WhatsAppViewModel::class.java]
+
+        connectionViewModel.isConnectedLiveData.observe(this) { isConnected ->
+            checkInternetConnected(isConnected)
+        }
 
         statusAdapter = StatusAdapter(this)
         InterAds.preloadInterAds(
@@ -141,6 +150,32 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
         }
     }
 
+    private fun checkInternetConnected(isConnected: Boolean) {
+        if (!isConnected) {
+            binding.origin.gone()
+            binding.noInternet.root.visible()
+            binding.noInternet.tryAgain.setOnClickListener {
+                val connected = connectionViewModel.isConnectedLiveData.value == true
+                if (connected) {
+                    binding.origin.visible()
+                    binding.noInternet.root.visibility = View.VISIBLE
+                    // Maybe reload your data
+                } else {
+                    Toast.makeText(
+                        this,
+                        R.string.no_connection,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        } else {
+            binding.origin.visible()
+            binding.noInternet.root.gone()
+        }
+    }
+
+
     private fun displayByCondition(position: Int) {
         currentTab = position
         when(position) {
@@ -178,19 +213,17 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
     // Handle result from folder picker
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && data?.data != null) {
-            val uri = data.data!!
-
-            contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-
-            when (requestCode) {
-                REQUEST_CODE_OPEN_DIRECTORY -> {
-                    println("Picked WhatsApp statuses folder: $uri")
-                    saveUri(uri) // Save to PREF_KEY_STATUSES_URI
-                }
+        if (requestCode == REQUEST_CODE_OPEN_DIRECTORY && resultCode == RESULT_OK) {
+            val treeUri = data?.data
+            if (treeUri != null) {
+                contentResolver.takePersistableUriPermission(
+                    treeUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                saveUri(treeUri)
+                Toast.makeText(this, "Folder selected", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Folder not selected", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -198,6 +231,7 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
 
 
     private fun openStatusFolderPicker() {
+        WelcomeActivity.isFromService = true
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
             addFlags(
                 Intent.FLAG_GRANT_READ_URI_PERMISSION or
@@ -208,29 +242,24 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Encode the path with slashes replaced by %2F
-            val encodedPath = Uri.encode("Android/media/com.whatsapp/WhatsApp/Media")
-            val initialUri = Uri.parse("content://com.android.externalstorage.documents/tree/primary:$encodedPath")
+            // Try to hint the correct folder; user may still need to navigate manually
+//            val targetPath = "WhatsApp/Media/.Statuses"
+//            val encodedPath = Uri.encode(targetPath)
+            val initialUri = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fmedia/document/primary%3AAndroid%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses")
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, initialUri)
         }
 
         startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY)
     }
 
-
-    fun saveUri(uri: Uri) {
-        contentResolver.takePersistableUriPermission(
-            uri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
+    private fun saveUri(uri: Uri) {
         prefs.edit().putString(PREF_KEY_STATUSES_URI, uri.toString()).apply()
     }
 
-    fun getSavedUri(): Uri? =
+    private fun getSavedUri(): Uri? =
         prefs.getString(PREF_KEY_STATUSES_URI, null)?.let { Uri.parse(it) }
 
-
-    fun hasAccess(): Boolean {
+    private fun hasAccess(): Boolean {
         val uri = getSavedUri() ?: return false
         return contentResolver.persistedUriPermissions.any {
             it.uri == uri && it.isReadPermission
@@ -250,11 +279,21 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
             loadBanner(this, BANNER_HOME)
         }
 
-        if (!hasAccess() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+        if (!hasAccess() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // If no access, prompt the user to pick the status folder
-            openStatusFolderPicker()
+            val requestPermissionDialog = RequiredPermissionBottomSheet(this@WhatsAppActivity){
+                openStatusFolderPicker()
+            }
+
+            requestPermissionDialog.show()
+
         }
     }
+
+
+
+
 
     override fun onDownloadListener(status: WhatsAppStatus) {
        val path = Uri.parse(status.path)

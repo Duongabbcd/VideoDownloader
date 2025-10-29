@@ -87,6 +87,7 @@ object ThemeUtil {
     }
 
     fun updateTheme(activity: Activity) {
+        return
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
 
         //update accent

@@ -569,4 +569,22 @@
     <string name="intro_3_1">3. Haz clic en el botón de descarga</string>
     <string name="paste">Pegar</string>
 
+    <string name="player_resolution">Resolución de video como en el reproductor</string>
+    <string name="download_started">¡Descarga de video iniciada con éxito!</string>
+    <string name="video_found">Video encontrado</string>
+    <string name="whatshould">¿Qué debemos hacer?</string>
+    <string name="view">Ver</string>
+    <string name="dontshow">No mostrar</string>
+    <string name="continue_str">Continuar</string>
+    <string name="no_internet_desc">Conéctate a Wi-Fi o una red móvil para ver este contenido</string>
+    <string name="no_internet_title">Sin conexión</string>
+    <string name="try_again">Intentar de nuevo</string>
+    <string name="can_not_download">Has configurado las descargas solo por Wi-Fi, asegúrate de que esté activado para continuar</string>
+    <string name="no_connection">Aún no hay conexión a Internet. Debes comprobarlo en la configuración del dispositivo.</string>
+
+    <string name="cache_1">Caché limpiada correctamente</string>
+    <string name="cache_2">Error al limpiar la caché</string>
+    <string name="clear_all_browser">El historial del navegador se ha borrado</string>
+    <string name="welcome_back"> ¡Ich bin noch nicht fertig!</string>
+
 </resources>

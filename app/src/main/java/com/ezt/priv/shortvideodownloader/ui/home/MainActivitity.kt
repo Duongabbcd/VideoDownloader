@@ -19,6 +19,8 @@ import android.view.WindowInsets
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
@@ -48,11 +50,13 @@ import com.ezt.priv.shortvideodownloader.database.viewmodel.ResultViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.SettingsViewModel
 import com.ezt.priv.shortvideodownloader.databinding.ActivityMainBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
+import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
 import com.ezt.priv.shortvideodownloader.ui.downloads.DownloadQueueMainFragment
 import com.ezt.priv.shortvideodownloader.ui.downloads.HistoryFragment
 import com.ezt.priv.shortvideodownloader.ui.more.settings.SettingsActivity
 import com.ezt.priv.shortvideodownloader.util.Common
 import com.ezt.priv.shortvideodownloader.util.Common.gone
+import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.CrashListener
 import com.ezt.priv.shortvideodownloader.util.FileUtil
 import com.ezt.priv.shortvideodownloader.util.NavbarUtil
@@ -100,9 +104,15 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
 
+    private val connectionViewModel: InternetConnectionViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val videoDownloaderPath: String = FileUtil.getDefaultApplicationPath()
+        isHomeActivity = true
+        connectionViewModel.isConnectedLiveData.observe(this) { isConnected ->
+            checkInternetConnected(isConnected)
+        }
         addingNoMediaFiles(videoDownloaderPath)
 
         handleIncomingIntent(intent)
@@ -315,6 +325,31 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                 }
 
             }
+        }
+    }
+
+    private fun checkInternetConnected(isConnected: Boolean) {
+        if (!isConnected) {
+            binding.origin.gone()
+            binding.noInternet.root.visible()
+            binding.noInternet.tryAgain.setOnClickListener {
+                val connected = connectionViewModel.isConnectedLiveData.value == true
+                if (connected) {
+                    binding.origin.visible()
+                    binding.noInternet.root.visibility = View.VISIBLE
+                    // Maybe reload your data
+                } else {
+                    Toast.makeText(
+                        this,
+                        R.string.no_connection,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        } else {
+            binding.origin.visible()
+            binding.noInternet.root.gone()
         }
     }
 
@@ -585,6 +620,11 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
         exitProcess(0)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        isHomeActivity = false
+    }
+
     companion object {
         private val TAG = MainActivity::class.java.simpleName
         var isChangeTheme = false
@@ -616,29 +656,6 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                     }
 
                 }
-            }
-
-        }
-
-        fun backToScreen(activity: AppCompatActivity, title: String = "INTER_AD1") {
-            val inter = InterAds.ALIAS_INTER_DOWNLOAD
-
-            val condition = RemoteConfig.INTER_DOWNLOAD_2
-            if (condition != "0") {
-                InterAds.showPreloadInter(
-                    activity = activity,
-                    alias = inter,
-                    onLoadDone = {
-                        Log.d(TAG, "onLoadDone")
-                        activity.finish()
-                    },
-                    onLoadFailed = {
-                        Log.d(TAG, "onLoadFailed")
-                        InterAds.preloadInterAds(activity, inter, condition)
-                        activity.finish()
-                    })
-            } else {
-                activity.finish()
             }
 
         }

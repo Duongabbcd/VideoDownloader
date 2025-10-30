@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.main.home.browser.homeTab.BrowserHomeFragment">
@@ -258,7 +259,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
-                    android:backgroundTint="#8E5400"
+                    android:backgroundTint="@color/tab_select"
                     android:contentDescription="@string/imageView"
                     android:onClick="@{() -> videoTabVModel.showVideoInfo()}"
                     android:src="@{videoTabVModel.getDownloadBtnIcon()}"

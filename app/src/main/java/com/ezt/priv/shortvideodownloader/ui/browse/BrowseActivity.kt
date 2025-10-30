@@ -1,39 +1,20 @@
 package com.ezt.priv.shortvideodownloader.ui.browse
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.webkit.JavascriptInterface
 import android.webkit.URLUtil
-import android.webkit.WebChromeClient
 import android.webkit.WebChromeClient.CustomViewCallback
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.preference.PreferenceManager
-import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.priv.shortvideodownloader.ads.type.InterAds
@@ -47,7 +28,6 @@ import com.ezt.priv.shortvideodownloader.databinding.ActivityBrowseBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.browse.detector.SingleLiveEvent
 import com.ezt.priv.shortvideodownloader.ui.browse.qualifier.VideFormatEntityList
-import com.ezt.priv.shortvideodownloader.ui.browse.qualifier.VideoFormatEntity
 import com.ezt.priv.shortvideodownloader.ui.browse.qualifier.VideoInfo
 import com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.BrowserViewModel
 import com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.DownloadButtonState
@@ -57,16 +37,10 @@ import com.ezt.priv.shortvideodownloader.ui.browse.webtab.WebTab
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.priv.shortvideodownloader.ui.info.DownloadInfoActivity
-import com.ezt.priv.shortvideodownloader.ui.tab.TabActivity
 import com.ezt.priv.shortvideodownloader.ui.tab.viewmodel.TabViewModel
-import com.ezt.priv.shortvideodownloader.ui.whatsapp.WhatsAppActivity
 import com.ezt.priv.shortvideodownloader.util.Common.gone
-import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.Utils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBinding::inflate), BrowserServicesProvider,OnDownloadMediaFileListener {

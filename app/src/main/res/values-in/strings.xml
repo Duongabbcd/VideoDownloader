@@ -573,9 +573,10 @@
     <string name="got_it">Mengerti</string>
     <string name="next">Berikutnya</string>
 
-    <string name="intro_1_1">1. Pergi ke situs web</string>
-    <string name="intro_2_1">2. Putar videonya</string>
+    <string name="intro_1_1">1. Klik bagikan atau salin tautan</string>
+    <string name="intro_2_1">2. Klik salah satu tombol ini</string>
     <string name="intro_3_1">3. Klik tombol unduh</string>
+
     <string name="paste">Tempel</string>
 
     <string name="player_resolution">Resolusi video seperti di pemutar</string>
@@ -598,5 +599,6 @@
 
     <string name="permission_requrired">Izin Diperlukan</string>
     <string name="open_folder_desc">Karena pembatasan sistem, Anda perlu memberikan izin kepada .Statuses untuk mengunduh file.</string>
+    <string name="quality_options">Opsi kualitas</string>
 
 </resources>

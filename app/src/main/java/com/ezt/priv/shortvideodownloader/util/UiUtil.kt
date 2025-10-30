@@ -111,10 +111,25 @@ object UiUtil {
     //return filesize
     fun populateFormatCard(context: Context, formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>? = null, showSize: Boolean = true) : Long {
         var formatNote = chosenFormat.format_note
+
+        println("formatNote: $formatNote")
         if (formatNote.isEmpty()) formatNote = context.getString(R.string.defaultValue)
         else if (formatNote == "best") formatNote = context.getString(R.string.best_quality)
         else if (formatNote == "worst") formatNote = context.getString(R.string.worst_quality)
 
+        formatNote = when {
+            formatNote.contains("1080x1920") -> "FULL HD"
+            formatNote.contains("1920x1080")  -> "FULL HD"
+            formatNote.contains("1280x720") -> "HD"
+            formatNote.contains("720x1280") -> "HD"
+            formatNote.contains("720x480") -> "SD"
+            formatNote.contains("480x720") -> "SD"
+            formatNote.contains("720x576") -> "SD"
+            formatNote.contains("576x720") -> "SD"
+            formatNote.contains("854x480") -> "MHD"
+            formatNote.contains("480x854") -> "MHD"
+            else -> formatNote
+        }
         var container = chosenFormat.container
         if (container == "Default" || container.isBlank()) container = context.getString(R.string.defaultValue)
 

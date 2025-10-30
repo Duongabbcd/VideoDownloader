@@ -112,8 +112,8 @@ open class VideoDetectionTabViewModel @Inject constructor(
         downloadButtonState.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 when (downloadButtonState.get()) {
-                    is DownloadButtonStateCanNotDownload -> downloadButtonIcon.set(R.drawable.ic_refresh)
-                    is DownloadButtonStateCanDownload -> downloadButtonIcon.set(R.drawable.ic_downloads)
+                    is DownloadButtonStateCanNotDownload -> downloadButtonIcon.set(R.drawable.ic_refresh_white)
+                    is DownloadButtonStateCanDownload -> downloadButtonIcon.set(R.drawable.ic_downloads_white)
                     is DownloadButtonStateLoading -> {
                         downloadButtonIcon.set(R.drawable.invisible_24px)
                     }

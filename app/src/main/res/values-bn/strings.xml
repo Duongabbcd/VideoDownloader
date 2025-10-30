@@ -512,8 +512,8 @@
     <string name="got_it">বুঝেছি</string>
     <string name="next">পরবর্তী</string>
 
-    <string name="intro_1_1">১. ওয়েবসাইটে যান</string>
-    <string name="intro_2_1">২. ভিডিওটি চালান</string>
+    <string name="intro_1_1">১. শেয়ার বা লিংক কপি করুন</string>
+    <string name="intro_2_1">২. এই বোতামগুলোর যেকোনো একটিতে ক্লিক করুন</string>
     <string name="intro_3_1">৩. ডাউনলোড বোতামে ক্লিক করুন</string>
     <string name="paste">পেস্ট</string>
 
@@ -537,4 +537,6 @@
 
     <string name="permission_requrired">অনুমতি প্রয়োজন</string>
     <string name="open_folder_desc">সিস্টেম সীমাবদ্ধতার কারণে, ফাইল ডাউনলোডের জন্য .Statuses-কে অনুমোদন করতে হবে।</string>
+    <string name="quality_options">মানের বিকল্প</string>
+
 </resources>

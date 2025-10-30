@@ -542,9 +542,10 @@
     <string name="got_it">Verstanden</string>
     <string name="next">Weiter</string>
 
-    <string name="intro_1_1">1. Gehe zur Website</string>
-    <string name="intro_2_1">2. Spiele das Video ab</string>
+    <string name="intro_1_1">1. Klicke auf „Teilen“ oder „Link kopieren“</string>
+    <string name="intro_2_1">2. Klicke auf eine dieser Schaltflächen</string>
     <string name="intro_3_1">3. Klicke auf die Download-Schaltfläche</string>
+
     <string name="paste">Einfügen</string>
 
     <string name="player_resolution">Videoauflösung wie im Player</string>
@@ -566,5 +567,6 @@
     <string name="welcome_back">Willkommen zurück!</string>
     <string name="permission_requrired">Berechtigung erforderlich</string>
     <string name="open_folder_desc">Aufgrund von Systemeinschränkungen müssen Sie .Statuses autorisieren, um Dateien herunterzuladen.</string>
+    <string name="quality_options">Qualitätsoptionen</string>
 
 </resources>

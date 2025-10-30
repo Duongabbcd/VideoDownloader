@@ -51,7 +51,7 @@ class WebTabViewModel @Inject constructor(
 
     val loadPageEvent = SingleLiveEvent<WebTab>()
 
-    private val tabUrl = ObservableField("")
+    private val tabUrl: ObservableField<String> = ObservableField("")
     private var tabSuggestionJob: Job? = null
 
     override fun start() {
@@ -163,6 +163,7 @@ class WebTabViewModel @Inject constructor(
     }
 
     fun getTabTextInput(): ObservableField<String> {
+        println("getTabTextInput: ${tabUrl.get()}")
         return tabUrl
     }
 

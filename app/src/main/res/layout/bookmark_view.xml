@@ -9,8 +9,8 @@
     <ImageView
         android:id="@+id/bookmarkIcon"
         android:contentDescription="@string/imageView"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         android:padding="@dimen/_2sdp"
         android:gravity="center"
         android:textColor="@color/white"
@@ -24,7 +24,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="Dailymotion"
-        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_8sdp"
        style="@style/CustomTextStyleMedium12sp" />
 
 </LinearLayout>

@@ -16,6 +16,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.Patterns
+import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -34,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -43,10 +45,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezt.priv.shortvideodownloader.ui.adapter.HomeAdapter
 import com.ezt.priv.shortvideodownloader.R
+import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
+import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.database.models.expand.non_table.SearchSuggestionItem
 import com.ezt.priv.shortvideodownloader.database.models.expand.non_table.SearchSuggestionType
 import com.ezt.priv.shortvideodownloader.database.models.main.ResultItem
@@ -59,7 +64,9 @@ import com.ezt.priv.shortvideodownloader.ui.adapter.SearchSuggestionsAdapter
 import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
 import com.ezt.priv.shortvideodownloader.ui.home.adapter.BookmarkAdapter
 import com.ezt.priv.shortvideodownloader.ui.info.DownloadInfoActivity
+import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
 import com.ezt.priv.shortvideodownloader.ui.more.WebViewActivity
+import com.ezt.priv.shortvideodownloader.ui.more.guidance.GuidanceActivity
 import com.ezt.priv.shortvideodownloader.ui.more.settings.SettingsActivity
 import com.ezt.priv.shortvideodownloader.ui.social.FacebookInfoActivity
 import com.ezt.priv.shortvideodownloader.ui.tab.TabActivity
@@ -69,8 +76,10 @@ import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.Extensions.enableFastScroll
 import com.ezt.priv.shortvideodownloader.util.Extensions.isURL
 import com.ezt.priv.shortvideodownloader.util.NotificationUtil
+import com.ezt.priv.shortvideodownloader.util.SwipeGestureListener
 import com.ezt.priv.shortvideodownloader.util.ThemeUtil
 import com.ezt.priv.shortvideodownloader.util.UiUtil
+import com.ezt.priv.shortvideodownloader.util.Utils.setOnSwipeListener
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
@@ -87,7 +96,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.schabi.newpipe.extractor.timeago.patterns.tr
 import java.net.URL
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -137,11 +145,73 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var showClipboardFab: Boolean = false
 
     private lateinit var bookmarkAdapter: BookmarkAdapter
+
+    private var isRight = false
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         activity = getActivity()
         mainActivity = activity as MainActivity?
+
+        mainActivity?.let {
+//            binding.allBookmarks.setOnSwipeListener(object : SwipeGestureListener(it) {
+//                override fun onSwipeLeft() {
+//                    isRight = true
+//                    println("RecyclerView swiped RIGHT")
+//                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_1)
+//                    bookmarkAdapter.submitList(defaultList2)
+//                }
+//
+//                override fun onSwipeRight() {
+//                    isRight = false
+//                    println("RecyclerView swiped LEFT")
+//                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_2)
+//                    bookmarkAdapter.submitList(defaultList1)
+//                }
+//            })
+
+            binding.bookmarkDisplay.setOnClickListener {
+                isRight = !isRight
+                if(!isRight) {
+                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_1)
+                    bookmarkAdapter.submitList(defaultList1)
+                } else {
+                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_2)
+                    bookmarkAdapter.submitList(defaultList2)
+                }
+            }
+
+            binding.rlNative.gone()
+            if(RemoteConfig.NATIVE_HOME == "0") {
+                binding.rlNative.gone()
+                return@let
+            }
+            LanguageActivity.showNative(it, NativeAds.ALIAS_NATIVE_HOME, binding.frNative, fullScreen = false,{
+                binding.rlNative.visible()
+                binding.mLoadingView.root.visibility = GONE
+            }, {
+                if (RemoteConfig.NATIVE_HOME == "0") {
+                    binding.rlNative.visibility = GONE
+                    return@showNative
+                }
+                NativeAds.preloadNativeAds(
+                    it,
+                    alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                    adId = NativeAds.NATIVE_INTRO_FULLSCREEN
+                )
+                LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_HOME,
+                    binding.frNative, fullScreen = false, {
+                        binding.mLoadingView.root.visibility = View.GONE
+                    }, {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding.rlNative.visibility = View.GONE
+                        }, 1500) // Delay 1500 ms (1.5 seconds)
+                    })
+            } )
+
+        }
+
         quickLaunchSheet = false
         notificationUtil = NotificationUtil(requireContext())
         selectedObjects = arrayListOf()
@@ -186,9 +256,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.allBookmarks.enableFastScroll()
 
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
-
-        bookmarkAdapter.submitList(defaultList)
-
+        bookmarkAdapter.submitList(defaultList1)
 
         searchSuggestionsAdapter = SearchSuggestionsAdapter(
             this,
@@ -285,6 +353,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }else{
                 mainActivity?.finishAffinity()
             }
+        }
+
+        binding.guidanceBtn.setOnClickListener {
+            val ctx = context ?: return@setOnClickListener
+            startActivity(Intent(ctx, GuidanceActivity::class.java))
         }
 
         lifecycleScope.launch {
@@ -435,7 +508,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
             if(MainActivity.isSharedURL) {
-                MainActivity.isSharedURL  = false
+                MainActivity.isSharedURL = false
                 executeSearchingClipboard(clipboardList)
             }
 
@@ -1110,7 +1183,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         var latestURL = ""
 
-        private val defaultList = listOf<Bookmark>(
+        private val defaultList1 = listOf<Bookmark>(
 //            Bookmark("Google", "https://www.google.com", null, R.drawable.icon_google),
 //            Bookmark("Youtube", "https://youtube.com", null, R.drawable.icon_youtube),
             Bookmark("Facebook", "https://www.facebook.com/", "com.facebook.katana", R.drawable.icon_facebook),
@@ -1121,9 +1194,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             Bookmark("Dailymotion", "https://www.dailymotion.com",  "com.dailymotion.dailymotion",  R.drawable.icon_dailymotion),
             Bookmark("Vimeo", "https://vimeo.com", "com.vimeo.android.videoapp", R.drawable.icon_vimeo),
             Bookmark("Tubidy", "https://tubidy.cv", "com.tubidy", R.drawable.icon_tubidy),
+
+        )
+
+        private val defaultList2 = listOf<Bookmark>(
             Bookmark("Pinterest", "https://www.pinterest.com/videos", "com.pinterest", R.drawable.icon_pinterest),
             Bookmark("ImDb", "https://www.imdb.com", "com.imdb.mobile", R.drawable.icon_imdb),
-
         )
     }
 

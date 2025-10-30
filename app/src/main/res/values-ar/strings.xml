@@ -575,8 +575,8 @@
     <string name="got_it">فهمت</string>
     <string name="next">التالي</string>
 
-    <string name="intro_1_1">1. انتقل إلى الموقع</string>
-    <string name="intro_2_1">2. قم بتشغيل الفيديو</string>
+    <string name="intro_1_1">1. اضغط على مشاركة أو نسخ الرابط</string>
+    <string name="intro_2_1">2. اضغط على أحد هذه الأزرار</string>
     <string name="intro_3_1">3. اضغط على زر التنزيل</string>
     <string name="paste">لصق</string>
 
@@ -599,5 +599,6 @@
     <string name="welcome_back">مرحبا بكم من جديد!</string>
     <string name="permission_requrired">الإذن مطلوب</string>
     <string name="open_folder_desc">نظرًا لقيود النظام، نحتاج إلى إذنك للسماح لـ .Statuses بتنزيل الملفات.</string>
+    <string name="quality_options">خيارات الجودة</string>
 
 </resources>

@@ -49,6 +49,6 @@
     </dialog>
     <dialog
         android:id="@+id/downloadsAlreadyExistDialog2"
-        android:name="com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadsAlreadyExistDialog"
+        android:name="com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadsAlreadyExistBaseDialog"
         android:label="DownloadsAlreadyExistDialog" />
 </navigation>

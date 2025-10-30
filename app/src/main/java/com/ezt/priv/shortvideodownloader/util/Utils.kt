@@ -129,10 +129,11 @@ object Utils {
         return result
     }
 
-    fun View.setOnSWipeListener(activity: Activity) {
-        val gestureDetector = GestureDetector(activity, SwipeGestureListener(activity))
+    fun View.setOnSwipeListener(listener: GestureDetector.SimpleOnGestureListener) {
+        val gestureDetector = GestureDetector(context, listener)
         this.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
+            true
         }
     }
 
@@ -355,7 +356,7 @@ data class DownloadResult(
     val backgroundPath: String
 )
 
-class SwipeGestureListener(val activity: Activity) : GestureDetector.SimpleOnGestureListener() {
+open class SwipeGestureListener(val activity: Activity) : GestureDetector.SimpleOnGestureListener() {
     private val SWIPE_THRESHOLD = 100
     private val SWIPE_VELOCITY_THRESHOLD = 100
 
@@ -365,29 +366,48 @@ class SwipeGestureListener(val activity: Activity) : GestureDetector.SimpleOnGes
         velocityX: Float,
         velocityY: Float
     ): Boolean {
-        println("SwipeGestureListener - onFLing: $velocityY")
+        println("SwipeGestureListener - onFling called: vx=$velocityX, vy=$velocityY")
         try {
-            val diffY = e2.y.minus(e1!!.y)
-            val diffX = e2.x.minus(e1.x)
+            if (e1 == null || e2 == null) return false
 
-            if (abs(diffX) <= abs(diffY)) {
-                if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        activity.finish()
-                        activity.overridePendingTransition(
-                            R.anim.fade_in_quick, R.anim.exit_to_top
-                        )
+            val diffY = e2.y - e1.y
+            val diffX = e2.x - e1.x
+
+            // 👉 Horizontal swipe detection
+            if (abs(diffX) > abs(diffY)) {
+                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        onSwipeRight()
+                    } else {
+                        onSwipeLeft()
                     }
                     return true
                 }
             }
+            // 👇 Optional: vertical swipe detection (like you had)
+            else if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                if (diffY > 0) {
+                    activity.finish()
+                    activity.overridePendingTransition(
+                        R.anim.fade_in_quick, R.anim.exit_to_top
+                    )
+                }
+                return true
+            }
         } catch (ex: Exception) {
-            println("SwipeGestureListener: ${ex.printStackTrace()}")
+            ex.printStackTrace()
         }
 
         return false
     }
 
+    open fun onSwipeLeft() {
+        println("Swiped LEFT")
+    }
+
+    open fun onSwipeRight() {
+        println("Swiped RIGHT")
+    }
 }
 
 data class RingtoneItem(

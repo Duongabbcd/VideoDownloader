@@ -566,9 +566,11 @@
     <string name="got_it">Compris</string>
     <string name="next">Suivant</string>
 
-    <string name="intro_1_1">1. Allez sur le site web</string>
-    <string name="intro_2_1">2. Lisez la vidéo</string>
+    <string name="intro_1_1">1. Cliquez sur partager ou copier le lien</string>
+    <string name="intro_2_1">2. Cliquez sur l’un de ces boutons</string>
     <string name="intro_3_1">3. Cliquez sur le bouton de téléchargement</string>
+
+
     <string name="paste">Coller</string>
 
     <string name="player_resolution">Résolution vidéo comme dans le lecteur</string>
@@ -591,5 +593,6 @@
 
     <string name="permission_requrired">Autorisation requise</string>
     <string name="open_folder_desc">En raison des restrictions du système, nous avons besoin que vous autorisiez .Statuses à télécharger des fichiers.</string>
+    <string name="quality_options">Options de qualité</string>
 
 </resources>

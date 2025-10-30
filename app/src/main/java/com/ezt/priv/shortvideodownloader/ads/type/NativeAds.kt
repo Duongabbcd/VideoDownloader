@@ -21,6 +21,8 @@ import com.ezt.priv.shortvideodownloader.BuildConfig
 import com.ezt.priv.shortvideodownloader.MyApplication
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.helper.Prefs
+import com.ezt.priv.shortvideodownloader.ui.intro.IntroActivityNew
+import com.ezt.priv.shortvideodownloader.ui.intro.IntroFragmentNew
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
@@ -41,6 +43,7 @@ object NativeAds {
     const val NATIVE_INTRO_2 = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_INTRO_3 = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_INTRO_FULLSCREEN = ADMOB_AD_UNIT_ID_TEST
+    const val NATIVE_HOME = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_PERMISSION = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_FAVOURITE = ADMOB_AD_UNIT_ID_TEST
 
@@ -51,6 +54,7 @@ object NativeAds {
     const val ALIAS_NATIVE_INTRO_2 = "ads_native_intro_2"
     const val ALIAS_NATIVE_INTRO_3 = "ads_native_intro_3"
     const val ALIAS_NATIVE_FULLSCREEN = "ads_native_full_screen"
+    const val ALIAS_NATIVE_HOME = "ads_native_home_screen"
     const val ALIAS_NATIVE_PERMISSION = "ads_native_permission"
     const val ALIAS_NATIVE_FAVOURITE = "ads_native_favourite"
 
@@ -88,10 +92,10 @@ object NativeAds {
 
         if (!isDefault) {
             adView.callToActionView?.backgroundTintList =
-                ColorStateList.valueOf(Color.parseColor("#8246FF"))
+                ColorStateList.valueOf(Color.parseColor("#00C377"))
         } else {
             adView.callToActionView?.backgroundTintList =
-                ColorStateList.valueOf(Color.parseColor("#BCBCBC"))
+                ColorStateList.valueOf(Color.parseColor("#00C377"))
         }
 
         if (nativeAd.body == null) {
@@ -253,6 +257,9 @@ object NativeAds {
                 .withAdListener(object : AdListener() {
                     override fun onAdFailedToLoad(error: LoadAdError) {
                         println("NativeAds onAdFailedToLoad: $error")
+                        if(alias == ALIAS_NATIVE_FULLSCREEN) {
+                            IntroActivityNew.isFailedOfFullScreen = true
+                        }
 
                         val loadingTime = System.currentTimeMillis() - now
 //                        analyticsLogger.logAdRequest(

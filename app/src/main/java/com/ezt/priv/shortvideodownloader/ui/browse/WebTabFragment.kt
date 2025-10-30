@@ -52,6 +52,8 @@ import com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.WebTabViewModel
 import com.ezt.priv.shortvideodownloader.ui.browse.webtab.WebTab
 import com.ezt.priv.shortvideodownloader.ui.browse.webtab.WebTabFactory
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
+import com.ezt.priv.shortvideodownloader.util.Common.gone
+import com.ezt.priv.shortvideodownloader.util.Common.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -210,6 +212,19 @@ class WebTabFragment : BaseWebTabFragment() {
             loadingWavy.clipToOutline = true
 
             configureWebView(this)
+
+            tabViewModel.getTabTextInput().addOnPropertyChangedCallback(
+                object : Observable.OnPropertyChangedCallback() {
+                    override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                        val currentURL = tabViewModel.getTabTextInput().get() ?: ""
+                        if(currentURL.contains("youtube", true) || currentURL.contains("youtu.be", true)) {
+                            dataBinding.fab.gone()
+                        } else {
+                            dataBinding.fab.visible()
+                        }
+                    }
+                }
+            )
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(

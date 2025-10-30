@@ -574,9 +574,10 @@
     <string name="got_it">Entendi</string>
     <string name="next">Próximo</string>
 
-    <string name="intro_1_1">1. Vá para o site</string>
-    <string name="intro_2_1">2. Reproduza o vídeo</string>
+    <string name="intro_1_1">1. Clique em compartilhar ou copiar link</string>
+    <string name="intro_2_1">2. Clique em um desses botões</string>
     <string name="intro_3_1">3. Clique no botão de download</string>
+
     <string name="paste">Colar</string>
 
     <string name="player_resolution">Resolução de vídeo como no reprodutor</string>
@@ -599,5 +600,6 @@
 
     <string name="permission_requrired">Permissão necessária</string>
     <string name="open_folder_desc">Devido a restrições do sistema, precisamos que você autorize o .Statuses a baixar arquivos.</string>
+    <string name="quality_options">Opções de qualidade</string>
 
 </resources>

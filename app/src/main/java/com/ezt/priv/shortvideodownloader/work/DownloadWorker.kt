@@ -391,6 +391,7 @@ class DownloadWorker(
                         tempFileDir.delete()
 
                         Log.e(TAG, context.getString(R.string.failed_download), it)
+                        Toast.makeText(context, context.getString(R.string.failed_download), Toast.LENGTH_SHORT).show()
                         notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
 
                         downloadItem.status = DownloadRepository.Status.Error.toString()

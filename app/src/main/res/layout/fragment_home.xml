@@ -83,17 +83,62 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_anchor="@id/home_appbarlayout"
+        app:layout_anchorGravity="bottom"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/guidanceBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_34sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/background_radius_20"
+            android:backgroundTint="@color/tab_select"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/_6sdp"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:layout_width="@dimen/_26sdp"
+                android:layout_height="@dimen/_26sdp"
+                android:contentDescription="@string/imageView"
+                android:src="@drawable/icon_guidance" />
+
+            <TextView
+                style="@style/CustomTextStyleSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:text="@string/how_to_download"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allBookmarks"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/guidanceBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:scrollbars="none" />
-        
+
+        <ImageView
+            android:id="@+id/bookmarkDisplay"
+            android:src="@drawable/icon_home_1"
+            android:contentDescription="@string/imageView"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/allBookmarks"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp" />
+
         <TextView
             android:id="@+id/recentlySearch"
             android:visibility="gone"
@@ -159,8 +204,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -191,8 +235,7 @@
                     android:layout_marginStart="@dimen/_6sdp"
                     android:layout_height="@dimen/_24sdp"
                     android:layout_gravity="start"
-                    android:contentDescription="@string/imageView"
-                    android:src="@drawable/icon_movie" />
+                    android:contentDescription="@string/imageView" />
 
                 <!-- Add an ImageView here -->
                 <ImageView
@@ -231,9 +274,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/_15sdp"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_height="wrap_content">
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/progress"
@@ -259,19 +300,37 @@
 
             <ImageView
                 android:id="@+id/home"
+                android:src="@drawable/home"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:contentDescription="@string/imageView"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginHorizontal="@dimen/_16sdp"
-                android:background="@drawable/home"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_168sdp" />
+                android:layout_height="@dimen/_210sdp"/>
+
+            <!-- Native Ad Frame -->
+            <RelativeLayout
+                android:id="@+id/rlNative"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_210sdp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <include
+                    android:id="@+id/m_loading_view"
+                    layout="@layout/native_large_screen" />
+
+                <FrameLayout
+                    android:id="@+id/frNative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
 
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
                 app:layout_constraintTop_toBottomOf="@+id/home"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/_34sdp"
                 android:hint="@string/search_hint"
                 app:menu="@menu/main_menu">
 
@@ -284,8 +343,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:visibility="gone"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -1,5 +1,7 @@
 package com.ezt.priv.shortvideodownloader.ui.info
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -49,7 +51,7 @@ import com.ezt.priv.shortvideodownloader.ui.downloadcard.BackgroundToForegroundP
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadAudioFragment
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadFragmentAdapter
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadVideoFragment
-import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadsAlreadyExistDialog
+import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadsAlreadyExistBaseDialog
 import com.ezt.priv.shortvideodownloader.ui.home.HomeFragment
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
@@ -63,7 +65,6 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.shadow.ShadowDrawableWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
@@ -464,7 +465,9 @@ class DownloadInfoActivity :
                 Toast.makeText(this, resources.getString(R.string.cancel), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
+            Toast.makeText(this, resources.getString(R.string.starts), Toast.LENGTH_SHORT).show()
+            val clipboard = this@DownloadInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
 
             lifecycleScope.launch {
                 resultViewModel.cancelUpdateItemData()
@@ -746,7 +749,7 @@ class DownloadInfoActivity :
                     delay(500)
 
                     val bundle = bundleOf("duplicates" to ArrayList(res))
-                    val dialog = DownloadsAlreadyExistDialog().apply {
+                    val dialog = DownloadsAlreadyExistBaseDialog().apply {
                         arguments = bundle
                     }
 

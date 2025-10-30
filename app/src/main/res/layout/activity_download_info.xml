@@ -191,8 +191,9 @@
 
                  <Button
                      android:id="@+id/bottomsheet_download_button"
-                     android:backgroundTint="@color/blue_md_theme_light_inversePrimary"
+                     android:backgroundTint="@color/tab_select_0_6"
                      style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                     android:textColor="@color/white"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:autoLink="all"

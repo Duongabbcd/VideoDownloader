@@ -1,5 +1,7 @@
 package com.ezt.priv.shortvideodownloader.ui.splash
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -31,6 +33,7 @@ import com.ezt.priv.shortvideodownloader.ads.type.OpenAds
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity3
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
+import com.ezt.priv.shortvideodownloader.ui.social.FacebookInfoActivity
 import com.ezt.priv.shortvideodownloader.util.Common.visible
 
 @AndroidEntryPoint
@@ -61,6 +64,9 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         now = System.currentTimeMillis()
         isFirstStep = Common.getCountOpenApp(this@SplashActivity) == 0
         MyApplication.screenName = "splash_screen"
+
+        val clipboard = this@SplashActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
 
         initView()
     }
@@ -138,9 +144,12 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
             }
             showBanner()
         } else {
-            OpenAds.initOpenAds(this) {
-                isLoadAdsDone = true
-                handler.removeCallbacks(runnable)
+            if(RemoteConfig.AD_OPEN_APP.contains("1")) {
+                println("RemoteConfig AD_OPEN_APP: ${RemoteConfig.AD_OPEN_APP}")
+                InterAds.preloadInterDownload(
+                    this@SplashActivity, InterAds.ALIAS_INTER_SPLASH,
+                    InterAds.INTER_SPLASH
+                )
                 showBanner()
             }
         }
@@ -177,14 +186,13 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
                 }
 
             } else {
-                if (OpenAds.isCanShowOpenAds()) {
-                    binding.fullScreen.visible()
-                    OpenAds.showOpenAds(this) {
+                InterAds.showPreloadInterDownload(
+                    this,
+                    alias = InterAds.ALIAS_INTER_SPLASH,
+                    onLoadDone = { nextScreen() },
+                    onLoadFailed = {
                         nextScreen()
-                    }
-                } else {
-                    nextScreen()
-                }
+                    })
             }
 
         }
@@ -275,7 +283,7 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         Common.setPreLanguage(this, "en")
 
         //Previous: countOpen <= 1
-        if (countOpen >= 1) {
+        if (countOpen == 0) {
 //            analyticsLogger.updateUserProperties(
 //                this@SplashActivity,
 //                "splash_screen",

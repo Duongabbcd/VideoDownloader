@@ -11,7 +11,9 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -23,7 +25,7 @@ import com.ezt.priv.shortvideodownloader.database.viewmodel.DownloadViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.HistoryViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.ResultViewModel
 import com.ezt.priv.shortvideodownloader.ui.adapter.AlreadyExistsAdapter
-import com.ezt.priv.shortvideodownloader.ui.downloadcard.DownloadBottomSheetDialog.Companion.dismissedByUser
+import com.ezt.priv.shortvideodownloader.util.Common.gone
 import com.ezt.priv.shortvideodownloader.util.Extensions.enableFastScroll
 import com.ezt.priv.shortvideodownloader.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -36,7 +38,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAdapter.OnItemClickListener {
+class DownloadsAlreadyExistBaseDialog : DialogFragment(), AlreadyExistsAdapter.OnItemClickListener {
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel : ResultViewModel
@@ -72,42 +74,62 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
 
     }
 
-    @SuppressLint("RestrictedApi")
-    override fun setupDialog(dialog: Dialog, style: Int) {
-        super.setupDialog(dialog, style)
-        val view = requireActivity().layoutInflater.inflate(R.layout.fragment_already_exists_dialog, null)
-        dialog.setContentView(view)
-        dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
-        dialog.setOnShowListener {
-            val behavior = BottomSheetBehavior.from(view.parent as View)
-            val displayMetrics = DisplayMetrics()
-            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                behavior.peekHeight = displayMetrics.heightPixels
-            }
-        }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = Dialog(requireContext())
 
-        adapter = AlreadyExistsAdapter(this, requireActivity())
+        // Inflate your layout
+        val view = requireActivity().layoutInflater.inflate(R.layout.fragment_already_exists_dialog, null)
+
+        // Convert 16dp to pixels
+        val marginInDp = 16
+        val scale = resources.displayMetrics.density
+        val marginInPx = (marginInDp * scale + 0.5f).toInt()
+
+        // Set layout params with margins
+        val params = ViewGroup.MarginLayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx)
+        view.layoutParams = params
+
+        dialog.setContentView(view)
+
+        // Optional: transparent background
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Optional: ensure dialog width wraps content minus margins
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        // Setup views, RecyclerView, buttons
+        setupViews(view)
+
+        return dialog
+    }
+
+
+    private fun setupViews(view: View) {
+        // RecyclerView
         recyclerView = view.findViewById(R.id.downloadMultipleRecyclerview)
+        adapter = AlreadyExistsAdapter(this, requireActivity())
         recyclerView.adapter = adapter
         recyclerView.enableFastScroll()
+        recyclerView.gone()
 
-        runBlocking {
-            val items = withContext(Dispatchers.IO){
-                downloadViewModel.getAllByIDs(duplicateIDs.map { it.downloadItemID })
-            }
-            duplicates = items.map { item -> AlreadyExistsItem(item, duplicateIDs.firstOrNull { it.downloadItemID == item.id }?.historyItemID) }.toMutableList()
-            adapter.submitList(duplicates.toList())
-        }
+        // Load duplicates
+        loadDuplicates()
 
+        // Button click
         view.findViewById<MaterialButton>(R.id.bottomsheet_download_button).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 downloadViewModel.deleteWithDuplicateStatus()
                 val items = duplicates.map { it.downloadItem }
                 items.forEach { it.id = 0 }
                 val result = downloadViewModel.queueDownloads(items, true)
-                if (result.message.isNotBlank()){
+                if (result.message.isNotBlank()) {
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
@@ -119,7 +141,21 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
                 }
             }
         }
+    }
 
+    private fun loadDuplicates() {
+        runBlocking {
+            val items = withContext(Dispatchers.IO) {
+                downloadViewModel.getAllByIDs(duplicateIDs.map { it.downloadItemID })
+            }
+            duplicates = items.map { item ->
+                AlreadyExistsItem(
+                    item,
+                    duplicateIDs.firstOrNull { it.downloadItemID == item.id }?.historyItemID
+                )
+            }.toMutableList()
+            adapter.submitList(duplicates.toList())
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

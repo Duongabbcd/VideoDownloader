@@ -117,7 +117,7 @@ class GuidanceFragmentNew : Fragment() {
 
     private fun setUiIntro1() {
         binding.guidanceTitle.text = getString(R.string.intro_1_1)
-        binding.guidancePic.setImageResource(R.drawable.bg_intro1)
+        binding.guidancePic.setImageResource(R.drawable.guide1)
         binding.introStep.setImageResource(R.drawable.icon_intro1_1)
 //        binding.intro2.visible()
 //     binding.intro3.gone()
@@ -127,7 +127,7 @@ class GuidanceFragmentNew : Fragment() {
     private fun setUiIntro2() {
         println("setUiIntro2")
         binding.guidanceTitle.text = getString(R.string.intro_2_1)
-        binding.guidancePic.setImageResource(R.drawable.bg_intro2)
+        binding.guidancePic.setImageResource(R.drawable.guide2)
         binding.introStep.setImageResource(R.drawable.icon_intro2_1)
 //        binding.intro2.visible()
 //     binding.intro3.gone()
@@ -137,7 +137,7 @@ class GuidanceFragmentNew : Fragment() {
 
     private fun setUiIntro3() {
         binding.guidanceTitle.text = getString(R.string.intro_3_1)
-        binding.guidancePic.setImageResource(R.drawable.bg_intro3)
+        binding.guidancePic.setImageResource(R.drawable.guide3)
         binding.introStep.setImageResource(R.drawable.icon_intro3_1)
 //        binding.skipBtn.gone()
 //        binding.intro2.visible()

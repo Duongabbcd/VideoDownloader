@@ -52,7 +52,7 @@ class IntroActivityNew : BaseActivity2<ActivityIntroBinding>(ActivityIntroBindin
         numberPage = if (isTestDevice) {
             5
         } else {
-            if (RemoteConfig.ADS_DISABLE_2 == "0" || RemoteConfig.NATIVE_INTRO == "0") {
+            if (RemoteConfig.ADS_DISABLE_2 == "0" || RemoteConfig.NATIVE_INTRO == "0" || isFailedOfFullScreen) {
                 4
             }  else {
                5
@@ -116,6 +116,7 @@ class IntroActivityNew : BaseActivity2<ActivityIntroBinding>(ActivityIntroBindin
     companion object {
         var isIntroFullFail1: Boolean = true
         var numberPage = 3
+        var isFailedOfFullScreen = false
         private val TAG = IntroActivityNew::class.java.simpleName
     }
 

@@ -14,6 +14,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
@@ -135,11 +136,11 @@ class NotificationUtil(var context: Context) {
             .setContentTitle(resources.getString(R.string.observe_sources))
             .setContentText(title)
             .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.ic_launcher_background
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -184,11 +185,11 @@ class NotificationUtil(var context: Context) {
 
         notificationBuilder
             .setContentTitle(title)
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.ic_launcher_background
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -248,7 +249,7 @@ class NotificationUtil(var context: Context) {
                 R.drawable.ic_terminal
             }
 
-            else -> R.drawable.ic_launcher_foreground_large
+            else -> R.drawable.ic_launcher_background
         }
 
         val contentText = StringBuilder("$title")
@@ -256,13 +257,16 @@ class NotificationUtil(var context: Context) {
         val bitmap = iconType.toBitmap(context)
         notificationBuilder
             .setContentTitle("${res.getString(R.string.downloaded)} $title")
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(bitmap)
             .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
             .setContentText(title)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
+
+        Toast.makeText(context, res.getString(R.string.download_successfully), Toast.LENGTH_SHORT).show()
+
         if (filepath != null){
             contentText.append("\n\n"+ filepath.joinToString("\n"))
             try{
@@ -329,7 +333,7 @@ class NotificationUtil(var context: Context) {
         ) {
             //make summary notification
             val summaryNotification = getBuilder(DOWNLOAD_WORKER_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+                .setSmallIcon(R.drawable.ic_launcher_background)
                 .setLargeIcon(bitmap)
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
@@ -529,11 +533,11 @@ class NotificationUtil(var context: Context) {
         return notificationBuilder
             .setContentTitle(resources.getString(R.string.cleanup_leftover_downloads))
             .setCategory(Notification.CATEGORY_EVENT)
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.ic_launcher_background
                 )
             )
             .setContentText("")
@@ -665,11 +669,11 @@ class NotificationUtil(var context: Context) {
             .setContentTitle(resources.getString(R.string.updating_download_data))
             .setOngoing(true)
             .setCategory(Notification.CATEGORY_MESSAGE)
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.ic_launcher_background
                 )
             )
             .setContentText("")
@@ -731,11 +735,11 @@ class NotificationUtil(var context: Context) {
 
         notificationBuilder
             .setContentTitle(resources.getString(R.string.finished_download_notification_channel_name))
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.ic_launcher_background
                 )
             )
             .setContentIntent(openMultipleDownloads)
@@ -758,11 +762,11 @@ class NotificationUtil(var context: Context) {
 
         notificationBuilder
             .setContentTitle(resources.getString(R.string.all_queries_finished))
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.ic_launcher_background
                 )
             )
             .setContentIntent(openMultipleDownloads)

@@ -518,9 +518,10 @@
     <string name="got_it">समझ गया</string>
     <string name="next">अगला</string>
 
-    <string name="intro_1_1">1. वेबसाइट पर जाएं</string>
-    <string name="intro_2_1">2. वीडियो चलाएं</string>
+    <string name="intro_1_1">1. शेयर या लिंक कॉपी पर क्लिक करें</string>
+    <string name="intro_2_1">2. इनमें से किसी एक बटन पर क्लिक करें</string>
     <string name="intro_3_1">3. डाउनलोड बटन पर क्लिक करें</string>
+
     <string name="paste">पेस्ट करें</string>
 
     <string name="player_resolution">प्लेयर में जैसा वीडियो रेज़ोल्यूशन</string>
@@ -543,5 +544,6 @@
 
     <string name="permission_requrired">अनुमति आवश्यक है</string>
     <string name="open_folder_desc">सिस्टम प्रतिबंधों के कारण, हमें फ़ाइलें डाउनलोड करने के लिए .Statuses को अनुमति देनी होगी।</string>
+    <string name="quality_options">गुणवत्ता विकल्प</string>
 
 </resources>

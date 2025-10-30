@@ -570,9 +570,10 @@
     <string name="got_it">Capito</string>
     <string name="next">Avanti</string>
 
-    <string name="intro_1_1">1. Vai al sito web</string>
-    <string name="intro_2_1">2. Riproduci il video</string>
+    <string name="intro_1_1">1. Clicca su condividi o copia link</string>
+    <string name="intro_2_1">2. Clicca su uno di questi pulsanti</string>
     <string name="intro_3_1">3. Clicca sul pulsante di download</string>
+
     <string name="paste">Incolla</string>
 
     <string name="player_resolution">Risoluzione video come nel lettore</string>
@@ -595,5 +596,6 @@
 
     <string name="permission_requrired">Autorizzazione richiesta</string>
     <string name="open_folder_desc">A causa delle restrizioni di sistema, è necessario autorizzare .Statuses a scaricare i file.</string>
+    <string name="quality_options">Opzioni di qualità</string>
 
 </resources>

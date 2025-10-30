@@ -575,9 +575,10 @@
     <string name="got_it">Понятно</string>
     <string name="next">Далее</string>
 
-    <string name="intro_1_1">1. Перейдите на сайт</string>
-    <string name="intro_2_1">2. Воспроизведите видео</string>
+    <string name="intro_1_1">1. Нажмите «Поделиться» или «Скопировать ссылку»</string>
+    <string name="intro_2_1">2. Нажмите одну из этих кнопок</string>
     <string name="intro_3_1">3. Нажмите кнопку загрузки</string>
+
     <string name="paste">Вставить</string>
 
     <string name="player_resolution">Разрешение видео как в плеере</string>
@@ -600,5 +601,6 @@
 
     <string name="permission_requrired">Требуется разрешение</string>
     <string name="open_folder_desc">Из-за системных ограничений необходимо разрешить .Statuses загружать файлы.</string>
+    <string name="quality_options">Параметры качества</string>
 
 </resources>

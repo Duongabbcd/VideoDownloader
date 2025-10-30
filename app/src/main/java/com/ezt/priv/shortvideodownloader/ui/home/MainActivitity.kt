@@ -42,6 +42,7 @@ import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.type.BannerAds
 import com.ezt.priv.shortvideodownloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.priv.shortvideodownloader.ads.type.InterAds
+import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.database.VideoDownloadDB
 import com.ezt.priv.shortvideodownloader.database.repository.DownloadRepository
 import com.ezt.priv.shortvideodownloader.database.viewmodel.CookieViewModel
@@ -108,6 +109,13 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        NativeAds.preloadNativeAds(
+            this@MainActivity,
+            alias = NativeAds.ALIAS_NATIVE_HOME,
+            adId = NativeAds.NATIVE_HOME
+        )
+
         val videoDownloaderPath: String = FileUtil.getDefaultApplicationPath()
         isHomeActivity = true
         connectionViewModel.isConnectedLiveData.observe(this) { isConnected ->

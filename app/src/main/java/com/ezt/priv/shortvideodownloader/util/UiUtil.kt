@@ -128,7 +128,7 @@ object UiUtil {
             formatNote.contains("576x720") -> "SD"
             formatNote.contains("854x480") -> "MHD"
             formatNote.contains("480x854") -> "MHD"
-            else -> formatNote
+            else -> "MHD"
         }
         var container = chosenFormat.container
         if (container == "Default" || container.isBlank()) container = context.getString(R.string.defaultValue)

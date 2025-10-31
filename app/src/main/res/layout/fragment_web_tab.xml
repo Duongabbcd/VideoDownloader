@@ -265,6 +265,7 @@
                     android:onClick="@{() -> videoTabVModel.showVideoInfo()}"
                     android:src="@{videoTabVModel.getDownloadBtnIcon()}"
                     app:borderWidth="0dp"
+                    app:tint="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

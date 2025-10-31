@@ -523,7 +523,7 @@ class NotificationUtil(var context: Context) {
         notificationManager.cancel(id)
     }
 
-    fun cancelErroredNotification(id: Int) {
+    fun cancelErrorNotification(id: Int) {
         notificationManager.cancel(DOWNLOAD_ERRORED_NOTIFICATION_ID + id)
     }
 

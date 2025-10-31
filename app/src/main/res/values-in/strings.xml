@@ -600,5 +600,6 @@
     <string name="permission_requrired">Izin Diperlukan</string>
     <string name="open_folder_desc">Karena pembatasan sistem, Anda perlu memberikan izin kepada .Statuses untuk mengunduh file.</string>
     <string name="quality_options">Opsi kualitas</string>
+    <string name="do_you_want_to_exit_app">Apakah Anda ingin keluar dari aplikasi?</string>
 
 </resources>

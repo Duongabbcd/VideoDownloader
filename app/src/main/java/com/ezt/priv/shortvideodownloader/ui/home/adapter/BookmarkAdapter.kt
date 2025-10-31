@@ -33,14 +33,17 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
     inner class MyHolder(
         private val binding: BookmarkViewBinding
     ) : RecyclerView.ViewHolder(binding.root ) {
-        val packageManager = context.packageManager
 
         fun bind(position: Int) {
             binding.apply {
                 val bookmark = allBookmarks[position]
                 try {
-                    Glide.with(context).load(bookmark.imagePath ).placeholder(R.drawable.icon_default_app).error(R.drawable.icon_default_app)
-                        .into(binding.bookmarkIcon)
+                    val iconName = "icon_${bookmark.name.toLowerCase()}"
+                    val iconRes = context.resources.getIdentifier(iconName, "drawable", context.packageName)
+
+                    println("BookmarkAdapter: $iconName and $iconRes")
+
+                    binding.bookmarkIcon.setImageResource(iconRes)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     binding.bookmarkIcon.setBackgroundColor(colors[(colors.indices).random()])
@@ -60,35 +63,8 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
             }
         }
 
-//        private fun openBookmark(bookmark: Bookmark) {
-//            val packageName = bookmark.packageName
-//
-//            if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
-//                // Open the installed app
-//                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
-//                if (launchIntent != null) {
-//                    context.startActivity(launchIntent)
-//                } else {
-//                    // fallback in rare cases
-//                    openInBrowseActivity(bookmark.url)
-//                }
-//            } else {
-//                openInBrowseActivity(bookmark.url)
-//            }
-//
-//        }
-
         private fun openBookmark(bookmark: Bookmark) {
             openInBrowseActivity(bookmark.url)
-        }
-
-        private fun isAppInstalled(packageName: String): Boolean {
-            return try {
-                packageManager.getPackageInfo(packageName, 0)
-                true
-            } catch (e: PackageManager.NameNotFoundException) {
-                false
-            }
         }
 
 

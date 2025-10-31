@@ -602,5 +602,6 @@
     <string name="permission_requrired">Требуется разрешение</string>
     <string name="open_folder_desc">Из-за системных ограничений необходимо разрешить .Statuses загружать файлы.</string>
     <string name="quality_options">Параметры качества</string>
+    <string name="do_you_want_to_exit_app">Вы хотите выйти из приложения?</string>
 
 </resources>

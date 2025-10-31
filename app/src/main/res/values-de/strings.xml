@@ -568,5 +568,6 @@
     <string name="permission_requrired">Berechtigung erforderlich</string>
     <string name="open_folder_desc">Aufgrund von Systemeinschränkungen müssen Sie .Statuses autorisieren, um Dateien herunterzuladen.</string>
     <string name="quality_options">Qualitätsoptionen</string>
+    <string name="do_you_want_to_exit_app">Möchten Sie die App verlassen?</string>
 
 </resources>

@@ -1184,13 +1184,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         var latestURL = ""
 
         private val defaultList1 = listOf<Bookmark>(
-//            Bookmark("Google", "https://www.google.com", null, R.drawable.icon_google),
-//            Bookmark("Youtube", "https://youtube.com", null, R.drawable.icon_youtube),
             Bookmark("Facebook", "https://www.facebook.com/", "com.facebook.katana", R.drawable.icon_facebook),
             Bookmark("Instagram", "https://www.instagram.com/", "com.instagram.android", R.drawable.icon_instagram),
             Bookmark("WhatsApp", "https://www.whatsapp.com", "com.whatsapp", R.drawable.icon_whatsapp),
             Bookmark("TikTok", "https://www.tiktok.com", "com.zhiliaoapp.musically", R.drawable.icon_tiktok),
-            Bookmark("Twitter (X)", "https://x.com",  "com.twitter.android", R.drawable.icon_twitter),
+            Bookmark("Twitter", "https://x.com",  "com.twitter.android", R.drawable.icon_twitter),
             Bookmark("Dailymotion", "https://www.dailymotion.com",  "com.dailymotion.dailymotion",  R.drawable.icon_dailymotion),
             Bookmark("Vimeo", "https://vimeo.com", "com.vimeo.android.videoapp", R.drawable.icon_vimeo),
             Bookmark("Tubidy", "https://tubidy.cv", "com.tubidy", R.drawable.icon_tubidy),
@@ -1334,4 +1332,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 }
 
-data class Bookmark(val name: String, val url: String,val packageName: String? = null, var imagePath: Int? = null)
+data class Bookmark(val name: String, val url: String,val packageName: String? = null, var imagePath: Int = 0)

@@ -1,6 +1,7 @@
 package com.ezt.priv.shortvideodownloader.ui.home
 
 import android.app.ActionBar.LayoutParams
+import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -50,6 +51,7 @@ import com.ezt.priv.shortvideodownloader.database.viewmodel.DownloadViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.ResultViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.SettingsViewModel
 import com.ezt.priv.shortvideodownloader.databinding.ActivityMainBinding
+import com.ezt.priv.shortvideodownloader.databinding.DialogExitAppBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
 import com.ezt.priv.shortvideodownloader.ui.downloads.DownloadQueueMainFragment
@@ -624,8 +626,10 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        exitProcess(0)
+        val dialog = ExitAppDialog(this) {
+            moveTaskToBack(true)
+        }
+        dialog.show()
     }
 
     override fun onDestroy() {
@@ -666,6 +670,34 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                 }
             }
 
+        }
+    }
+}
+
+class ExitAppDialog(
+    context: Context,
+    private val onClickListener: () -> Unit
+) : Dialog(context) {
+    private val binding by lazy { DialogExitAppBinding.inflate(layoutInflater) }
+
+    init {
+        setContentView(binding.root)
+        window?.setBackgroundDrawableResource(R.color.transparent)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding.apply {
+            textCancel.setOnClickListener {
+                dismiss()
+            }
+
+            textExit.setOnClickListener {
+                onClickListener()
+                dismiss()
+            }
         }
     }
 }

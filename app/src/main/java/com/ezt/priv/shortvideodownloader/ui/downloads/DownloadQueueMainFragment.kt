@@ -4,14 +4,11 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -28,7 +25,6 @@ import com.ezt.priv.shortvideodownloader.util.Extensions.createBadge
 import com.ezt.priv.shortvideodownloader.util.NavbarUtil
 import com.ezt.priv.shortvideodownloader.util.NotificationUtil
 import com.ezt.priv.shortvideodownloader.util.UiUtil
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
@@ -150,7 +146,7 @@ class DownloadQueueMainFragment : BaseFragment<FragmentDownloadQueueMainScreenBi
                     downloadViewpager.setCurrentItem(4, false)
                     val reconfigureID = arguments?.getLong("reconfigure")
                     reconfigureID?.apply {
-                        notificationUtil.cancelErroredNotification(this.toInt())
+                        notificationUtil.cancelErrorNotification(this.toInt())
                         lifecycleScope.launch {
                             kotlin.runCatching {
                                 val item = withContext(Dispatchers.IO){

@@ -591,5 +591,5 @@
     <string name="permission_requrired">Permiso requerido</string>
     <string name="open_folder_desc">Debido a las restricciones del sistema, necesitamos que autorices a .Statuses para descargar archivos.</string>
     <string name="quality_options">Opciones de calidad</string>
-
+    <string name="do_you_want_to_exit_app">¿Desea salir de la aplicación?</string>
 </resources>

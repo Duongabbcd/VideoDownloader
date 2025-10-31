@@ -308,6 +308,10 @@ class DownloadAudioFragment(
                     }
                 }
                 formatCard.setOnClickListener {
+                    if(resultItem!!.formats.size == 1) {
+                        return@setOnClickListener
+                    }
+
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null) {
                         formatViewModel.setItem(downloadItem, !nonSpecific)
                         val bottomSheet = FormatSelectionBottomSheetDialog(listener)

@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -227,6 +229,16 @@ class DownloadsAlreadyExistBaseDialog : DialogFragment(), AlreadyExistsAdapter.O
         super.onCancel(dialog)
         existenceDismissedByUser = true
     }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+    }
+
 
 
     companion object {

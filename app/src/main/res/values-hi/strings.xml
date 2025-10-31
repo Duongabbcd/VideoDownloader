@@ -545,5 +545,6 @@
     <string name="permission_requrired">अनुमति आवश्यक है</string>
     <string name="open_folder_desc">सिस्टम प्रतिबंधों के कारण, हमें फ़ाइलें डाउनलोड करने के लिए .Statuses को अनुमति देनी होगी।</string>
     <string name="quality_options">गुणवत्ता विकल्प</string>
+    <string name="do_you_want_to_exit_app">क्या आप ऐप से बाहर निकलना चाहते हैं?</string>
 
 </resources>

@@ -127,16 +127,18 @@
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:scrollbars="none" />
 
-        <ImageView
+        <TextView
             android:id="@+id/bookmarkDisplay"
-            android:src="@drawable/icon_home_1"
+            android:text="@string/next_option"
+            android:textColor="@color/cool_blue"
+            style="@style/CustomTextStyleMedium14sp"
             android:contentDescription="@string/imageView"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/allBookmarks"
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_24sdp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/recentlySearch"
@@ -442,9 +444,13 @@
             android:layout_height="@dimen/_40sdp"/>
 
         <TextView
-            android:textColor="@color/dark_blue"
+            android:textColor="@color/white"
             android:textSize="18sp"
+            android:backgroundTint="@color/dark_blue"
+            android:background="@drawable/background_radius_12_white"
             android:text="@string/please_wait"
+            android:paddingHorizontal="@dimen/_6sdp"
+            android:paddingVertical="@dimen/_4sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

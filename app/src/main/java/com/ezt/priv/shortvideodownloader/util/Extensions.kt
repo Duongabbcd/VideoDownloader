@@ -353,6 +353,8 @@ object Extensions {
                     .load(imageURL)
                     .resize(1280, 0)
                     .onlyScaleDown()
+                    .placeholder(R.drawable.background_radius_10_gray)
+                    .error(R.drawable.background_radius_10_gray)
                     .into(this)
                 return true
             } else {

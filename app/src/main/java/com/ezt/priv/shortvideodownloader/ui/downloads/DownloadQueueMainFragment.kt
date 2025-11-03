@@ -108,7 +108,7 @@ class DownloadQueueMainFragment : BaseFragment<FragmentDownloadQueueMainScreenBi
                 }
             }.attach()
 
-            val textAppearanceResId = R.style.CustomTextStyleMedium14sp // your style
+            val textAppearanceResId = R.style.CustomTextStyleMedium16sp // your style
             // Loop through tabs to disable all-caps
             for (i in 0 until downloadTablayout.tabCount) {
                 val tab = downloadTablayout.getTabAt(i)
@@ -192,7 +192,7 @@ class DownloadQueueMainFragment : BaseFragment<FragmentDownloadQueueMainScreenBi
                 lifecycleScope.launch {
                     downloadViewModel.cancelledDownloadsCount.collectLatest {
                         downloadTablayout.getTabAt(3)?.apply {
-                            createBadge(it)
+//                            createBadge(it)
                         }
                     }
                 }
@@ -200,7 +200,7 @@ class DownloadQueueMainFragment : BaseFragment<FragmentDownloadQueueMainScreenBi
                     downloadViewModel.erroredDownloadsCount.collectLatest {
                         downloadTablayout.getTabAt(4)?.apply {
                             removeBadge()
-                            if (it > 0) createBadge(it)
+//                            if (it > 0) createBadge(it)
                         }
                     }
                 }

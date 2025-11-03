@@ -123,7 +123,9 @@ class DownloadAudioFragment(
                     if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
                 if (binding.titleTextinput.editText?.text?.isEmpty() == true) {
                     binding.titleTextinput.editText!!.setText(downloadItem.title)
-                    binding.titleTextinput.endIconMode = END_ICON_NONE
+                }
+                binding.clearText.setOnClickListener {
+                    binding.titleTextinput.editText!!.setText("")
                 }
                 binding.titleTextinput.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -153,7 +155,6 @@ class DownloadAudioFragment(
                             downloadItem.title
                         ).contains(binding.titleTextinput.editText?.text.toString())
                     ) {
-                        binding.titleTextinput.endIconMode = TextInputLayout.END_ICON_CUSTOM
                         binding.titleTextinput.endIconDrawable =
                             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
                         downloadItem.title = binding.titleTextinput.editText?.text.toString()
@@ -170,11 +171,6 @@ class DownloadAudioFragment(
                         downloadItem.author =  binding.authorTextinput.editText?.text.toString()
                     }
                 }
-
-                binding.titleTextinput.setEndIconOnClickListener {
-                    binding.titleTextinput.editText!!.setText("")
-                }
-
 
                 binding.authorTextinput.setEndIconOnClickListener {
                     if (resultItem != null) {

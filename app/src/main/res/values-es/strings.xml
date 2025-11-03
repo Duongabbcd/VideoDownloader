@@ -548,7 +548,7 @@
     <string name="instagram_stories">Ver historias y descargar desde cuenta privada</string>
     <string name="open_instagram">Abrir Instagram</string>
 
-    <string name="browser">Navegador</string>
+    <string name="browser">Limpiar</string>
     <string name="general_settings">Configuración general</string>
     <string name="help">Ayuda</string>
     <string name="clear_cache">Borrar caché</string>
@@ -592,4 +592,8 @@
     <string name="open_folder_desc">Debido a las restricciones del sistema, necesitamos que autorices a .Statuses para descargar archivos.</string>
     <string name="quality_options">Opciones de calidad</string>
     <string name="do_you_want_to_exit_app">¿Desea salir de la aplicación?</string>
+
+    <string name="next_option">Más opciones</string>
+    <string name="prev_option">Opciones anteriores</string>
+
 </resources>

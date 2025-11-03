@@ -578,7 +578,7 @@
     <string name="open_instagram">Open Instagram</string>
 
     //Settings
-    <string name="browser">Browser</string>
+    <string name="browser">Clean up</string>
     <string name="general_settings">General Settings</string>
     <string name="help">Help</string>
     <string name="clear_cache">Clear cache</string>
@@ -623,4 +623,6 @@
     <string name="quality_options">Quality options</string>
 
     <string name="do_you_want_to_exit_app">Do you want to exit app?</string>
+    <string name="next_option">More options</string>
+    <string name="prev_option">Previous options</string>
 </resources>

@@ -39,8 +39,7 @@
         <ImageView
             android:id="@+id/appIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/backIcon"
-            app:layout_constraintBottom_toBottomOf="@+id/backIcon"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_gravity="end"

@@ -17,7 +17,7 @@ import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.BuildConfig
 import com.ezt.priv.shortvideodownloader.MyApplication
 import com.ezt.priv.shortvideodownloader.ads.AdmobUtils
-import com.ezt.priv.shortvideodownloader.ads.AdsManager.countClickRingtone
+import com.ezt.priv.shortvideodownloader.ads.AdsManager.countClickVideo
 import com.ezt.priv.shortvideodownloader.ads.AdsManager.isTestDevice
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.helper.Prefs
@@ -232,14 +232,14 @@ object InterAds {
 
     fun preloadInterAds(context: Activity, alias: String, adUnit: String) {
         val interCondition = when (adUnit) {
-            INTER_AD1 -> RemoteConfig.INTER_RINGTONE_2
-            INTER_AD2 -> RemoteConfig.INTER_WALLPAPER_2
-            INTER_AD3 -> RemoteConfig.INTER_CALLSCREEN_2
-            INTER_AD4 -> RemoteConfig.INTER_DOWNLOAD_2
-            else -> RemoteConfig.INTER_RINGTONE_2
+            INTER_AD1 -> RemoteConfig.INTER_ALL
+            INTER_AD2 -> RemoteConfig.INTER_ALL
+            INTER_AD3 -> RemoteConfig.INTER_ALL
+            INTER_AD4 -> RemoteConfig.INTER_ALL
+            else -> RemoteConfig.INTER_ALL
         }
 
-        if (RemoteConfig.ADS_DISABLE_2 == "0" || interCondition == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0" || interCondition == "0") {
             return
         }
 
@@ -264,24 +264,24 @@ object InterAds {
         val now = System.currentTimeMillis()
         val divide = (now - currentTimeMillis) / 1000
 
-        isMoreThan40Seconds = divide >= RemoteConfig.INTER_SPACE_TIME_2.toInt()
+        isMoreThan40Seconds = divide >= RemoteConfig.INTER_SPACE.toInt()
         println("preloadInterAds - isMoreThan40Seconds: $divide and $isMoreThan40Seconds")
 
         when (alias) {
             ALIAS_INTER_DOWNLOAD -> {
-                println("Interstitial condition download:  $countClickRingtone")
+                println("Interstitial condition download:  $countClickVideo")
                 println("preloadInterAds wrapper download: ${context.javaClass.simpleName} and $wrapper")
-                if (RemoteConfig.INTER_DOWNLOAD_2 == "0" || isTestDevice) {
+                if (RemoteConfig.INTER_ALL == "0" || isTestDevice) {
                     interPreloadMap.remove(alias)
                     return
                 }
 
-                if (countClickRingtone == 0) {
+                if (countClickVideo == 0) {
                     interPreloadMap[alias]?.postValue(wrapper)
                 } else {
-                    println("Interstitial condition download: $isMoreThan40Seconds and ${countClickRingtone >= RemoteConfig.INTER_DOWNLOAD_2.toInt()}")
+                    println("Interstitial condition download: $isMoreThan40Seconds and ${countClickVideo >= RemoteConfig.INTER_ALL.toInt()}")
 
-                    if (isMoreThan40Seconds && countClickRingtone >= RemoteConfig.INTER_DOWNLOAD_2.toInt()) {
+                    if (isMoreThan40Seconds && countClickVideo >= RemoteConfig.INTER_ALL.toInt()) {
 
                         interPreloadMap[alias]?.postValue(wrapper)
                     } else {
@@ -290,75 +290,6 @@ object InterAds {
                     }
                 }
 
-            }
-
-
-            ALIAS_INTER_RINGTONE -> {
-                println("Interstitial condition ringtone:  $countClickRingtone")
-                println("preloadInterAds wrapper ringtone: ${context.javaClass.simpleName} and $wrapper")
-                if (RemoteConfig.INTER_RINGTONE_2 == "0" || isTestDevice) {
-                    interPreloadMap.remove(alias)
-                    return
-                }
-
-                if (countClickRingtone == 0) {
-                    interPreloadMap[alias]?.postValue(wrapper)
-                } else {
-                    println("Interstitial condition ringtone: $isMoreThan40Seconds and ${countClickRingtone >= RemoteConfig.INTER_RINGTONE_2.toInt()}")
-                    if (isMoreThan40Seconds && countClickRingtone >= RemoteConfig.INTER_RINGTONE_2.toInt()) {
-
-                        interPreloadMap[alias]?.postValue(wrapper)
-                    } else {
-                        interPreloadMap.remove(alias)
-                        return
-                    }
-                }
-            }
-
-            ALIAS_INTER_WALLPAPER -> {
-                println("Interstitial condition wallpaper:  $countClickRingtone")
-                println("preloadInterAds wrapper wallpaper: ${context.javaClass.simpleName} and $wrapper")
-                if (RemoteConfig.INTER_WALLPAPER_2 == "0" || isTestDevice) {
-                    interPreloadMap.remove(alias)
-                    return
-                }
-                if (countClickRingtone == 0) {
-                    interPreloadMap[alias]?.postValue(wrapper)
-                } else {
-                    println("Interstitial condition wallpaper: $isMoreThan40Seconds and ${countClickRingtone >= RemoteConfig.INTER_WALLPAPER_2.toInt()}")
-                    if (isMoreThan40Seconds && countClickRingtone >= RemoteConfig.INTER_WALLPAPER_2.toInt()) {
-
-                        interPreloadMap[alias]?.postValue(wrapper)
-                    } else {
-                        interPreloadMap.remove(alias)
-                        return
-                    }
-                }
-
-
-            }
-
-            ALIAS_INTER_CALLSCREEN -> {
-                println("Interstitial condition callscreen:  $countClickRingtone")
-                println("preloadInterAds wrapper callscreen: ${context.javaClass.simpleName} and $wrapper")
-                if (RemoteConfig.INTER_CALLSCREEN_2 == "0" || isTestDevice) {
-                    interPreloadMap.remove(alias)
-                    return
-                }
-
-                if (countClickRingtone == 0) {
-                    interPreloadMap[alias]?.postValue(wrapper)
-                } else {
-                    println("Interstitial condition callscreen: $isMoreThan40Seconds and ${countClickRingtone >= RemoteConfig.INTER_CALLSCREEN_2.toInt()}")
-
-                    if (isMoreThan40Seconds && countClickRingtone >= RemoteConfig.INTER_CALLSCREEN_2.toInt()) {
-
-                        interPreloadMap[alias]?.postValue(wrapper)
-                    } else {
-                        interPreloadMap.remove(alias)
-                        return
-                    }
-                }
             }
         }
 
@@ -441,8 +372,8 @@ object InterAds {
         alias: String = ALIAS_INTER_SPLASH,
         adUnit: String = INTER_SPLASH
     ) {
-        println("InterAds preloadInterDownload: ${RemoteConfig.ADS_DISABLE_2} and $alias and $adUnit" )
-        if (RemoteConfig.ADS_DISABLE_2 == "0") {
+        println("InterAds preloadInterDownload: ${RemoteConfig.ADS_DISABLE} and $alias and $adUnit" )
+        if (RemoteConfig.ADS_DISABLE == "0") {
             return
         }
 
@@ -468,7 +399,7 @@ object InterAds {
 
         val now = System.currentTimeMillis()
 
-        println("Interstitial condition splash wallpaper:  $countClickRingtone")
+        println("Interstitial condition splash wallpaper:  $countClickVideo")
         println("preloadInterAds wrapper splash wallpaper: ${context.javaClass.simpleName} and $wrapper")
         if (isTestDevice) {
             interPreloadMap.remove(alias)
@@ -555,8 +486,8 @@ object InterAds {
 
 
         val isMoreThan40Seconds =
-            (System.currentTimeMillis() - currentTimeMillis) / 1000 >= RemoteConfig.INTER_SPACE_TIME_2.toInt()
-        return isMoreThan40Seconds && countClickRingtone % interValue.toInt() == 0
+            (System.currentTimeMillis() - currentTimeMillis) / 1000 >= RemoteConfig.INTER_SPACE.toInt()
+        return isMoreThan40Seconds && countClickVideo % interValue.toInt() == 0
     }
 
     fun showPreloadInter(
@@ -581,7 +512,7 @@ object InterAds {
             return false
         }
 
-        countClickRingtone++
+        countClickVideo++
 
         println("showPreloadInter $alias ----- ${interPreloadMap[alias]}")
         val ob = interPreloadMap[alias]
@@ -618,7 +549,7 @@ object InterAds {
                                     if (isLoading) {
                                         onLoadDone?.invoke()
 
-                                        countClickRingtone = 1
+                                        countClickVideo = 1
                                         currentTimeMillis = System.currentTimeMillis()
                                     } else {
                                         onLoadFailed?.invoke()

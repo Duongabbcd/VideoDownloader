@@ -559,7 +559,7 @@
     <string name="instagram_stories">Просматривать истории и загружать из приватного аккаунта</string>
     <string name="open_instagram">Открыть Instagram</string>
 
-    <string name="browser">Браузер</string>
+    <string name="browser">Очистить</string>
     <string name="general_settings">Основные настройки</string>
     <string name="help">Помощь</string>
     <string name="clear_cache">Очистить кэш</string>
@@ -603,5 +603,8 @@
     <string name="open_folder_desc">Из-за системных ограничений необходимо разрешить .Statuses загружать файлы.</string>
     <string name="quality_options">Параметры качества</string>
     <string name="do_you_want_to_exit_app">Вы хотите выйти из приложения?</string>
+
+    <string name="next_option">Больше вариантов</string>
+    <string name="prev_option">Предыдущие варианты</string>
 
 </resources>

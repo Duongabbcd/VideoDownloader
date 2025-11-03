@@ -3,7 +3,6 @@ package com.ezt.priv.shortvideodownloader.ui.social
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -27,12 +26,10 @@ import com.ezt.priv.shortvideodownloader.ads.type.InterAds
 import com.ezt.priv.shortvideodownloader.database.models.main.ResultItem
 import com.ezt.priv.shortvideodownloader.database.viewmodel.DownloadViewModel
 import com.ezt.priv.shortvideodownloader.database.viewmodel.ResultViewModel
-import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
 import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.priv.shortvideodownloader.ui.info.DownloadInfoActivity
-import com.ezt.priv.shortvideodownloader.ui.tab.TabActivity
 import com.ezt.priv.shortvideodownloader.util.Common.gone
 import com.ezt.priv.shortvideodownloader.util.Common.visible
 import kotlinx.coroutines.Dispatchers
@@ -40,11 +37,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.getValue
 
-class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(ActivityFacebookInfoBinding::inflate){
-    private var facebookURL  =""
+class FacebookInfoActivity :
+    BaseActivity2<ActivityFacebookInfoBinding>(ActivityFacebookInfoBinding::inflate) {
+    private var facebookURL = ""
 
-    private lateinit var resultViewModel : ResultViewModel
-    private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var resultViewModel: ResultViewModel
+    private lateinit var downloadViewModel: DownloadViewModel
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -72,15 +70,20 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                 items.onEach {
                     println("showSingleDownloadSheet 4: $it")
                 }
-                if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
+                if (resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1) {
                     println("It is here")
-                }else if (resultViewModel.repository.itemCount.value == 1){
-                    if (sharedPreferences!!.getBoolean("download_card", true)){
-                        if(items.size == 1 ){
+                } else if (resultViewModel.repository.itemCount.value == 1) {
+                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                        if (items.size == 1) {
 
                             showSingleDownloadSheet(
                                 items[0],
-                                DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                DownloadViewModel.Type.valueOf(
+                                    sharedPreferences!!.getString(
+                                        "preferred_download_type",
+                                        "video"
+                                    )!!
+                                )
                             )
                         }
                     }
@@ -99,25 +102,48 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
 
             isFacebook = facebookURL.contains("facebook", true)
             igGuidance.isVisible = !isFacebook
-            val appImage = if(isFacebook) R.drawable.icon_facebook else R.drawable.icon_instagram
-            val appName = if(isFacebook) "Facebook" else "Instagram"
+            val appImage = if (isFacebook) R.drawable.icon_facebook else {
+                if (facebookURL.contains("tiktok", true)) {
+                    R.drawable.icon_tiktok
+                } else {
+                    R.drawable.icon_instagram
+                }
+            }
+            val appName = if (isFacebook) "Facebook" else {
+                if (facebookURL.contains("tiktok", true)) {
+                    "Tiktok"
+                } else {
+                    "Instagram"
+                }
+            }
             currentAppName.text = appName
             Glide.with(this@FacebookInfoActivity).load(appImage).into(appIcon)
             backIcon.setOnClickListener {
                 isDisabled = false
-                val clipboard = this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                val clipboard =
+                    this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
-                InterAds.showPreloadInter(this@FacebookInfoActivity, alias = InterAds.ALIAS_INTER_DOWNLOAD, {
-                    startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
-                    finish()
-                }, {
-                    startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
-                    finish()
-                })
+                InterAds.showPreloadInter(
+                    this@FacebookInfoActivity,
+                    alias = InterAds.ALIAS_INTER_DOWNLOAD,
+                    {
+                        startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
+                        finish()
+                    },
+                    {
+                        startActivity(Intent(this@FacebookInfoActivity, MainActivity::class.java))
+                        finish()
+                    })
             }
 
             appIcon.setOnClickListener {
-                val packageName = if (isFacebook) "com.facebook.katana" else "com.instagram.android"
+                val packageName = if (isFacebook) "com.facebook.katana" else {
+                    if (facebookURL.contains("tiktok", true)) {
+                        "com.zhiliaoapp.musicall"
+                    } else {
+                        "com.instagram.android"
+                    }
+                }
                 if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
                     val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
                     if (launchIntent != null) {
@@ -127,13 +153,20 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
 
             }
 
-            if(facebookURL.equals("https://www.facebook.com/", true) || facebookURL.equals("https://www.instagram.com/", true)) {
+            if (facebookURL.equals(
+                    "https://www.facebook.com/",
+                    true
+                ) || facebookURL.equals(
+                    "https://www.instagram.com/",
+                    true
+                ) || facebookURL.equals("com.zhiliaoapp.musicall", true)
+            ) {
                 println("facebookURL: $facebookURL")
             } else {
                 searchBar.setText(facebookURL)
                 queryList.add(facebookURL)
 
-                if(!isDisabled) {
+                if (!isDisabled) {
                     startSearchFacebookURL()
                 }
 
@@ -183,23 +216,29 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
             binding.root.isEnabled = false
         }
 
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             resultViewModel.deleteAll()
 
             val check1 = sharedPreferences!!.getBoolean("quick_download", false)
-            val check2 = sharedPreferences!!.getString("preferred_download_type", "video") == "command"
+            val check2 =
+                sharedPreferences!!.getString("preferred_download_type", "video") == "command"
             val check3 = Patterns.WEB_URL.matcher(queryList.first()).matches()
             val check4 = sharedPreferences!!.getBoolean("download_card", true)
             println("startSearch 1: $check1 and $check2 and $check3 and ${queryList.size}")
-            if(check1|| check2){
-                if (queryList.size == 1 && check3 ){
+            if (check1 || check2) {
+                if (queryList.size == 1 && check3) {
                     println("startSearch 2: $check4")
                     if (check4) {
-                        withContext(Dispatchers.Main){
+                        withContext(Dispatchers.Main) {
                             println("showSingleDownloadSheet 6")
                             showSingleDownloadSheet(
                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                type = DownloadViewModel.Type.valueOf(
+                                    sharedPreferences!!.getString(
+                                        "preferred_download_type",
+                                        "video"
+                                    )!!
+                                )
                             )
                             binding.loading.gone().also {
                                 binding.root.isEnabled = true
@@ -208,7 +247,12 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                     } else {
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
                             result = downloadViewModel.createEmptyResultItem(queryList.first()),
-                            givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                            givenType = DownloadViewModel.Type.valueOf(
+                                sharedPreferences!!.getString(
+                                    "preferred_download_type",
+                                    "video"
+                                )!!
+                            )
                         )
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                         withContext(Dispatchers.Main) {
@@ -218,8 +262,8 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                         }
                     }
 
-                }else{
-                    resultViewModel.parseQueries(queryList){
+                } else {
+                    resultViewModel.parseQueries(queryList) {
                         lifecycleScope.launch {
                             withContext(Dispatchers.Main) {
                                 binding.loading.gone().also {
@@ -230,8 +274,8 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
                     }
 
                 }
-            }else{
-                resultViewModel.parseQueries(queryList){
+            } else {
+                resultViewModel.parseQueries(queryList) {
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             binding.loading.gone().also {
@@ -248,9 +292,9 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
         super.onResume()
         Log.d(
             TAG,
-            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE}"
         )
-        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE == "0") {
             binding.frBanner.root.gone()
         } else {
             loadBanner(this, BANNER_HOME)
@@ -280,8 +324,8 @@ class FacebookInfoActivity : BaseActivity2<ActivityFacebookInfoBinding>(Activity
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
         type: DownloadViewModel.Type,
-        disableUpdateData : Boolean = false
-    ){
+        disableUpdateData: Boolean = false
+    ) {
         val intent = Intent(this@FacebookInfoActivity, DownloadInfoActivity::class.java)
 
         intent.putExtra("result", resultItem)

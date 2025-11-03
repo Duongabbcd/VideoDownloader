@@ -8,62 +8,54 @@
         <key>ADS_SPLASH_070625</key>
         <value>0</value>
     </entry>
+
+    <entry>
+        <key>AD_OPEN_APP</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>AD_RETURN_APP</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>ADS_DISABLE</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>BANNER_ALL</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>INTER_ALL</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>INTER_SPACE</key>
+        <value>40</value>
+    </entry>
+    <entry>
+        <key>NATIVE_HOME</key>
+        <value>1</value>
+    </entry>
     <entry>
         <key>NATIVE_INTRO</key>
+        <value>125</value>
+    </entry>
+    <entry>
+        <key>NATIVE_INTRO_FULL</key>
         <value>1</value>
     </entry>
     <entry>
         <key>NATIVE_LANGUAGE</key>
+        <value>12</value>
+    </entry>
+    <entry>
+        <key>NATIVE_PREVIEW</key>
         <value>1</value>
-    </entry>
-    <entry>
-        <key>REMOTE_ADS_PLAY_SONG_070625</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>NATIVE_PERMISSION</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>ADS_INTRO_070625</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>NATIVE_FAVOURITE</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>INTER_INTRO_070625</key>
-        <value>0</value>
-    </entry>
-    <entry>
-        <key>REMOTE_ADS_HOME_070625</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>NATIVE_CUSTOM_HOME_070625</key>
-        <value>0</value>
-    </entry>
-    <entry>
-        <key>INTER_HOME_070625</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>REMOTE_ADS_HOME_070625</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>BANNER_COLLAP_ALL_070625</key>
-        <value>0</value>
     </entry>
 
     <entry>
-        <key>ONRESUME_070625</key>
-        <value>0</value>
-    </entry>
-
-    <entry>
-        <key>UPDATE_APP_VERSION</key>
-        <value>0</value>
+        <key>isForcedToUpdate</key>
+        <value>1</value>
     </entry>
 </defaultsMap>

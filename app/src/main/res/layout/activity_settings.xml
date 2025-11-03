@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:paddingTop="@dimen/_40sdp"
+    android:paddingTop="@dimen/_45sdp"
     tools:context=".ui.more.settings.SettingsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -144,13 +144,14 @@
             android:id="@+id/browserLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/background_radius_12_white"
             android:orientation="vertical"
             android:padding="@dimen/_16sdp"
             app:layout_constraintTop_toBottomOf="@id/browserTitle">
 
             <LinearLayout
+                android:id="@+id/searchEngineText"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
                 android:gravity="center_vertical"
@@ -176,8 +177,10 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textGoogle"
                 android:layout_marginStart="@dimen/_32sdp"
                 android:text="Google"
+                android:visibility="gone"
                 android:textColor="#9E9E9E"
                 style="@style/CustomTextStyle"
                 android:textSize="10sp"
@@ -186,7 +189,6 @@
 
             <LinearLayout
                 android:id="@+id/clearCache"
-                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_20sdp"
                 android:gravity="center_vertical"

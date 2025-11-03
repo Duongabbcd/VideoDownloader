@@ -41,6 +41,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.ezt.priv.shortvideodownloader.R
+import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
+import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.database.VideoDownloadDB
 import com.ezt.priv.shortvideodownloader.database.repository.HistoryRepository2
 import com.ezt.priv.shortvideodownloader.database.viewmodel.DownloadViewModel
@@ -517,6 +519,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
 //                openMultipleFilesIntent(requireActivity(), item.downloadPath)
 //            }
 
+            if(RemoteConfig.NATIVE_PREVIEW != "0") {
+                NativeAds.preloadNativeAds(requireActivity(), alias = NativeAds.ALIAS_NATIVE_PREVIEW, adId = NativeAds.NATIVE_PREVIEW)
+            }
+
             UiUtil.showHistoryItemDetailsCard(item, requireActivity(), filePresent, sharedPreferences,
                 removeItem = { it, deleteFile ->
                     historyViewModel.delete(it, deleteFile)
@@ -620,16 +626,16 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     val deleteFile = booleanArrayOf(false)
                     val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
-                    deleteDialog.setMultiChoiceItems(
-                        arrayOf(getString(R.string.delete_files_too)),
-                        booleanArrayOf(false)
-                    ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
+//                    deleteDialog.setMultiChoiceItems(
+//                        arrayOf(getString(R.string.delete_files_too)),
+//                        booleanArrayOf(false)
+//                    ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         lifecycleScope.launch {
                             val selectedObjects = getSelectedIDs()
                             historyAdapter.clearCheckedItems()
-                            historyViewModel.deleteAllWithIDs(selectedObjects, deleteFile[0])
+                            historyViewModel.deleteAllWithIDs(selectedObjects, true)
                             actionMode?.finish()
                         }
                     }

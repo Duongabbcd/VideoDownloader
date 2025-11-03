@@ -17,6 +17,8 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -26,6 +28,7 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.Window
@@ -33,9 +36,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.RadioButton
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DimenRes
@@ -48,11 +54,13 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
+import com.bumptech.glide.Glide
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -85,6 +93,8 @@ import kotlin.collections.contains
 import kotlin.collections.indexOf
 import kotlin.text.contains
 import com.ezt.priv.shortvideodownloader.R
+import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
+import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.database.models.expand.table.Format
 import com.ezt.priv.shortvideodownloader.database.models.main.CommandTemplate
 import com.ezt.priv.shortvideodownloader.database.models.main.DownloadItem
@@ -99,12 +109,16 @@ import io.noties.markwon.MarkwonConfiguration
 import com.ezt.priv.shortvideodownloader.database.models.expand.non_table.GithubRelease
 import com.ezt.priv.shortvideodownloader.database.viewmodel.YTDLPViewModel
 import com.ezt.priv.shortvideodownloader.ui.downloadcard.VideoCutListener
+import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
 import com.ezt.priv.shortvideodownloader.ui.player.PlayerActivity
 import com.ezt.priv.shortvideodownloader.util.Common.gone
+import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.Extensions.createBadge
 import com.ezt.priv.shortvideodownloader.util.Extensions.enableTextHighlight
 import com.ezt.priv.shortvideodownloader.util.Extensions.getMediaDuration
+import com.ezt.priv.shortvideodownloader.util.Extensions.loadThumbnail
 import com.ezt.priv.shortvideodownloader.util.Extensions.toStringDuration
+import com.google.android.material.imageview.ShapeableImageView
 
 object UiUtil {
     @SuppressLint("SetTextI18n")
@@ -779,7 +793,7 @@ object UiUtil {
 
     fun showHistoryItemDetailsCard(
         item: HistoryItem?,
-        context: Activity,
+        context: FragmentActivity,
         isPresent: Boolean,
         preferences: SharedPreferences,
         removeItem: (item:HistoryItem, removeFiles: Boolean) -> Unit,
@@ -851,6 +865,8 @@ object UiUtil {
         }
 
         val time = bottomSheet.findViewById<TextView>(R.id.time)
+        val thumbnailImage = bottomSheet.findViewById<ShapeableImageView>(R.id.thumbnailImage)
+        val noImage = bottomSheet.findViewById<ImageView>(R.id.noImage)
         val thumbnail = bottomSheet.findViewById<TextView>(R.id.thumbnail)
         val formatNote = bottomSheet.findViewById<TextView>(R.id.format_note)
         val container = bottomSheet.findViewById<Chip>(R.id.container_chip)
@@ -858,6 +874,9 @@ object UiUtil {
         val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
         val command = bottomSheet.findViewById<Chip>(R.id.command)
         val location = bottomSheet.findViewById<Chip>(R.id.location)
+        val rlNative = bottomSheet.findViewById<RelativeLayout>(R.id.rlNative)
+        val mLoadingView = bottomSheet.findViewById<View>(R.id.m_loading_view)
+        val frNative = bottomSheet.findViewById<FrameLayout>(R.id.frNative)
         val file = File(item.downloadPath.first())
 
         val calendar = Calendar.getInstance()
@@ -865,13 +884,40 @@ object UiUtil {
         time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
         time.isClickable = false
 
-        thumbnail?.isVisible = item.thumb.isNotBlank()
+//        thumbnail?.isVisible = item.thumb.isNotBlank()
+        thumbnail?.isVisible = false
         thumbnail?.apply {
             isVisible = item.thumb.isNotBlank()
             setOnClickListener {
                 openLinkIntent(context, item.thumb)
             }
         }
+
+        val check = thumbnailImage?.loadThumbnail(false, item.thumb ) == true
+        noImage?.isVisible = !check
+
+        LanguageActivity.showNative(context , NativeAds.ALIAS_NATIVE_HOME, frNative!!, fullScreen = false,{
+            rlNative?.visible()
+            mLoadingView?.gone()
+        }, {
+            if (RemoteConfig.NATIVE_HOME == "0") {
+                rlNative?.visibility = GONE
+                return@showNative
+            }
+            NativeAds.preloadNativeAds(
+                context,
+                alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                adId = NativeAds.NATIVE_INTRO_FULLSCREEN
+            )
+            LanguageActivity.showNative(context, alias = NativeAds.ALIAS_NATIVE_HOME,
+                frNative, fullScreen = false, {
+                    mLoadingView?.gone()
+                }, {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        rlNative?.visibility = View.GONE
+                    }, 1500) // Delay 1500 ms (1.5 seconds)
+                })
+        } )
 
         if (item.type != DownloadViewModel.Type.command){
             if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
@@ -899,7 +945,7 @@ object UiUtil {
         if (codecText == "" || codecText == "none" || item.downloadPath.size > 1){
             codec!!.visibility = View.GONE
         }else{
-            codec!!.visibility = View.VISIBLE
+            codec!!.visibility = View.GONE
             codec.text = codecText
         }
 
@@ -912,7 +958,8 @@ object UiUtil {
         }
 
         val availableFiles = item.downloadPath.filter { FileUtil.exists(it) }
-        location?.isVisible = availableFiles.isNotEmpty()
+//        location?.isVisible = availableFiles.isNotEmpty()
+        location?.isVisible = false
         location?.setOnClickListener {
             showFullTextDialog(context, availableFiles.joinToString("\n"), context.getString(R.string.location))
         }

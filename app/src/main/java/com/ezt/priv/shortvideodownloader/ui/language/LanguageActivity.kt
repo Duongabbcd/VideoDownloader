@@ -43,28 +43,28 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
         allLanguages = GlobalConstant.getListLocation()
         now = System.currentTimeMillis()
 
-        if (RemoteConfig.NATIVE_INTRO.contains("1") && RemoteConfig.ADS_DISABLE_2 != "0") {
+        if (RemoteConfig.NATIVE_INTRO.contains("1") && RemoteConfig.ADS_DISABLE != "0") {
             NativeAds.preloadNativeAds(
                 this@LanguageActivity, NativeAds.ALIAS_NATIVE_INTRO_1,
                 NativeAds.NATIVE_INTRO_1
             )
         }
 
-         if (RemoteConfig.NATIVE_INTRO.contains("2") && RemoteConfig.ADS_DISABLE_2 != "0") {
+         if (RemoteConfig.NATIVE_INTRO.contains("2") && RemoteConfig.ADS_DISABLE != "0") {
             NativeAds.preloadNativeAds(
                 this@LanguageActivity, NativeAds.ALIAS_NATIVE_INTRO_2,
                 NativeAds.NATIVE_INTRO_2
             )
         }
 
-        if (RemoteConfig.NATIVE_INTRO.contains("3") && RemoteConfig.ADS_DISABLE_2 != "0") {
+        if (RemoteConfig.NATIVE_INTRO.contains("5") && RemoteConfig.ADS_DISABLE != "0") {
             NativeAds.preloadNativeAds(
-                this@LanguageActivity, NativeAds.ALIAS_NATIVE_INTRO_3,
-                NativeAds.NATIVE_INTRO_3
+                this@LanguageActivity, NativeAds.ALIAS_NATIVE_INTRO_5,
+                NativeAds.NATIVE_INTRO_5
             )
         }
 
-        if (RemoteConfig.NATIVE_INTRO != "0" && RemoteConfig.ADS_DISABLE_2 != "0") {
+        if (RemoteConfig.NATIVE_INTRO_FULL != "0" && RemoteConfig.ADS_DISABLE != "0") {
             NativeAds.preloadNativeAds(
                 this@LanguageActivity, NativeAds.ALIAS_NATIVE_FULLSCREEN,
                 NativeAds.NATIVE_INTRO_FULLSCREEN
@@ -73,7 +73,7 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
 
         start = intent.getBooleanExtra("fromSplash", false)
         binding.apply {
-            rlNative.isVisible = RemoteConfig.ADS_DISABLE_2 != "0"
+            rlNative.isVisible = RemoteConfig.ADS_DISABLE != "0"
             applyBtn.isVisible = !start
             showNative(
                 this@LanguageActivity,

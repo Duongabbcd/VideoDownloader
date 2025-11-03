@@ -1,49 +1,40 @@
 package com.ezt.priv.shortvideodownloader.ads
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 
 object FireBaseConfig {
 
-    fun initRemoteConfig(layout: Int, completeListener: CompleteListener) {
-        val mFirebaseRemoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings =
-            com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(3600)
-                .build()
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings)
-        mFirebaseRemoteConfig.setDefaultsAsync(layout)
+    fun initRemoteConfig(
+        layout: Int,
+        onComplete: (success: Boolean) -> Unit
+    ) {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(0) // always fetch latest
+            .build()
 
-        mFirebaseRemoteConfig.addOnConfigUpdateListener(object :
-            com.google.firebase.remoteconfig.ConfigUpdateListener {
-            override fun onUpdate(configUpdate: com.google.firebase.remoteconfig.ConfigUpdate) {
-                mFirebaseRemoteConfig.activate().addOnCompleteListener {
-                    completeListener.onComplete()
-                }
-            }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(layout)
 
-            override fun onError(error: com.google.firebase.remoteconfig.FirebaseRemoteConfigException) {
-            }
-        })
-
-        mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener {
-            if (it.isSuccessful) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    completeListener.onComplete()
-                }, 2000)
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("RemoteConfig", "Fetch & Activate successful")
+                onComplete(true)
+            } else {
+                Log.e("RemoteConfig", "Fetch failed", task.exception)
+                onComplete(false)
             }
         }
     }
 
-    interface CompleteListener {
-        fun onComplete()
+    fun getValue(key: String): FirebaseRemoteConfigValue {
+        val value: FirebaseRemoteConfigValue = FirebaseRemoteConfig.getInstance().getValue(key)
+        Log.d("FireBaseConfig", "getValue: $key = ${value.asString()} from source ${value.source}")
+        return value
     }
 
-    fun getValue(key: String): String {
-        val mFirebaseRemoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        Log.d("==FireBaseConfig==", "getValue: $key ${mFirebaseRemoteConfig.getString(key)}")
-        return mFirebaseRemoteConfig.getString(key)
-    }
 }
+

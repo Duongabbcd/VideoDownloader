@@ -554,7 +554,7 @@
     <string name="instagram_stories">Lihat cerita dan unduh dari akun pribadi</string>
     <string name="open_instagram">Buka Instagram</string>
 
-    <string name="browser">Peramban</string>
+    <string name="browser">Pulire</string>
     <string name="general_settings">Pengaturan Umum</string>
     <string name="help">Bantuan</string>
     <string name="clear_cache">Hapus cache</string>
@@ -598,5 +598,8 @@
     <string name="open_folder_desc">A causa delle restrizioni di sistema, è necessario autorizzare .Statuses a scaricare i file.</string>
     <string name="quality_options">Opzioni di qualità</string>
     <string name="do_you_want_to_exit_app">Vuoi uscire dall’app?</string>
+
+    <string name="next_option">Altre opzioni</string>
+    <string name="prev_option">Opzioni precedenti</string>
 
 </resources>

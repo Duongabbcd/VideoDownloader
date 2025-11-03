@@ -547,7 +547,7 @@
     <string name="instagram_stories">스토리를 보고 비공개 계정에서 다운로드</string>
     <string name="open_instagram">인스타그램 열기</string>
 
-    <string name="browser">브라우저</string>
+    <string name="browser">정리하기</string>
     <string name="general_settings">일반 설정</string>
     <string name="help">도움말</string>
     <string name="clear_cache">캐시 지우기</string>
@@ -591,5 +591,8 @@
     <string name="open_folder_desc">시스템 제한으로 인해 파일을 다운로드하려면 .Statuses에 권한을 부여해야 합니다.</string>
     <string name="quality_options">품질 옵션</string>
     <string name="do_you_want_to_exit_app">앱을 종료하시겠습니까?</string>
+
+    <string name="next_option">추가 옵션</string>
+    <string name="prev_option">이전 옵션</string>
 
 </resources>

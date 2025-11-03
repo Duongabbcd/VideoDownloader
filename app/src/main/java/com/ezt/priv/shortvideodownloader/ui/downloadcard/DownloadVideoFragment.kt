@@ -203,8 +203,11 @@ class DownloadVideoFragment(
                 binding.titleTextinput.visibility = if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
                 if (binding.titleTextinput.editText?.text?.isEmpty() == true){
                     binding.titleTextinput.editText!!.setText(downloadItem.title)
-                    binding.titleTextinput.endIconMode = END_ICON_NONE
                 }
+                binding.clearText.setOnClickListener {
+                    binding.titleTextinput.editText!!.setText("")
+                }
+
                 binding.titleTextinput.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -228,7 +231,6 @@ class DownloadVideoFragment(
 
                 if (savedInstanceState?.containsKey("updated") == true){
                     if (!listOf(resultItem?.title, downloadItem.title).contains(binding.titleTextinput.editText?.text.toString())){
-                        binding.titleTextinput.endIconMode = END_ICON_CUSTOM
                         binding.titleTextinput.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
                         downloadItem.title = binding.titleTextinput.editText?.text.toString()
                     }
@@ -240,9 +242,6 @@ class DownloadVideoFragment(
                     }
                 }
 
-                binding.titleTextinput.setEndIconOnClickListener {
-                    binding.titleTextinput.editText!!.setText("")
-                }
 
                 binding.authorTextinput.setEndIconOnClickListener {
                     if (resultItem != null){

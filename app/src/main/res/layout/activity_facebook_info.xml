@@ -291,9 +291,13 @@
                 android:layout_height="@dimen/_40sdp"/>
 
             <TextView
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/white"
                 android:textSize="18sp"
+                android:backgroundTint="@color/dark_blue"
+                android:background="@drawable/background_radius_12_white"
                 android:text="@string/please_wait"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingVertical="@dimen/_4sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

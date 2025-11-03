@@ -22,7 +22,6 @@ import com.ezt.priv.shortvideodownloader.MyApplication
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.helper.Prefs
 import com.ezt.priv.shortvideodownloader.ui.intro.IntroActivityNew
-import com.ezt.priv.shortvideodownloader.ui.intro.IntroFragmentNew
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
@@ -41,9 +40,10 @@ object NativeAds {
 
     const val NATIVE_INTRO_1 = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_INTRO_2 = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_INTRO_3 = ADMOB_AD_UNIT_ID_TEST
+    const val NATIVE_INTRO_5 = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_INTRO_FULLSCREEN = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_HOME = ADMOB_AD_UNIT_ID_TEST
+    const val NATIVE_PREVIEW = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_PERMISSION = ADMOB_AD_UNIT_ID_TEST
     const val NATIVE_FAVOURITE = ADMOB_AD_UNIT_ID_TEST
 
@@ -52,11 +52,11 @@ object NativeAds {
 
     const val ALIAS_NATIVE_INTRO_1 = "ads_native_intro_1"
     const val ALIAS_NATIVE_INTRO_2 = "ads_native_intro_2"
-    const val ALIAS_NATIVE_INTRO_3 = "ads_native_intro_3"
+    const val ALIAS_NATIVE_INTRO_5 = "ads_native_intro_3"
     const val ALIAS_NATIVE_FULLSCREEN = "ads_native_full_screen"
     const val ALIAS_NATIVE_HOME = "ads_native_home_screen"
-    const val ALIAS_NATIVE_PERMISSION = "ads_native_permission"
-    const val ALIAS_NATIVE_FAVOURITE = "ads_native_favourite"
+    const val ALIAS_NATIVE_PREVIEW= "ads_native_preview_screen"
+
 
     const val ALIAS_INTRO = "ads_native_language"
 
@@ -186,7 +186,7 @@ object NativeAds {
     }
 
     fun preloadNativeAds(activity: Activity, alias: String, adId: String = NATIVE_LANGUAGE_1) {
-        if (RemoteConfig.ADS_DISABLE_2 == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0") {
             return
         }
         println("preloadNativeAds: $alias and $adId")

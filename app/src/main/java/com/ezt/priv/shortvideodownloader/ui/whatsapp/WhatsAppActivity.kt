@@ -24,7 +24,6 @@ import com.ezt.priv.shortvideodownloader.database.models.expand.non_table.WhatsA
 import com.ezt.priv.shortvideodownloader.databinding.ActivityWhatsappBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.connection.InternetConnectionViewModel
-import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
 import com.ezt.priv.shortvideodownloader.ui.welcome.WelcomeActivity
 import com.ezt.priv.shortvideodownloader.ui.whatsapp.adapter.OnEditWhatsAppListener
@@ -271,9 +270,9 @@ class WhatsAppActivity : BaseActivity2<ActivityWhatsappBinding>(ActivityWhatsapp
         // Check for saved URI permission
 
         Log.d(TAG,
-            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+            "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE}"
         )
-        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE == "0") {
             binding.frBanner.root.gone()
         } else {
             loadBanner(this, BANNER_HOME)

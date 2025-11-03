@@ -33,6 +33,7 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
     inner class MyHolder(
         private val binding: BookmarkViewBinding
     ) : RecyclerView.ViewHolder(binding.root ) {
+        val packageManager = context.packageManager
 
         fun bind(position: Int) {
             binding.apply {
@@ -63,8 +64,36 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
             }
         }
 
+        private fun openBookmark1(bookmark: Bookmark) {
+            val packageName = bookmark.packageName
+
+            if (!packageName.isNullOrEmpty() && isAppInstalled(packageName)) {
+                // Open the installed app
+                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+                if (launchIntent != null) {
+                    context.startActivity(launchIntent)
+                } else {
+                    // fallback in rare cases
+                    openInBrowseActivity(bookmark.url)
+                }
+            } else {
+                openInBrowseActivity(bookmark.url)
+            }
+
+        }
+
         private fun openBookmark(bookmark: Bookmark) {
             openInBrowseActivity(bookmark.url)
+        }
+
+
+        private fun isAppInstalled(packageName: String): Boolean {
+            return try {
+                packageManager.getPackageInfo(packageName, 0)
+                true
+            } catch (e: PackageManager.NameNotFoundException) {
+                false
+            }
         }
 
 
@@ -80,6 +109,11 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
                     putExtra("facebookURL", url)
                 })
 
+                url.contains("tiktok", true) ->    context.startActivity(Intent(context,
+                    FacebookInfoActivity::class.java).apply {
+                    putExtra("facebookURL", url)
+                })
+
                 url.contains("whatsapp", true) ->    context.startActivity(Intent(context,
                     WhatsAppActivity::class.java))
 
@@ -91,7 +125,6 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
             }
 
         }
-
     }
 
 

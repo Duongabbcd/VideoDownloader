@@ -502,7 +502,7 @@
     <string name="instagram_stories">कहानियाँ देखें और निजी खाते से डाउनलोड करें</string>
     <string name="open_instagram">इंस्टाग्राम खोलें</string>
 
-    <string name="browser">ब्राउज़र</string>
+    <string name="browser">साफ करें</string>
     <string name="general_settings">सामान्य सेटिंग्स</string>
     <string name="help">मदद</string>
     <string name="clear_cache">कैश साफ करें</string>
@@ -546,5 +546,8 @@
     <string name="open_folder_desc">सिस्टम प्रतिबंधों के कारण, हमें फ़ाइलें डाउनलोड करने के लिए .Statuses को अनुमति देनी होगी।</string>
     <string name="quality_options">गुणवत्ता विकल्प</string>
     <string name="do_you_want_to_exit_app">क्या आप ऐप से बाहर निकलना चाहते हैं?</string>
+
+    <string name="next_option">अधिक विकल्प</string>
+    <string name="prev_option">पिछले विकल्प</string>
 
 </resources>

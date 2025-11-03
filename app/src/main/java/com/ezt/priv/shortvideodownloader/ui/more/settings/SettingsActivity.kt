@@ -71,7 +71,7 @@ class SettingsActivity : BaseActivity2<ActivitySettingsBinding>(ActivitySettings
                 })
             }
 
-            val isAllowedWifiOnly = Common.getAllowWifiDownloadOnly(this@SettingsActivity)
+            var isAllowedWifiOnly = Common.getAllowWifiDownloadOnly(this@SettingsActivity)
            if(isAllowedWifiOnly) {
                wifiSwitch.setImageResource(R.drawable.icon_switch_on)
            } else {
@@ -79,6 +79,7 @@ class SettingsActivity : BaseActivity2<ActivitySettingsBinding>(ActivitySettings
            }
 
             wifiSwitch.setOnClickListener {
+                isAllowedWifiOnly= !isAllowedWifiOnly
                 if(isAllowedWifiOnly) {
                     Common.setAllowWifiDownloadOnly(this@SettingsActivity, false)
                     wifiSwitch.setImageResource(R.drawable.icon_switch_on)

@@ -41,7 +41,7 @@
         android:id="@+id/iconHome"
         android:src="@drawable/ic_back_white"
         android:padding="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_32sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:contentDescription="@string/imageView"
         app:layout_constraintTop_toTopOf="parent"

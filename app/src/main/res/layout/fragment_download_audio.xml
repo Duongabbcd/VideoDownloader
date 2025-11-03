@@ -13,30 +13,45 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/title_textinput"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_10sdp"
-                android:hint="@string/title"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox">
-
-                <com.google.android.material.textfield.TextInputEditText
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/title_textinput"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
-                    android:inputType="text"
                     android:layout_height="wrap_content"
-                    />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:hint="@string/title"
+                    android:paddingStart="@dimen/_10sdp"
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:paddingEnd="@dimen/_40sdp"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
-                    android:id="@+id/clearAllText"
+                    android:id="@+id/clearText"
+                    android:padding="@dimen/_10sdp"
                     android:contentDescription="@string/imageView"
+                    app:layout_constraintEnd_toEndOf="@id/title_textinput"
+                    app:layout_constraintTop_toTopOf="@id/title_textinput"
+                    app:layout_constraintBottom_toBottomOf="@id/title_textinput"
                     android:src="@drawable/baseline_close_24"
-                    android:layout_width="@dimen/_24sdp"
-                    android:layout_height="@dimen/_24sdp"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,6 +64,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/author_textinput"
                     android:layout_width="0dp"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_weight="45"
                     android:hint="@string/author"
@@ -67,6 +83,7 @@
                     android:id="@+id/downloadContainer"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
+                    android:visibility="gone"
                     android:layout_weight="45"
                     android:layout_height="wrap_content"
                     android:hint="@string/container">

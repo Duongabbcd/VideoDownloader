@@ -10,22 +10,14 @@ import android.util.Log
 import android.view.View
 import com.ezt.priv.shortvideodownloader.MyApplication
 import com.ezt.priv.shortvideodownloader.ads.AdmobUtils.isNetworkConnected
-import com.ezt.priv.shortvideodownloader.ads.AdsManager
 import com.ezt.priv.shortvideodownloader.ads.FireBaseConfig
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
-import com.ezt.priv.shortvideodownloader.ads.helper.GDPRRequestable
 import com.ezt.priv.shortvideodownloader.databinding.ActivitySplashBinding
-import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.util.Common
-import com.ezt.priv.shortvideodownloader.util.Common.inVisible
-import com.google.android.ump.FormError
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
 import kotlin.system.exitProcess
 import com.ezt.priv.shortvideodownloader.R
-import com.ezt.priv.shortvideodownloader.ads.AdsManager.isTestDevice
-import com.ezt.priv.shortvideodownloader.ads.RemoteConfig.NATIVE_FULL_SPLASH_070625
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig.REMOTE_SPLASH_070625
 import com.ezt.priv.shortvideodownloader.ads.type.InterAds
 import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
@@ -33,7 +25,6 @@ import com.ezt.priv.shortvideodownloader.ads.type.OpenAds
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity3
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
-import com.ezt.priv.shortvideodownloader.ui.social.FacebookInfoActivity
 import com.ezt.priv.shortvideodownloader.util.Common.visible
 
 @AndroidEntryPoint
@@ -55,9 +46,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
     private var now = 0L
 
-//    @Inject
-//    lateinit var analyticsLogger: AnalyticsLogger
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isLoadAdsDone = false
@@ -71,32 +59,14 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         initView()
     }
 
-//    private fun initGDPR() {
-//        if (isNetworkConnected(this)) {
-//            MyApplication.trackingEvent("check_GDPR")
-//            GDPRRequestable.getGdprRequestable(this)
-//                .setOnRequestGDPRCompleted(object : GDPRRequestable.RequestGDPRCompleted {
-//                    override fun onRequestGDPRCompleted(formError: FormError?) {
-//                        println("onRequestGDPRCompleted: $formError")
-//
-//                    }
-//                })
-//            GDPRRequestable.getGdprRequestable(this).requestGDPR()
-//        } else {
-//
-//        }
-//
-//    }
-
-
     private fun initAds() {
-        println("RemoteConfig.ADS_DISABLE: ${RemoteConfig.ADS_DISABLE_2} and ${RemoteConfig.AD_OPEN_APP}")
+        println("RemoteConfig.ADS_DISABLE: ${RemoteConfig.ADS_DISABLE} and ${RemoteConfig.AD_OPEN_APP}")
         if (RemoteConfig.AD_OPEN_APP == "0") {
             showAds()
             return
         }
 
-        if (RemoteConfig.ADS_DISABLE_2 == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0") {
             showBanner()
             return
         }
@@ -199,74 +169,53 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
     }
 
     override fun initView() {
-        if ((!isTaskRoot && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) && intent.action != null && intent.action === Intent.ACTION_MAIN) {
+        if ((!isTaskRoot && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) &&
+            intent.action != null && intent.action === Intent.ACTION_MAIN) {
             finish()
             return
         }
 
         handler.postDelayed(runnable, 20000)
-        val x = 0
 
         if (isNetworkConnected(this)) {
-            FireBaseConfig.initRemoteConfig(
-                R.xml.remote_config_default,
-                object : FireBaseConfig.CompleteListener {
-                    override fun onComplete() {
-//                        RemoteConfig.AD_OPEN_APP = FireBaseConfig.getValue("AD_OPEN_APP")
-//                        RemoteConfig.ADS_DISABLE_2 = FireBaseConfig.getValue("ADS_DISABLE_2")
-//                        RemoteConfig.BANNER_ALL_2 = FireBaseConfig.getValue("BANNER_ALL_2")
-//
-//                        RemoteConfig.INTER_DOWNLOAD_2 = FireBaseConfig.getValue("INTER_DOWNLOAD_2")
-//                        RemoteConfig.INTER_CALLSCREEN_2 =
-//                            FireBaseConfig.getValue("INTER_CALLSCREEN_2")
-//                        RemoteConfig.INTER_RINGTONE_2 = FireBaseConfig.getValue("INTER_RINGTONE_2")
-//                        RemoteConfig.INTER_SPACE_TIME_2 =
-//                            FireBaseConfig.getValue("INTER_SPACE_TIME_2")
-//                        RemoteConfig.INTER_WALLPAPER_2 =
-//                            FireBaseConfig.getValue("INTER_WALLPAPER_2")
-//
-//                        RemoteConfig.NATIVE_FAVOURITE = FireBaseConfig.getValue("NATIVE_FAVOURITE")
-//                        RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO")
-//                        RemoteConfig.NATIVE_LANGUAGE = FireBaseConfig.getValue("NATIVE_LANGUAGE")
-//                        RemoteConfig.NATIVE_PERMISSION =
-//                            FireBaseConfig.getValue("NATIVE_PERMISSION")
-//
-//                        RemoteConfig.OPEN_AD_RETURN_APP =
-//                            FireBaseConfig.getValue("OPEN_AD_RETURN_APP")
-//
-//                        RemoteConfig.REWARD_RINGTONE = FireBaseConfig.getValue("REWARD_RINGTONE")
-//                        RemoteConfig.REWARD_SLIDE = FireBaseConfig.getValue("REWARD_SLIDE")
-//                        RemoteConfig.REWARD_VIDEO = FireBaseConfig.getValue("REWARD_VIDEO")
-//
-//                        RemoteConfig.isForcedToUpdate =
-//                            FireBaseConfig.getValue("isForcedToUpdate")
-//                        RemoteConfig.totalFreeRingtones =
-//                            FireBaseConfig.getValue("totalFreeRingtones")
-//                        RemoteConfig.totalFreeWallpapers =
-//                            FireBaseConfig.getValue("totalFreeWallpapers")
+            // Initialize Remote Config and wait for completion
+            FireBaseConfig.initRemoteConfig(R.xml.remote_config_default) { success ->
+                if (success) {
+                    // Always read the latest remote values here
+                    RemoteConfig.ADS_DISABLE = FireBaseConfig.getValue("ADS_DISABLE").asString()
+                    RemoteConfig.AD_OPEN_APP = FireBaseConfig.getValue("AD_OPEN_APP").asString()
+                    RemoteConfig.AD_RETURN_APP = FireBaseConfig.getValue("AD_RETURN_APP").asString()
+                    RemoteConfig.BANNER_ALL_2 = FireBaseConfig.getValue("BANNER_ALL").asString()
+                    RemoteConfig.INTER_ALL = FireBaseConfig.getValue("INTER_ALL").asString()
+                    RemoteConfig.INTER_SPACE = FireBaseConfig.getValue("INTER_SPACE").asString()
+                    RemoteConfig.NATIVE_HOME = FireBaseConfig.getValue("NATIVE_HOME").asString()
+                    RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO").asString()
+                    RemoteConfig.NATIVE_LANGUAGE = FireBaseConfig.getValue("NATIVE_LANGUAGE").asString()
+                    RemoteConfig.NATIVE_INTRO_FULL = FireBaseConfig.getValue("NATIVE_INTRO_FULL").asString()
+                    RemoteConfig.NATIVE_PREVIEW = FireBaseConfig.getValue("NATIVE_PREVIEW").asString()
+                    RemoteConfig.isForcedToUpdate = FireBaseConfig.getValue("isForcedToUpdate").asString()
 
-//                        AdsManager.countClickRingtone = 0
-//                        AdsManager.countClickWallpaper = 0
-//                        AdsManager.countClickCallscreen = 0
+                    Log.d("Splash", "ADS_DISABLE = ${RemoteConfig.ADS_DISABLE}")
 
+                    // Initialize ads or move to next screen
+                    initAdsOrNextScreen()
+                } else {
+                    // Failed to fetch, fallback to defaults
+                    Log.d("Splash", "Using default RemoteConfig values")
+                    RemoteConfig.ADS_DISABLE = "1" // default value
+                    initAdsOrNextScreen()
+                }
+            }
+        } else {
+            // No network, use defaults
+            initAdsOrNextScreen()
+        }
+    }
 
-                        if (isInitAds.get()) {
-                            return
-                        }
-                        isInitAds.set(true)
-
-                        println("RemoteConfig.ADS_DISABLE: ${RemoteConfig.ADS_DISABLE_2}")
-                        if (RemoteConfig.ADS_DISABLE_2 != "0") {
-                            initAds()
-                            setupCMP()
-                        } else {
-                            binding.tvStart.visible()
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                nextScreen()
-                            }, 3000)
-                        }
-                    }
-                })
+    private fun initAdsOrNextScreen() {
+        if (RemoteConfig.ADS_DISABLE != "0") {
+            initAds()
+            setupCMP()
         } else {
             binding.tvStart.visible()
             Handler(Looper.getMainLooper()).postDelayed({
@@ -274,6 +223,8 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
             }, 3000)
         }
     }
+
+
 
     private fun nextScreen() {
         val countOpen = Common.getCountOpenApp(this)
@@ -284,13 +235,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
         //Previous: countOpen <= 1
         if (countOpen == 0) {
-//            analyticsLogger.updateUserProperties(
-//                this@SplashActivity,
-//                "splash_screen",
-//                -1
-//            )
-
-//            analyticsLogger.logScreenGo("language_screen", "splash_screen", duration)
 
             val intent = Intent(this@SplashActivity, LanguageActivity::class.java)
             intent.putExtra("fromSplash", true)
@@ -301,33 +245,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             intent.putExtra("fromSplash", true)
             startActivity(intent)
-
-//            val isWritingGranted = hasLegacyWritePermission(this@SplashActivity)
-//            val isSystemModified = RingtoneHelper.hasWriteSettingsPermission(this@SplashActivity)
-//
-//            if (!isWritingGranted || !isSystemModified) {
-//                analyticsLogger.updateUserProperties(
-//                    this@SplashActivity,
-//                    "splash_screen",
-//                    -1
-//                )
-//                analyticsLogger.logScreenGo("permission_screen", "splash_screen", duration)
-//                val intent = Intent(this@SplashActivity, PermissionActivity::class.java)
-//                intent.putExtra("fromSplash", true)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                startActivity(intent)
-//            } else {
-//                analyticsLogger.updateUserProperties(
-//                    this@SplashActivity,
-//                    "splash_screen",
-//                    -1
-//                )
-//                analyticsLogger.logScreenGo("main_screen", "splash_screen", duration)
-//                val intent = Intent(this@SplashActivity, MainActivity::class.java)
-//                intent.putExtra("fromSplash", true)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                startActivity(intent)
-//            }
 
         }
 

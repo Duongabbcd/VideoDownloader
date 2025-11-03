@@ -71,7 +71,7 @@
                 android:gravity="start"
                 android:maxLines="2"
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/format_id"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

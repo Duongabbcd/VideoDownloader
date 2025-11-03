@@ -30,7 +30,7 @@ object OpenAds {
     private var loadTimeOpenAd: Long = 0
 
     fun initOpenAds(context: Activity, callback: (Boolean) -> Unit) {
-        if (RemoteConfig.ADS_DISABLE_2 == "0" || RemoteConfig.AD_OPEN_APP == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0" || RemoteConfig.AD_OPEN_APP == "0") {
             callback(false)
             return
         }

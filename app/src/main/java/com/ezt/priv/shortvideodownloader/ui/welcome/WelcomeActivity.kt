@@ -33,7 +33,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         binding.title.text = resources.getString(R.string.welcome_back)
 
-        if (RemoteConfig.OPEN_AD_RETURN_APP == "1") {
+        if (RemoteConfig.AD_RETURN_APP == "1") {
             OpenAds.initOpenAds(this@WelcomeActivity) { isReady ->
                 if (isReady) {
                     OpenAds.showOpenAds(

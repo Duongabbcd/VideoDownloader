@@ -13,14 +13,11 @@ import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.currentTabPosition
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
-import com.ezt.priv.shortvideodownloader.ui.info.DownloadInfoActivity
 import com.ezt.priv.shortvideodownloader.ui.tab.adapter.OnEditTabListener
 import com.ezt.priv.shortvideodownloader.ui.tab.adapter.TabAdapter
 import com.ezt.priv.shortvideodownloader.ui.tab.viewmodel.TabViewModel
-import com.ezt.priv.shortvideodownloader.ui.whatsapp.WhatsAppActivity
 import com.ezt.priv.shortvideodownloader.util.Common.gone
 import com.ezt.priv.shortvideodownloader.util.Common.visible
-import org.schabi.newpipe.extractor.timeago.patterns.th
 
 class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflate),
     OnEditTabListener {
@@ -75,9 +72,9 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
     override fun onResume() {
         super.onResume()
         Log.d(
-            TAG, "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE_2}"
+            TAG, "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE}"
         )
-        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE_2 == "0") {
+        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE == "0") {
             binding.frBanner.root.gone()
         } else {
             loadBanner(this, BANNER_HOME)

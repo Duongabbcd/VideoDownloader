@@ -20,10 +20,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import com.google.ads.mediation.admob.AdMobAdapter
-import dagger.hilt.components.SingletonComponent
 
 @SuppressLint("StaticFieldLeak")
 object BannerAds {
@@ -69,7 +66,7 @@ object BannerAds {
         adUnitId: String = BANNER_ID_DEFAULT,
         onDisplayListener: (Boolean) -> Unit
     ) {
-        if (RemoteConfig.ADS_DISABLE_2 == "0" || RemoteConfig.BANNER_ALL_2 == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0" || RemoteConfig.BANNER_ALL_2 == "0") {
             onDisplayListener(false)
             return
         }

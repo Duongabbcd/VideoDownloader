@@ -174,10 +174,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.bookmarkDisplay.setOnClickListener {
                 isRight = !isRight
                 if(!isRight) {
-                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_1)
+                    binding.bookmarkDisplay.text = resources.getString(R.string.next_option)
                     bookmarkAdapter.submitList(defaultList1)
                 } else {
-                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_2)
+                    binding.bookmarkDisplay.text = resources.getString(R.string.prev_option)
                     bookmarkAdapter.submitList(defaultList2)
                 }
             }

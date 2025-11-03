@@ -6,13 +6,10 @@ import android.util.Log
 import com.ezt.priv.shortvideodownloader.ads.AdmobUtils
 import com.ezt.priv.shortvideodownloader.ads.AdsManager.isTestDevice
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
-import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.databinding.ActivityIntroBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
-import com.ezt.priv.shortvideodownloader.util.Common
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class IntroActivityNew : BaseActivity2<ActivityIntroBinding>(ActivityIntroBinding::inflate), IntroFragmentNew.CallbackIntro {
@@ -52,7 +49,7 @@ class IntroActivityNew : BaseActivity2<ActivityIntroBinding>(ActivityIntroBindin
         numberPage = if (isTestDevice) {
             5
         } else {
-            if (RemoteConfig.ADS_DISABLE_2 == "0" || RemoteConfig.NATIVE_INTRO == "0" || isFailedOfFullScreen) {
+            if (RemoteConfig.ADS_DISABLE == "0" || RemoteConfig.NATIVE_INTRO == "0" || isFailedOfFullScreen) {
                 4
             }  else {
                5

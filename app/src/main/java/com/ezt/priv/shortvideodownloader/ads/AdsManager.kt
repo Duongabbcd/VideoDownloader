@@ -2,12 +2,8 @@ package com.ezt.priv.shortvideodownloader.ads
 
 import android.app.Activity
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import com.admob.max.dktlibrary.AdmobUtils
 import com.admob.max.dktlibrary.utils.admod.NativeHolderAdmob
 import com.ezt.priv.shortvideodownloader.R
@@ -19,7 +15,7 @@ object AdsManager {
     var isTestDevice = false
 
 
-    var countClickRingtone = 0
+    var countClickVideo = 0
 
     fun showNativeFullScreen(
         context: Context,

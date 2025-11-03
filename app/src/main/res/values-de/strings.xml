@@ -526,7 +526,7 @@
     <string name="instagram_stories">Stories anzeigen und von privatem Konto herunterladen</string>
     <string name="open_instagram">Instagram öffnen</string>
 
-    <string name="browser">Browser</string>
+    <string name="browser">Aufräumen</string>
     <string name="general_settings">Allgemeine Einstellungen</string>
     <string name="help">Hilfe</string>
     <string name="clear_cache">Cache löschen</string>
@@ -570,4 +570,6 @@
     <string name="quality_options">Qualitätsoptionen</string>
     <string name="do_you_want_to_exit_app">Möchten Sie die App verlassen?</string>
 
+    <string name="next_option">Weitere Optionen</string>
+    <string name="prev_option">Vorherige Optionen</string>
 </resources>

@@ -41,7 +41,7 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
     }
     private var decryptedFile: File? = null
 
-    private var player: ExoPlayer? = null
+    private lateinit var player: ExoPlayer
     private var hasInitialized = false
 
     private val handler = Handler(Looper.getMainLooper())
@@ -157,31 +157,31 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                 }
 
                 binding.iconRotation.setOnClickListener {
-                    // Delay orientation change slightly to avoid crashes
                     binding.root.post {
                         val currentOrientation = resources.configuration.orientation
-                        requestedOrientation = when (currentOrientation) {
+                        when (currentOrientation) {
                             Configuration.ORIENTATION_PORTRAIT -> {
-                                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
-                                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-                                }
-
+                                // Rotate to landscape
+                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                                // Fit with black bars (don’t stretch)
+                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                             }
 
                             Configuration.ORIENTATION_LANDSCAPE -> {
-                                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT.also {
-                                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                                }
+                                // Rotate back to portrait
+                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                                // Fit again (good default)
+                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                             }
 
                             else -> {
-                                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE.also {
-                                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-                                }
+                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                             }
                         }
                     }
                 }
+
 
             }
         }
@@ -284,9 +284,7 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
 
     private fun releasePlayer() {
         returnedFromSettings = false
-
-        player?.release()
-        player = null
+        player.release()
         hasInitialized = false
         handler.removeCallbacks(updateSeekBarRunnable)
         decryptedFile?.delete()

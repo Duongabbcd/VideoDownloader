@@ -63,9 +63,69 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/downloads_card_view"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="@dimen/_130sdp"
+                app:cardCornerRadius="@dimen/_20sdp"
+                app:cardElevation="0dp"
+                app:checkedIcon="@null"
+                app:cardMaxElevation="@dimen/_12sdp"
+                android:checkable="true"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                app:strokeWidth="0dp"
+                app:cardPreventCornerOverlap="true">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/thumbnailImage"
+                    android:contentDescription="@string/imageView"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/noImage"
+                    android:visibility="gone"
+                    android:src="@drawable/icon_no_image"
+                    android:contentDescription="@string/imageView"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"/>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Native Ad Frame -->
+            <RelativeLayout
+                android:id="@+id/rlNative"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_130sdp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <include
+                    android:id="@+id/m_loading_view"
+                    layout="@layout/native_small_screen" />
+
+                <FrameLayout
+                    android:id="@+id/frNative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:scrollbars="none"
+            android:layout_marginTop="@dimen/_10sdp"
             android:paddingHorizontal="@dimen/_20sdp"
             android:layout_height="wrap_content">
 
@@ -111,6 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
+                    android:visibility="gone"
                     android:minWidth="@dimen/_30sdp"
                     app:chipIcon="@drawable/ic_format"
                     app:cornerRadius="@dimen/_10sdp"
@@ -164,6 +225,7 @@
                     android:minWidth="@dimen/_30sdp"
                     app:cornerRadius="@dimen/_10sdp"
                     android:text="@string/command"
+                    android:visibility="gone"
                     app:chipIcon="@drawable/ic_baseline_keyboard_arrow_right_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +266,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="end"
+            android:gravity="center_horizontal"
             android:layout_margin="@dimen/_10sdp"
             android:orientation="horizontal">
 

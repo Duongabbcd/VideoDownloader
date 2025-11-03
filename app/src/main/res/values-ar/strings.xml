@@ -559,7 +559,7 @@
     <string name="instagram_stories">عرض القصص وتنزيلها من حساب خاص</string>
     <string name="open_instagram">افتح إنستغرام</string>
 
-    <string name="browser">المتصفح</string>
+    <string name="browser">تنظيف</string>
     <string name="general_settings">الإعدادات العامة</string>
     <string name="help">مساعدة</string>
     <string name="clear_cache">مسح ذاكرة التخزين المؤقت</string>
@@ -601,5 +601,7 @@
     <string name="open_folder_desc">نظرًا لقيود النظام، نحتاج إلى إذنك للسماح لـ .Statuses بتنزيل الملفات.</string>
     <string name="quality_options">خيارات الجودة</string>
     <string name="do_you_want_to_exit_app">هل تريد الخروج من التطبيق؟</string>
+    <string name="next_option">المزيد من الخيارات</string>
+    <string name="prev_option">الخيارات السابقة</string>
 
 </resources>

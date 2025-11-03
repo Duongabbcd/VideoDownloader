@@ -496,7 +496,7 @@
     <string name="instagram_stories">গল্প দেখুন এবং প্রাইভেট অ্যাকাউন্ট থেকে ডাউনলোড করুন</string>
     <string name="open_instagram">ইনস্টাগ্রাম খুলুন</string>
 
-    <string name="browser">ব্রাউজার</string>
+    <string name="browser">পরিষ্কার করুন</string>
     <string name="general_settings">সাধারণ সেটিংস</string>
     <string name="help">সহায়তা</string>
     <string name="clear_cache">ক্যাশ মুছুন</string>
@@ -539,4 +539,9 @@
     <string name="open_folder_desc">সিস্টেম সীমাবদ্ধতার কারণে, ফাইল ডাউনলোডের জন্য .Statuses-কে অনুমোদন করতে হবে।</string>
     <string name="quality_options">মানের বিকল্প</string>
     <string name="do_you_want_to_exit_app">আপনি কি অ্যাপটি বন্ধ করতে চান?</string>
+
+    <string name="next_option">আরও বিকল্প</string>
+    <string name="prev_option">পূর্ববর্তী বিকল্প</string>
+
+
 </resources>

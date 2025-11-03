@@ -13,11 +13,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.admob.max.dktlibrary.utils.admod.NativeHolderAdmob
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.ads.AdmobUtils
-import com.ezt.priv.shortvideodownloader.ads.AdsManager
 import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.databinding.ViewpagerIntroItempageBinding
 import com.ezt.priv.shortvideodownloader.ui.intro.IntroActivityNew.Companion.numberPage
@@ -45,7 +43,7 @@ class IntroFragmentNew : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (RemoteConfig.ADS_DISABLE_2 == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0") {
             binding.rlNative.gone()
         }
 
@@ -351,7 +349,7 @@ class IntroFragmentNew : Fragment() {
     private fun showNativeIntro(position: Int) {
         when (position) {
             0 -> {
-                if (RemoteConfig.ADS_DISABLE_2 == "0") {
+                if (RemoteConfig.ADS_DISABLE == "0") {
                     binding.rlNative.gone()
                     return
                 }
@@ -388,7 +386,7 @@ class IntroFragmentNew : Fragment() {
             }
 
             1 -> {
-                if (RemoteConfig.ADS_DISABLE_2 == "0") {
+                if (RemoteConfig.ADS_DISABLE == "0") {
                     binding.rlNative.gone()
                     return
                 }
@@ -428,14 +426,14 @@ class IntroFragmentNew : Fragment() {
             }
 
             4 -> {
-                if (RemoteConfig.ADS_DISABLE_2 == "0") {
+                if (RemoteConfig.ADS_DISABLE == "0") {
                     binding.rlNative.gone()
                     return
                 }
                 binding.frNative.visible()
                 activity?.let { it ->
                     LanguageActivity.showNative(it,
-                        NativeAds.ALIAS_NATIVE_INTRO_3,
+                        NativeAds.ALIAS_NATIVE_INTRO_5,
                         binding.frNative,
                         onLoadDone = {
                             binding.mLoadingView.root.visibility = View.GONE
@@ -447,10 +445,10 @@ class IntroFragmentNew : Fragment() {
                             }
                             NativeAds.preloadNativeAds(
                                 it,
-                                alias = NativeAds.ALIAS_NATIVE_INTRO_3,
-                                adId = NativeAds.NATIVE_INTRO_3
+                                alias = NativeAds.ALIAS_NATIVE_INTRO_5,
+                                adId = NativeAds.NATIVE_INTRO_5
                             )
-                            LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_INTRO_3,
+                            LanguageActivity.showNative(it, alias = NativeAds.ALIAS_NATIVE_INTRO_5,
                                 binding.frNative, false, {
                                     binding.mLoadingView.root.visibility = View.GONE
                                 }, {

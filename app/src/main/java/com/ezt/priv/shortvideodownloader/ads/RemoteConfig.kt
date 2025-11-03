@@ -19,27 +19,16 @@ object RemoteConfig {
 
     var BANNER_ALL_2 = "1"
 
-    var INTER_CALLSCREEN_2 = "1"
-    var INTER_DOWNLOAD_2 = "1"
-    var INTER_RINGTONE_2 = "1"
-    var INTER_SPACE_TIME_2 = "40"
-    var INTER_WALLPAPER_2 = "1"
+    var INTER_ALL = "1"
+    var INTER_SPACE = "40"
 
-
-    var NATIVE_FAVOURITE = "1"
-    var NATIVE_INTRO = "123"
     var NATIVE_HOME = "1"
     var NATIVE_LANGUAGE = "12"
-    var NATIVE_PERMISSION = "1"
-    var OPEN_AD_RETURN_APP = "1"
 
-    var REWARD_RINGTONE = "1"
-    var REWARD_SLIDE = "1"
-    var REWARD_VIDEO = "1"
-
+    var NATIVE_INTRO = "125"
+    var NATIVE_INTRO_FULL = "1"
+    var NATIVE_PREVIEW = "1"
 
     //features
-    var isForcedToUpdate = ""
-    var totalFreeRingtones = "5"
-    var totalFreeWallpapers = "15"
+    var isForcedToUpdate = "1"
 }

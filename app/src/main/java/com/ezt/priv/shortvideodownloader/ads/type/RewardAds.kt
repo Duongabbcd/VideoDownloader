@@ -111,7 +111,7 @@ object RewardAds {
     }
 
     fun initRewardAds(context: Activity) {
-        if (RemoteConfig.ADS_DISABLE_2 == "0") return
+        if (RemoteConfig.ADS_DISABLE == "0") return
         if (mRewardAds != null || isLoading || !isCanLoadAds()) return
         val now = System.currentTimeMillis()
         isLoading = true

@@ -148,6 +148,8 @@ dependencies {
     implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2")
     implementation("io.github.junkfood02.youtubedl-android:aria2c:0.18.0")
 
+    implementation("com.googlecode.mp4parser:isoparser:1.1.22")
+
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
 

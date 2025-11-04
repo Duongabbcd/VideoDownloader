@@ -896,21 +896,23 @@ object UiUtil {
         val check = thumbnailImage?.loadThumbnail(false, item.thumb ) == true
         noImage?.isVisible = !check
 
-        LanguageActivity.showNative(context , NativeAds.ALIAS_NATIVE_HOME, frNative!!, fullScreen = false,{
+        LanguageActivity.showNative1(context , NativeAds.ALIAS_NATIVE_HOME, frNative!!, fullScreen = false,{
             rlNative?.visible()
             mLoadingView?.gone()
         }, {
+            rlNative?.gone()
             if (RemoteConfig.NATIVE_HOME == "0") {
                 rlNative?.visibility = GONE
-                return@showNative
+                return@showNative1
             }
             NativeAds.preloadNativeAds(
                 context,
                 alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
                 adId = NativeAds.NATIVE_INTRO_FULLSCREEN
             )
-            LanguageActivity.showNative(context, alias = NativeAds.ALIAS_NATIVE_HOME,
+            LanguageActivity.showNative1(context, alias = NativeAds.ALIAS_NATIVE_HOME,
                 frNative, fullScreen = false, {
+                    rlNative?.visible()
                     mLoadingView?.gone()
                 }, {
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -988,9 +990,11 @@ object UiUtil {
         openFile!!.tag = item.id
         openFile.setOnClickListener{
             if (item.downloadPath.size == 1) {
+                println("fragmentedURL: ${item.format.url} and ${fragmentedURL.any{ item.format.url.contains(it, true)}}")
                 context.startActivity(Intent(context, PlayerActivity::class.java).apply {
                     putExtra("playerURL", item.downloadPath.first())
                     putExtra("playerName", item.title)
+                    putExtra("isFragmented", fragmentedURL.any{ item.format.url.contains(it, true)})
                 })
             }else{
                 openMultipleFilesIntent(context, item.downloadPath)
@@ -2782,4 +2786,6 @@ object UiUtil {
         }).build()
         mw.setMarkdown(textView, v.body)
     }
+
+    val fragmentedURL = listOf<String>("fmp4", "m3u8", "ism", "mpd")
 }

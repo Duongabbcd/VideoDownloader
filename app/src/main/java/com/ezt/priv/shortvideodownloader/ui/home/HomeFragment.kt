@@ -499,7 +499,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             latestURL = clipboardList.last()
 
-            if (latestURL.contains("facebook", true) || latestURL.contains("instagram", true)) {
+            if (latestURL.contains("facebook", true) || latestURL.contains("instagram", true) || latestURL.contains("tiktok", true)) {
                 val ctx = context ?: return@post
                 startActivity(Intent(ctx, FacebookInfoActivity::class.java).apply {
                     putExtra("facebookURL", latestURL)

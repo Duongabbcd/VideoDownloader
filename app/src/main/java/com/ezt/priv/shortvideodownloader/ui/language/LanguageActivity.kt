@@ -259,6 +259,24 @@ class LanguageActivity : BaseActivity2<ActivityLanguageBinding>(ActivityLanguage
                 layoutResId = if(fullScreen) R.layout.native_fullscreen else R.layout.native_large_screen
             )
         }
+
+        fun showNative1(
+            activity: FragmentActivity,
+            alias: String,
+            frNative: ViewGroup,
+            fullScreen: Boolean = false,
+            onLoadDone: (() -> Unit)? = null,
+            onLoadFailed: (() -> Unit)? = null,
+        ) {
+            NativeAds.showPreloadNative(
+                activity,
+                alias,
+                frNative,
+                onLoadDone,
+                onLoadFailed,
+                layoutResId =  R.layout.native_small_screen
+            )
+        }
     }
 
 }

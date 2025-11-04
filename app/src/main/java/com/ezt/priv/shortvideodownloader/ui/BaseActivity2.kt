@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
+import com.ezt.priv.shortvideodownloader.ui.player.PlayerActivity
 import com.ezt.priv.shortvideodownloader.ui.player.PlayerActivity.Companion.returnedFromSettings
 import com.ezt.priv.shortvideodownloader.ui.splash.SplashActivity
 import com.ezt.priv.shortvideodownloader.ui.welcome.WelcomeActivity
@@ -64,7 +65,7 @@ abstract class BaseActivity2<T : ViewBinding>(private val inflater: Inflate<T>) 
         Log.d(TAG, "isDarkMode $isDarkMode")
 
         Common.setLocale(this@BaseActivity2, Common.getPreLanguage(this))
-        if (isDarkMode) {
+        if (isDarkMode && this != PlayerActivity) {
             setTheme(R.style.BaseTheme)
             flag =
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY

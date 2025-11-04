@@ -248,7 +248,7 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
                     fps = it.fps.toString(),
                     asr = it.asr.toString(),
                     format_note = "${it.width}x${it.height}",
-                    url = it.url
+                    url = it.url ?: ""
                 )
             }.toMutableList()
         }

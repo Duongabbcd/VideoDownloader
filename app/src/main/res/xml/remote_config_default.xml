@@ -19,7 +19,11 @@
     </entry>
     <entry>
         <key>ADS_DISABLE</key>
-        <value>0</value>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>AD_RETURN_SPACE</key>
+        <value>1</value>
     </entry>
     <entry>
         <key>BANNER_ALL</key>

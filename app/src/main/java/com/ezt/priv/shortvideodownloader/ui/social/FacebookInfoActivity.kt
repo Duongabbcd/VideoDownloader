@@ -101,7 +101,7 @@ class FacebookInfoActivity :
             appIcon.isVisible = facebookURL.isNotEmpty()
 
             isFacebook = facebookURL.contains("facebook", true)
-            igGuidance.isVisible = !isFacebook
+            igGuidance.isVisible = !isFacebook && !facebookURL.contains("tiktok", true)
             val appImage = if (isFacebook) R.drawable.icon_facebook else {
                 if (facebookURL.contains("tiktok", true)) {
                     R.drawable.icon_tiktok
@@ -159,9 +159,10 @@ class FacebookInfoActivity :
                 ) || facebookURL.equals(
                     "https://www.instagram.com/",
                     true
-                ) || facebookURL.equals("com.zhiliaoapp.musicall", true)
+                ) || facebookURL.equals("https://www.tiktok.com", true)
             ) {
                 println("facebookURL: $facebookURL")
+                searchBar.setText("")
             } else {
                 searchBar.setText(facebookURL)
                 queryList.add(facebookURL)
@@ -310,6 +311,10 @@ class FacebookInfoActivity :
             }
 
             downloadBtn.setOnClickListener {
+                if(searchBar.text == "") {
+                    return@setOnClickListener
+                }
+
                 val clipboard: ClipboardManager =
                     application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 

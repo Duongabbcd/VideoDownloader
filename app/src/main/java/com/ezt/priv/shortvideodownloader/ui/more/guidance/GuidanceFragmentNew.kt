@@ -158,6 +158,7 @@ class GuidanceFragmentNew : Fragment() {
         binding.disclaimer.visible()
         binding.disclaimer1.visible()
         binding.disclaimer2.visible()
+        binding.nextBtn.text = resources.getString(R.string.got_it)
         binding.introStep.setImageResource(R.drawable.icon_intro4_1)
     }
 

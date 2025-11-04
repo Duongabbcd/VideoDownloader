@@ -38,9 +38,14 @@ class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidance
 
     override fun onNext(position: Int, introPos: Int) {
         println("onNext: $position and $introPos")
-        showAfterIntro1 {
-            binding.viewpager.currentItem++
+        if(position < introPos - 1) {
+            showAfterIntro1 {
+                binding.viewpager.currentItem++
+            }
+        } else {
+            finish()
         }
+
     }
 
     private fun showAfterIntro1(callback : () -> Unit){

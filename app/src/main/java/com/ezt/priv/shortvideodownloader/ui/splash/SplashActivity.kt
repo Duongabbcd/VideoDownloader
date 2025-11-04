@@ -169,53 +169,57 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
     }
 
     override fun initView() {
-        if ((!isTaskRoot && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) &&
-            intent.action != null && intent.action === Intent.ACTION_MAIN) {
+        if ((!isTaskRoot && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) && intent.action != null && intent.action === Intent.ACTION_MAIN) {
             finish()
             return
         }
 
         handler.postDelayed(runnable, 20000)
+        val x = 0
 
         if (isNetworkConnected(this)) {
-            // Initialize Remote Config and wait for completion
-            FireBaseConfig.initRemoteConfig(R.xml.remote_config_default) { success ->
-                if (success) {
-                    // Always read the latest remote values here
-                    RemoteConfig.ADS_DISABLE = FireBaseConfig.getValue("ADS_DISABLE").asString()
-                    RemoteConfig.AD_OPEN_APP = FireBaseConfig.getValue("AD_OPEN_APP").asString()
-                    RemoteConfig.AD_RETURN_APP = FireBaseConfig.getValue("AD_RETURN_APP").asString()
-                    RemoteConfig.BANNER_ALL_2 = FireBaseConfig.getValue("BANNER_ALL").asString()
-                    RemoteConfig.INTER_ALL = FireBaseConfig.getValue("INTER_ALL").asString()
-                    RemoteConfig.INTER_SPACE = FireBaseConfig.getValue("INTER_SPACE").asString()
-                    RemoteConfig.NATIVE_HOME = FireBaseConfig.getValue("NATIVE_HOME").asString()
-                    RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO").asString()
-                    RemoteConfig.NATIVE_LANGUAGE = FireBaseConfig.getValue("NATIVE_LANGUAGE").asString()
-                    RemoteConfig.NATIVE_INTRO_FULL = FireBaseConfig.getValue("NATIVE_INTRO_FULL").asString()
-                    RemoteConfig.NATIVE_PREVIEW = FireBaseConfig.getValue("NATIVE_PREVIEW").asString()
-                    RemoteConfig.isForcedToUpdate = FireBaseConfig.getValue("isForcedToUpdate").asString()
+            FireBaseConfig.initRemoteConfig(
+                R.xml.remote_config_default,
+                object : FireBaseConfig.CompleteListener {
+                    override fun onComplete() {
+                        RemoteConfig.AD_OPEN_APP = FireBaseConfig.getValue("AD_OPEN_APP")
+                        RemoteConfig.ADS_DISABLE = FireBaseConfig.getValue("ADS_DISABLE")
+                        RemoteConfig.AD_RETURN_APP = FireBaseConfig.getValue("AD_RETURN_APP")
+                        RemoteConfig.AD_RETURN_SPACE = FireBaseConfig.getValue("AD_RETURN_SPACE")
+                        RemoteConfig.BANNER_ALL_2 = FireBaseConfig.getValue("BANNER_ALL")
 
-                    Log.d("Splash", "ADS_DISABLE = ${RemoteConfig.ADS_DISABLE}")
+                        RemoteConfig.INTER_ALL = FireBaseConfig.getValue("INTER_ALL")
+                        RemoteConfig.INTER_SPACE =
+                            FireBaseConfig.getValue("INTER_SPACE")
 
-                    // Initialize ads or move to next screen
-                    initAdsOrNextScreen()
-                } else {
-                    // Failed to fetch, fallback to defaults
-                    Log.d("Splash", "Using default RemoteConfig values")
-                    RemoteConfig.ADS_DISABLE = "1" // default value
-                    initAdsOrNextScreen()
-                }
-            }
-        } else {
-            // No network, use defaults
-            initAdsOrNextScreen()
-        }
-    }
+                        RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO")
+                        RemoteConfig.NATIVE_LANGUAGE = FireBaseConfig.getValue("NATIVE_LANGUAGE")
+                        RemoteConfig.NATIVE_INTRO = FireBaseConfig.getValue("NATIVE_INTRO")
+                        RemoteConfig.NATIVE_INTRO_FULL = FireBaseConfig.getValue("NATIVE_INTRO_FULL")
+                        RemoteConfig.NATIVE_PREVIEW = FireBaseConfig.getValue("NATIVE_PREVIEW")
 
-    private fun initAdsOrNextScreen() {
-        if (RemoteConfig.ADS_DISABLE != "0") {
-            initAds()
-            setupCMP()
+
+                        RemoteConfig.isForcedToUpdate =
+                            FireBaseConfig.getValue("isForcedToUpdate")
+
+
+                        if (isInitAds.get()) {
+                            return
+                        }
+                        isInitAds.set(true)
+
+                        println("RemoteConfig.ADS_DISABLE: ${RemoteConfig.ADS_DISABLE}")
+                        if (RemoteConfig.ADS_DISABLE != "0") {
+                            initAds()
+                            setupCMP()
+                        } else {
+                            binding.tvStart.visible()
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                nextScreen()
+                            }, 3000)
+                        }
+                    }
+                })
         } else {
             binding.tvStart.visible()
             Handler(Looper.getMainLooper()).postDelayed({
@@ -223,8 +227,6 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
             }, 3000)
         }
     }
-
-
 
     private fun nextScreen() {
         val countOpen = Common.getCountOpenApp(this)
@@ -235,6 +237,13 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
 
         //Previous: countOpen <= 1
         if (countOpen == 0) {
+//            analyticsLogger.updateUserProperties(
+//                this@SplashActivity,
+//                "splash_screen",
+//                -1
+//            )
+
+//            analyticsLogger.logScreenGo("language_screen", "splash_screen", duration)
 
             val intent = Intent(this@SplashActivity, LanguageActivity::class.java)
             intent.putExtra("fromSplash", true)
@@ -245,6 +254,33 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             intent.putExtra("fromSplash", true)
             startActivity(intent)
+
+//            val isWritingGranted = hasLegacyWritePermission(this@SplashActivity)
+//            val isSystemModified = RingtoneHelper.hasWriteSettingsPermission(this@SplashActivity)
+//
+//            if (!isWritingGranted || !isSystemModified) {
+//                analyticsLogger.updateUserProperties(
+//                    this@SplashActivity,
+//                    "splash_screen",
+//                    -1
+//                )
+//                analyticsLogger.logScreenGo("permission_screen", "splash_screen", duration)
+//                val intent = Intent(this@SplashActivity, PermissionActivity::class.java)
+//                intent.putExtra("fromSplash", true)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                startActivity(intent)
+//            } else {
+//                analyticsLogger.updateUserProperties(
+//                    this@SplashActivity,
+//                    "splash_screen",
+//                    -1
+//                )
+//                analyticsLogger.logScreenGo("main_screen", "splash_screen", duration)
+//                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+//                intent.putExtra("fromSplash", true)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                startActivity(intent)
+//            }
 
         }
 

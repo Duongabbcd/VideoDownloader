@@ -218,9 +218,13 @@ class WebTabFragment : BaseWebTabFragment() {
                     override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                         val currentURL = tabViewModel.getTabTextInput().get() ?: ""
                         if(currentURL.contains("youtube", true) || currentURL.contains("youtu.be", true)) {
+                            Toast.makeText(context, resources.getString(R.string.youtube_desc),
+                                Toast.LENGTH_SHORT).show()
                             dataBinding.fab.gone()
+                            loadingWavy.gone()
                         } else {
                             dataBinding.fab.visible()
+                            loadingWavy.visible()
                         }
                     }
                 }
@@ -724,6 +728,7 @@ class WebTabFragment : BaseWebTabFragment() {
     }
 
     private fun showToastVideoFound() {
+        return
         val context = context
 
         if (context != null) {

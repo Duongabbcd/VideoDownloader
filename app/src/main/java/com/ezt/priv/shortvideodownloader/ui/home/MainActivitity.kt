@@ -1,6 +1,7 @@
 package com.ezt.priv.shortvideodownloader.ui.home
 
 import android.app.ActionBar.LayoutParams
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -38,6 +39,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.getAbsolutePath
+import com.ezt.priv.shortvideodownloader.InAppUpdate
+import com.ezt.priv.shortvideodownloader.InstallUpdatedListener
 import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.type.BannerAds
@@ -94,7 +97,7 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.system.exitProcess
 
-class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inflate) {
+class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inflate), InstallUpdatedListener {
 
     lateinit var context: Context
     private lateinit var preferences: SharedPreferences
@@ -107,11 +110,12 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
 
+    private lateinit var inAppUpdate: InAppUpdate
     private val connectionViewModel: InternetConnectionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        checkUpdateVersion()
         NativeAds.preloadNativeAds(
             this@MainActivity,
             alias = NativeAds.ALIAS_NATIVE_HOME,
@@ -506,6 +510,15 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
             window.statusBarColor = getColor(android.R.color.transparent)
             incognitoHeader.visibility = View.GONE
         }
+
+        // Check if it's an emulator before using InAppUpdate
+        if (!isEmulator()) {
+            // Initialize and call InAppUpdate methods only on real devices
+            ensureInAppUpdateInitialized()
+            if (::inAppUpdate.isInitialized) {
+                inAppUpdate.onResume()
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -670,6 +683,114 @@ class MainActivity : BaseActivity2<ActivityMainBinding>(ActivityMainBinding::inf
                 }
             }
 
+        }
+    }
+
+    private fun checkUpdateVersion() {
+        val isForceUpdate = RemoteConfig.isForcedToUpdate == "1"
+        // Start the update check
+        if (isEmulator()) {
+            return
+        }
+        inAppUpdate = InAppUpdate(this, forceUpdate = isForceUpdate, installUpdatedListener = this)
+
+    }
+
+    private fun isEmulator(): Boolean {
+        val product = Build.PRODUCT
+        val fingerprint = Build.FINGERPRINT
+        val brand = Build.BRAND
+        val device = Build.DEVICE
+        val model = Build.MODEL
+        val manufacturer = Build.MANUFACTURER
+
+        val result = (Build.HARDWARE.contains("ranchu")
+                || fingerprint.contains("generic")
+                || fingerprint.contains("emulator")
+                || model.contains("Emulator")
+                || model.contains("Android SDK built for")
+                || manufacturer.contains("Genymotion")
+                || product.contains("sdk_gphone")
+                || product.contains("google_sdk")
+                || brand.startsWith("generic") && device.startsWith("generic")
+                || "google_sdk" == product)
+
+        println("isEmulator 0: ${Build.FINGERPRINT} and ${Build.MODEL} and ${Build.MANUFACTURER} and ${Build.BRAND} and ${Build.DEVICE}")
+        println("isEmulator 1: $result")
+        return result
+    }
+
+    override fun onUpdateNextAction() {
+        AlertDialog.Builder(this)
+            .setTitle("App Status")
+            .setMessage("You're now using the latest version.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                // Proceed with the app logic, e.g., show home screen
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    override fun onUpdateFailure() {
+        AlertDialog.Builder(this)
+            .setTitle("App Status")
+            .setMessage("The updating process is failed. Please try again!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                // Proceed with the app logic, e.g., show home screen
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    override fun onUpdateCancel() {
+        AlertDialog.Builder(this)
+            .setTitle("Update Cancelled")
+            .setMessage("You cancelled the update. Some features may not work correctly.")
+            .setPositiveButton("Continue Anyway") { dialog, _ ->
+                dialog.dismiss()
+                // Restart the app
+                val intent = packageManager.getLaunchIntentForPackage(packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish() // Finish current activity to avoid back stack
+                Runtime.getRuntime().exit(0) // Optional: force app process restart
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    override fun onDownloadCompleted() {
+        AlertDialog.Builder(this)
+            .setTitle("Download Completed")
+            .setMessage("Please restart your app to have the best experience.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                // Proceed with the app logic, e.g., show home screen
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (!isEmulator()) {
+            // Initialize and call InAppUpdate methods only on real devices
+            ensureInAppUpdateInitialized()
+            if (::inAppUpdate.isInitialized) {
+                inAppUpdate.onActivityResult(requestCode, resultCode, data)
+            }
+        }
+
+    }
+
+    private fun ensureInAppUpdateInitialized() {
+        if (!::inAppUpdate.isInitialized) {
+            // Initialize it here if not already initialized
+            val isForceUpdate = RemoteConfig.isForcedToUpdate == "1"
+            inAppUpdate = InAppUpdate(this, forceUpdate = isForceUpdate, installUpdatedListener = this)
         }
     }
 }

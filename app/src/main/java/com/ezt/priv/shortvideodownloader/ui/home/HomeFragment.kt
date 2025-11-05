@@ -16,7 +16,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.Patterns
-import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -35,7 +34,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
-import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -45,7 +43,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezt.priv.shortvideodownloader.ui.adapter.HomeAdapter
@@ -63,6 +60,7 @@ import com.ezt.priv.shortvideodownloader.ui.BaseFragment
 import com.ezt.priv.shortvideodownloader.ui.adapter.SearchSuggestionsAdapter
 import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
 import com.ezt.priv.shortvideodownloader.ui.home.adapter.BookmarkAdapter
+import com.ezt.priv.shortvideodownloader.ui.home.adapter.BookmarkListAdapter
 import com.ezt.priv.shortvideodownloader.ui.info.DownloadInfoActivity
 import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
 import com.ezt.priv.shortvideodownloader.ui.more.WebViewActivity
@@ -76,10 +74,8 @@ import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.util.Extensions.enableFastScroll
 import com.ezt.priv.shortvideodownloader.util.Extensions.isURL
 import com.ezt.priv.shortvideodownloader.util.NotificationUtil
-import com.ezt.priv.shortvideodownloader.util.SwipeGestureListener
 import com.ezt.priv.shortvideodownloader.util.ThemeUtil
 import com.ezt.priv.shortvideodownloader.util.UiUtil
-import com.ezt.priv.shortvideodownloader.util.Utils.setOnSwipeListener
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
@@ -144,7 +140,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var showDownloadAllFab: Boolean = false
     private var showClipboardFab: Boolean = false
 
-    private lateinit var bookmarkAdapter: BookmarkAdapter
+    private lateinit var bookmarkListAdapter: BookmarkListAdapter
 
     private var isRight = false
     
@@ -155,33 +151,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         mainActivity = activity as MainActivity?
 
         mainActivity?.let {
-//            binding.allBookmarks.setOnSwipeListener(object : SwipeGestureListener(it) {
-//                override fun onSwipeLeft() {
-//                    isRight = true
-//                    println("RecyclerView swiped RIGHT")
-//                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_1)
-//                    bookmarkAdapter.submitList(defaultList2)
-//                }
-//
-//                override fun onSwipeRight() {
-//                    isRight = false
-//                    println("RecyclerView swiped LEFT")
-//                    binding.bookmarkDisplay.setImageResource(R.drawable.icon_home_2)
-//                    bookmarkAdapter.submitList(defaultList1)
-//                }
-//            })
-
-            binding.bookmarkDisplay.setOnClickListener {
-                isRight = !isRight
-                if(!isRight) {
-                    binding.bookmarkDisplay.text = resources.getString(R.string.next_option)
-                    bookmarkAdapter.submitList(defaultList1)
-                } else {
-                    binding.bookmarkDisplay.text = resources.getString(R.string.prev_option)
-                    bookmarkAdapter.submitList(defaultList2)
-                }
-            }
-
             binding.rlNative.gone()
             if(RemoteConfig.NATIVE_HOME == "0") {
                 binding.rlNative.gone()
@@ -247,16 +216,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 this,
                 requireActivity()
             )
-        bookmarkAdapter = BookmarkAdapter()
+        bookmarkListAdapter = BookmarkListAdapter()
         binding.recyclerViewHome.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
-        binding.allBookmarks.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.multiple_grid_size))
+        binding.allBookmarks.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewHome.adapter = homeAdapter
-        binding.allBookmarks.adapter = bookmarkAdapter
+        binding.allBookmarks.adapter = bookmarkListAdapter
         binding.recyclerViewHome.enableFastScroll()
         binding.allBookmarks.enableFastScroll()
 
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
-        bookmarkAdapter.submitList(defaultList1)
+        bookmarkListAdapter.submitList(listOf(defaultList1, defaultList2))
 
         searchSuggestionsAdapter = SearchSuggestionsAdapter(
             this,

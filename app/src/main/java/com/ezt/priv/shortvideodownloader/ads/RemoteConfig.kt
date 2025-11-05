@@ -15,7 +15,9 @@ object RemoteConfig {
 
     //My current app
     var AD_OPEN_APP = "1"
-    var ADS_DISABLE_2 = "1"
+    var ADS_DISABLE = "1"
+    var AD_RETURN_APP = "1"
+    var AD_RETURN_SPACE = "1"
 
     var BANNER_ALL_2 = "1"
 

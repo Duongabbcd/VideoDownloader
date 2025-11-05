@@ -124,12 +124,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:scrollbars="none" />
 
         <TextView
             android:id="@+id/bookmarkDisplay"
             android:text="@string/next_option"
+            android:visibility="gone"
             android:textColor="@color/cool_blue"
             style="@style/CustomTextStyleMedium14sp"
             android:contentDescription="@string/imageView"

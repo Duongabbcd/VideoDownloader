@@ -6,9 +6,11 @@ import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ezt.priv.shortvideodownloader.R
+import com.ezt.priv.shortvideodownloader.databinding.BookmarkListViewBinding
 import com.ezt.priv.shortvideodownloader.databinding.BookmarkViewBinding
 import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
 import com.ezt.priv.shortvideodownloader.ui.home.Bookmark
@@ -16,7 +18,7 @@ import com.ezt.priv.shortvideodownloader.ui.social.FacebookInfoActivity
 import com.ezt.priv.shortvideodownloader.ui.whatsapp.WhatsAppActivity
 import com.google.android.material.snackbar.Snackbar
 
-class BookmarkAdapter(private val isActivity: Boolean = false) :
+class BookmarkAdapter() :
     RecyclerView.Adapter<BookmarkAdapter.MyHolder>() {
     private lateinit var context: Context
     private val allBookmarks =  mutableListOf<Bookmark>()
@@ -152,4 +154,53 @@ class BookmarkAdapter(private val isActivity: Boolean = false) :
     override fun getItemCount(): Int {
         return allBookmarks.size
     }
+}
+
+class BookmarkListAdapter(): RecyclerView.Adapter<BookmarkListAdapter.MyHolder>() {
+    private lateinit var context1: Context
+    private val allListBookmarks =  mutableListOf<List<Bookmark>>()
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MyHolder {
+        context1 = parent.context
+        return MyHolder(
+            binding = BookmarkListViewBinding.inflate(
+                LayoutInflater.from(context1),
+                parent,
+                false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: MyHolder, position: Int) {
+       holder.bind(position)
+    }
+
+    override fun getItemCount(): Int =allListBookmarks.size
+
+    fun submitList(input: List<List<Bookmark>>) {
+        allListBookmarks.clear()
+        allListBookmarks.addAll(input)
+        notifyDataSetChanged()
+    }
+
+    inner class MyHolder(private val binding: BookmarkListViewBinding) :  RecyclerView.ViewHolder(binding.root ) {
+        private lateinit var bookmarkAdapter: BookmarkAdapter
+
+        fun bind(position: Int) {
+            val bookmarks = allListBookmarks[position]
+            binding.apply {
+                bookmarkAdapter = BookmarkAdapter()
+                bookmarkAdapter.submitList(bookmarks)
+
+                allBookmarks.adapter = bookmarkAdapter
+                allBookmarks.layoutManager = GridLayoutManager(context1, 4)
+
+                val imageRes = if(position == 0) R.drawable.icon_home1 else R.drawable.icon_home2
+                image.setImageResource(imageRes)
+            }
+        }
+    }
+
 }

@@ -33,12 +33,9 @@ import java.util.Date
 
 object InterAds {
     val TIME_DELAY = if (BuildConfig.DEBUG) 10_000L else 40_000L
-    const val INTER_AD1 = "ca-app-pub-3940256099942544/1033173712"
-    const val INTER_AD2 = "ca-app-pub-3940256099942544/1033173712"
-    const val INTER_AD3 = "ca-app-pub-3940256099942544/1033173712"
-    const val INTER_AD4 = "ca-app-pub-3940256099942544/1033173712"
+    const val INTER_AD1 = "ca-app-pub-3607148519095421/3847534257"
 
-    const val INTER_SPLASH ="ca-app-pub-3940256099942544/1033173712"
+    const val INTER_SPLASH ="ca-app-pub-3607148519095421/5272296564"
 
     const val INTER_TEST_ID = "ca-app-pub-3940256099942544/1033173712"
     private const val INTER_ID_DEFAULT = "your-ad-id"
@@ -231,15 +228,9 @@ object InterAds {
     private var currentAdUnit = ""
 
     fun preloadInterAds(context: Activity, alias: String, adUnit: String) {
-        val interCondition = when (adUnit) {
-            INTER_AD1 -> RemoteConfig.INTER_ALL
-            INTER_AD2 -> RemoteConfig.INTER_ALL
-            INTER_AD3 -> RemoteConfig.INTER_ALL
-            INTER_AD4 -> RemoteConfig.INTER_ALL
-            else -> RemoteConfig.INTER_ALL
-        }
+        val interCondition = INTER_AD1
 
-        if (RemoteConfig.ADS_DISABLE == "0" || interCondition == "0") {
+        if (RemoteConfig.ADS_DISABLE == "0") {
             return
         }
 

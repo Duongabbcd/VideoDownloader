@@ -3,6 +3,9 @@ package com.ezt.priv.shortvideodownloader.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -75,6 +78,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.schabi.newpipe.extractor.timeago.patterns.tr
 import kotlin.math.abs
 
 class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
@@ -287,6 +291,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     }
 
                     withContext(Dispatchers.Main){
+                        val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val emptyClip = ClipData.newPlainText("", "")
+                        clipboard.setPrimaryClip(emptyClip)
+
                         handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
                         dismiss()
                     }
@@ -295,6 +303,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }
 
         downloadBtn.setOnLongClickListener {
+            return@setOnLongClickListener true
             val dd = MaterialAlertDialogBuilder(requireContext())
             dd.setTitle(getString(R.string.save_for_later))
             dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }

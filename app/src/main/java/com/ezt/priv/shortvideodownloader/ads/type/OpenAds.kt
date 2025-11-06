@@ -19,7 +19,7 @@ import java.util.Date
 
 object OpenAds {
 
-    private const val OPEN_TEST_ID = "ca-app-pub-3940256099942544/9257395921"
+    private const val OPEN_TEST_ID = "ca-app-pub-3607148519095421/8324452420"
 
     private const val OPEN_ID_DEFAULT = OPEN_TEST_ID
 

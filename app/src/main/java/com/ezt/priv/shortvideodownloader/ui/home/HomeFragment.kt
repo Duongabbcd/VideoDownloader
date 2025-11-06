@@ -253,7 +253,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 resultsList = items
                 progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                 if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                    showDownloadAllFab = items.size > 1 && items[0].playlistTitle.isNotEmpty() && !loadingItems
+                    showDownloadAllFab = items.size > 1 && items[0].playlistTitle.isNotEmpty() && !loadingItems && binding.searchBar.text.isNotEmpty()
                     downloadAllFab!!.isVisible = showDownloadAllFab
                 }else if (resultViewModel.repository.itemCount.value == 1){
                     if (sharedPreferences!!.getBoolean("download_card", true)){
@@ -333,7 +333,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             launch{
                 resultViewModel.uiState.collectLatest { res ->
                     if (res.errorMessage != null){
-                        return@collectLatest
                         println("resultViewModel: ${res.errorMessage}")
                         val isSingleQueryAndURL = queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()
 
@@ -467,13 +466,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (clipboardList.isNullOrEmpty()) return@post
 
             latestURL = clipboardList.last()
-
-            if (latestURL.contains("facebook", true) || latestURL.contains("instagram", true) || latestURL.contains("tiktok", true)) {
+            println("latestURL: $latestURL")
+            if ((latestURL.contains("facebook", true) || latestURL.contains("instagram", true) || latestURL.contains("tiktok", true)) && !latestURL.contains("stories", true)) {
                 val ctx = context ?: return@post
                 startActivity(Intent(ctx, FacebookInfoActivity::class.java).apply {
                     putExtra("facebookURL", latestURL)
                 })
-                return@post // ✅ STOP here → no more code in this post block will run
+                return@post
             }
 
             if(MainActivity.isSharedURL) {

@@ -54,7 +54,8 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         MyApplication.screenName = "splash_screen"
 
         val clipboard = this@SplashActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+        val emptyClip = ClipData.newPlainText("", "")
+        clipboard.setPrimaryClip(emptyClip)
 
         initView()
     }

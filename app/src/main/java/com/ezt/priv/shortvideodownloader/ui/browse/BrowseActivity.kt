@@ -103,16 +103,6 @@ class BrowseActivity : BaseActivity2<ActivityBrowseBinding>(ActivityBrowseBindin
 
     }
 
-    private fun updateTabValue(urlNew: String) {
-        val position = MainActivity.currentTabPosition
-        println("currentTabPosition 1: $position")
-        if(position >= 0) {
-            val allTabs = TabViewModel.getAllTabs(this@BrowseActivity).toMutableList()
-            allTabs[position] = urlNew
-            TabViewModel.addNewTab(this@BrowseActivity, allTabs)
-        }
-    }
-
     @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,

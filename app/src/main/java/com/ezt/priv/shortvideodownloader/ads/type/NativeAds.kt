@@ -35,24 +35,22 @@ object NativeAds {
     private const val ADMOB_AD_UNIT_ID_TEST = "ca-app-pub-3940256099942544/2247696110"
     private const val ADMOB_AD_UNIT_ID_TEST_WITH_VIDEO = "ca-app-pub-3940256099942544/1044960115"
 
-    const val NATIVE_LANGUAGE_1 = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_LANGUAGE_2 = ADMOB_AD_UNIT_ID_TEST
+    const val NATIVE_LANGUAGE_1 = "ca-app-pub-3607148519095421/3959214898"
+    const val NATIVE_LANGUAGE_2 = "ca-app-pub-3607148519095421/7238493666"
 
-    const val NATIVE_INTRO_1 = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_INTRO_2 = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_INTRO_5 = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_INTRO_FULLSCREEN = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_HOME = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_PREVIEW = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_PERMISSION = ADMOB_AD_UNIT_ID_TEST
-    const val NATIVE_FAVOURITE = ADMOB_AD_UNIT_ID_TEST
+    const val NATIVE_INTRO_1 = "ca-app-pub-3607148519095421/1333051552"
+    const val NATIVE_INTRO_2 = "ca-app-pub-3607148519095421/6282125901"
+    const val NATIVE_INTRO_5 = "ca-app-pub-3607148519095421/7595207573"
+    const val NATIVE_INTRO_FULLSCREEN = "ca-app-pub-3607148519095421/4097325002"
+    const val NATIVE_HOME = "ca-app-pub-3607148519095421/7610136559"
+    const val NATIVE_PREVIEW = "ca-app-pub-3607148519095421/5854201750"
 
     const val ALIAS_NATIVE_LANGUAGE_1 = "ads_native_language_1"
     const val ALIAS_NATIVE_LANGUAGE_2 = "ads_native_language_2"
 
     const val ALIAS_NATIVE_INTRO_1 = "ads_native_intro_1"
     const val ALIAS_NATIVE_INTRO_2 = "ads_native_intro_2"
-    const val ALIAS_NATIVE_INTRO_5 = "ads_native_intro_3"
+    const val ALIAS_NATIVE_INTRO_5 = "ads_native_intro_5"
     const val ALIAS_NATIVE_FULLSCREEN = "ads_native_full_screen"
     const val ALIAS_NATIVE_HOME = "ads_native_home_screen"
     const val ALIAS_NATIVE_PREVIEW= "ads_native_preview_screen"

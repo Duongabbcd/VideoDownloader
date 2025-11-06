@@ -52,6 +52,7 @@ import com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.WebTabViewModel
 import com.ezt.priv.shortvideodownloader.ui.browse.webtab.WebTab
 import com.ezt.priv.shortvideodownloader.ui.browse.webtab.WebTabFactory
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
+import com.ezt.priv.shortvideodownloader.ui.tab.viewmodel.TabViewModel
 import com.ezt.priv.shortvideodownloader.util.Common.gone
 import com.ezt.priv.shortvideodownloader.util.Common.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -217,6 +218,7 @@ class WebTabFragment : BaseWebTabFragment() {
                 object : Observable.OnPropertyChangedCallback() {
                     override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                         val currentURL = tabViewModel.getTabTextInput().get() ?: ""
+                        updateTabValue(currentURL, activity)
                         if(currentURL.contains("youtube", true) || currentURL.contains("youtu.be", true)) {
                             Toast.makeText(context, resources.getString(R.string.youtube_desc),
                                 Toast.LENGTH_SHORT).show()
@@ -251,6 +253,16 @@ class WebTabFragment : BaseWebTabFragment() {
         }
 
         return dataBinding.root
+    }
+
+    private fun updateTabValue(urlNew: String, activity1: BrowseActivity) {
+        val position = MainActivity.currentTabPosition
+        println("currentTabPosition 1: $position")
+        if(position >= 0) {
+            val allTabs = TabViewModel.getAllTabs(activity1).toMutableList()
+            allTabs[position] = urlNew
+            TabViewModel.addNewTab(activity1, allTabs)
+        }
     }
 
     override fun shareWebLink() {

@@ -2102,9 +2102,9 @@ object UiUtil {
                 cookieFetch()
             }
         }else if (continueAnyway) {
-            errDialog.setNeutralButton(R.string.continue_anyway) {d: DialogInterface?, _:Int ->
-                continued()
-            }
+//            errDialog.setNeutralButton(R.string.continue_anyway) {d: DialogInterface?, _:Int ->
+//                continued()
+//            }
         }
 
 

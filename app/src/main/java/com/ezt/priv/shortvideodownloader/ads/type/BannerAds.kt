@@ -26,11 +26,11 @@ import com.google.ads.mediation.admob.AdMobAdapter
 object BannerAds {
 
     private const val BANNER_TEST_ID = "ca-app-pub-3940256099942544/9214589741"
-     const val BANNER_HOME = "ca-app-pub-3940256099942544/9214589741"
+     const val BANNER_HOME = "ca-app-pub-3607148519095421/6960782750"
 
-    private val BANNER_ID_DEFAULT = BANNER_TEST_ID
-    private const val BANNER_ID_COLLAPSIBLE = BANNER_TEST_ID
-    private const val BANNER_HOME_COLLAPSIBLE = BANNER_TEST_ID
+    private val BANNER_ID_DEFAULT = BANNER_HOME
+    private const val BANNER_ID_COLLAPSIBLE = "ca-app-pub-3607148519095421/8428394206"
+    private const val BANNER_HOME_COLLAPSIBLE = "ca-app-pub-3607148519095421/8428394206"
 
     private var isInitBanner = false
 //    val analyticsLogger: AnalyticsLogger

@@ -120,9 +120,9 @@ class FacebookInfoActivity :
             Glide.with(this@FacebookInfoActivity).load(appImage).into(appIcon)
             backIcon.setOnClickListener {
                 isDisabled = false
-                val clipboard =
-                    this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+                val clipboard = this@FacebookInfoActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                val emptyClip = ClipData.newPlainText("", "")
+                clipboard.setPrimaryClip(emptyClip)
                 InterAds.showPreloadInter(
                     this@FacebookInfoActivity,
                     alias = InterAds.ALIAS_INTER_DOWNLOAD,

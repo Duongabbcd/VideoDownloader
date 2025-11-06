@@ -103,12 +103,23 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/transparent"
-        app:layout_constraintBottom_toTopOf="@id/frBanner" />
+        app:layout_constraintBottom_toTopOf="@id/rlNative" />
 
-    <include
-        android:id="@+id/frBanner"
-        layout="@layout/ads_banner"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    <!-- Native Ad Frame -->
+    <RelativeLayout
+        android:id="@+id/rlNative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/m_loading_view"
+            layout="@layout/native_shimmer_small_screen" />
+
+        <FrameLayout
+            android:id="@+id/frNative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

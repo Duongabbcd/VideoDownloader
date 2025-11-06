@@ -2,17 +2,23 @@ package com.ezt.priv.shortvideodownloader.ui.tab
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
+import android.view.View.GONE
 import androidx.lifecycle.ViewModelProvider
 import com.ezt.priv.shortvideodownloader.ads.RemoteConfig
 import com.ezt.priv.shortvideodownloader.ads.type.BannerAds.BANNER_HOME
 import com.ezt.priv.shortvideodownloader.ads.type.InterAds
+import com.ezt.priv.shortvideodownloader.ads.type.NativeAds
 import com.ezt.priv.shortvideodownloader.databinding.ActivityTabBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.ui.browse.BrowseActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.currentTabPosition
 import com.ezt.priv.shortvideodownloader.ui.home.MainActivity.Companion.loadBanner
+import com.ezt.priv.shortvideodownloader.ui.language.LanguageActivity
 import com.ezt.priv.shortvideodownloader.ui.tab.adapter.OnEditTabListener
 import com.ezt.priv.shortvideodownloader.ui.tab.adapter.TabAdapter
 import com.ezt.priv.shortvideodownloader.ui.tab.viewmodel.TabViewModel
@@ -32,6 +38,12 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
             this@TabActivity,
             alias = InterAds.ALIAS_INTER_DOWNLOAD,
             adUnit = InterAds.INTER_AD1
+        )
+
+        NativeAds.preloadNativeAds(
+            this@TabActivity,
+            alias = NativeAds.ALIAS_NATIVE_HOME,
+            adId = NativeAds.NATIVE_HOME
         )
 
         binding.apply {
@@ -74,11 +86,29 @@ class TabActivity : BaseActivity2<ActivityTabBinding>(ActivityTabBinding::inflat
         Log.d(
             TAG, "Banner Conditions: ${RemoteConfig.BANNER_ALL_2} and ${RemoteConfig.ADS_DISABLE}"
         )
-        if (RemoteConfig.BANNER_ALL_2 == "0" || RemoteConfig.ADS_DISABLE == "0") {
-            binding.frBanner.root.gone()
-        } else {
-            loadBanner(this, BANNER_HOME)
-        }
+        binding.rlNative.gone()
+        LanguageActivity.showNative(this@TabActivity, NativeAds.ALIAS_NATIVE_HOME, binding.frNative, fullScreen = false,{
+            binding.rlNative.visible()
+            binding.mLoadingView.root.visibility = GONE
+        }, {
+            if (RemoteConfig.NATIVE_HOME == "0") {
+                binding.rlNative.visibility = GONE
+                return@showNative
+            }
+            NativeAds.preloadNativeAds(
+                this@TabActivity,
+                alias = NativeAds.ALIAS_NATIVE_FULLSCREEN,
+                adId = NativeAds.NATIVE_INTRO_FULLSCREEN
+            )
+            LanguageActivity.showNative(this@TabActivity, alias = NativeAds.ALIAS_NATIVE_HOME,
+                binding.frNative, fullScreen = false, {
+                    binding.mLoadingView.root.visibility = View.GONE
+                }, {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rlNative.visibility = View.GONE
+                    }, 1500) // Delay 1500 ms (1.5 seconds)
+                })
+        } )
 
         tabViewModel.displayAllCurrentTabs()
     }

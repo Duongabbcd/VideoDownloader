@@ -74,7 +74,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
                 // Format Note ----------------------------------
                 if (item.format.format_note.isNotEmpty()){
                     formatNote.text = item.format.format_note.uppercase(Locale.getDefault())
-                    formatNote.visibility = View.VISIBLE
+                    formatNote.visibility = View.GONE
                 }else{
                     formatNote.visibility = View.GONE
                 }
@@ -92,7 +92,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
                 if (codecText == "" || codecText == "none" || codecText == "DEFAULT"){
                     codec.visibility = View.GONE
                 }else{
-                    codec.visibility = View.VISIBLE
+                    codec.visibility = View.GONE
                     codec.text = codecText
                 }
 

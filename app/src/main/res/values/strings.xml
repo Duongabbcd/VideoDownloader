@@ -3,7 +3,7 @@
     <string name="imageView" translatable="false">Image View</string>
 
     <string name="contact_email" translatable="false"></string>
-    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_id" translatable="false">ca-app-pub-3607148519095421~1068778934</string>
     <string name="adjust_token_key" translatable="false">aqsu0n4s6kn4</string>
     <string name="facebook_id" translatable="false"></string>
     <string name="facebook_client_token" translatable="false"></string>

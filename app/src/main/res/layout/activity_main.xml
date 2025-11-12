@@ -42,11 +42,11 @@
            android:id="@+id/bottomNavigationView"
            style="@style/NoRippleStyle"
            android:layout_width="match_parent"
-           android:layout_height="@dimen/_50sdp"
+           android:layout_height="@dimen/_44sdp"
            android:background="@color/white"
            app:itemBackground="@color/transparent"
            app:labelVisibilityMode="labeled"
-           app:itemVerticalPadding="@dimen/_8sdp"
+           app:itemVerticalPadding="@dimen/_6sdp"
            app:layout_constraintBottom_toTopOf="@+id/view"
            app:menu="@menu/bottom_nav_menu"/>
 

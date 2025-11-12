@@ -217,14 +217,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 requireActivity()
             )
         bookmarkListAdapter = BookmarkListAdapter()
-        binding.recyclerViewHome.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         binding.allBookmarks.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewHome.adapter = homeAdapter
         binding.allBookmarks.adapter = bookmarkListAdapter
-        binding.recyclerViewHome.enableFastScroll()
         binding.allBookmarks.enableFastScroll()
 
-        shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         bookmarkListAdapter.submitList(listOf(defaultList1, defaultList2))
 
         searchSuggestionsAdapter = SearchSuggestionsAdapter(
@@ -374,13 +370,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     loadingItems = res.processing
                     progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                     if (res.processing){
-                        binding.recyclerViewHome.setPadding(0,0,0,0)
-                        shimmerCards!!.startShimmer()
-                        shimmerCards!!.visibility = VISIBLE
+//                        binding.recyclerViewHome.setPadding(0,0,0,0)
                     }else{
-                        binding.recyclerViewHome.setPadding(0,0,0,100)
-                        shimmerCards!!.stopShimmer()
-                        shimmerCards!!.visibility = GONE
+//                        binding.recyclerViewHome.setPadding(0,0,0,100)
 
                         showDownloadAllFab = resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()
                         downloadAllFab!!.isVisible = showDownloadAllFab
@@ -869,7 +861,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     fun scrollToTop() {
-        binding.recyclerViewHome.scrollToPosition(0)
+//        binding.recyclerViewHome.scrollToPosition(0)
         runCatching { (binding.searchBar.parent as AppBarLayout).setExpanded(true, true) }
     }
 
@@ -878,7 +870,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
-        binding.recyclerViewHome.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
+//        binding.recyclerViewHome.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
         if (sharedPreferences!!.getBoolean("download_card", true)) {
             println("showSingleDownloadSheet 3")
             showSingleDownloadSheet(item!!, type!!)
@@ -1117,6 +1109,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ?: return null
 
             println("checkClipboard: $clipText")
+
+            if(clipText.isEmpty()) {
+                binding.copiedUrlFab.gone()
+            }
 
             val urls = clipText
                 .split("\r", "\n")

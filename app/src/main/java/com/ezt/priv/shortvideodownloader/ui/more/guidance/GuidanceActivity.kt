@@ -8,7 +8,8 @@ import com.ezt.priv.shortvideodownloader.ui.intro.IntroFragmentNew
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidanceBinding::inflate), IntroFragmentNew.CallbackIntro {
+class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidanceBinding::inflate),
+    IntroFragmentNew.CallbackIntro {
     private lateinit var guidanceAdapter: GuidanceAdapter
     var position: Int = 0
     private var now = 0L
@@ -26,7 +27,7 @@ class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidance
     private fun viewPager() {
 
         println("isIntroFullFail:${RemoteConfig.NATIVE_FULL_SCREEN_INTRO_070625}")
-       numberPage =4
+        numberPage = 4
 
         if (binding.viewpager.adapter == null) {
             guidanceAdapter = GuidanceAdapter(this)
@@ -38,7 +39,7 @@ class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidance
 
     override fun onNext(position: Int, introPos: Int) {
         println("onNext: $position and $introPos")
-        if(position < introPos - 1) {
+        if (position <= introPos - 1) {
             showAfterIntro1 {
                 binding.viewpager.currentItem++
             }
@@ -48,7 +49,7 @@ class GuidanceActivity : BaseActivity2<ActivityGuidanceBinding>(ActivityGuidance
 
     }
 
-    private fun showAfterIntro1(callback : () -> Unit){
+    private fun showAfterIntro1(callback: () -> Unit) {
         callback.invoke()
     }
 

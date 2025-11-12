@@ -54,15 +54,15 @@ class GuidanceFragmentNew : Fragment() {
         binding.nextBtn.setOnClickListener {
             var positionIntro = 0
             when (binding.guidanceTitle.text) {
-                getString(R.string.intro_1) -> {
+                getString(R.string.intro_1_1) -> {
                     positionIntro = 1
                 }
 
-                getString(R.string.intro_2) -> {
+                getString(R.string.intro_2_1) -> {
                     positionIntro = 2
                 }
 
-                getString(R.string.intro_3) -> {
+                getString(R.string.intro_3_1) -> {
                     positionIntro = 3
                 }
             }

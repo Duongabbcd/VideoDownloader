@@ -25,6 +25,7 @@ import android.text.format.DateFormat
 import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -127,23 +128,22 @@ object UiUtil {
         var formatNote = chosenFormat.format_note
 
         println("formatNote: $formatNote")
-        if (formatNote.isEmpty()) formatNote = context.getString(R.string.defaultValue)
-        else if (formatNote == "best") formatNote = context.getString(R.string.best_quality)
-        else if (formatNote == "worst") formatNote = context.getString(R.string.worst_quality)
 
-        formatNote = when {
-            formatNote.contains("1080x1920") -> "FULL HD"
-            formatNote.contains("1920x1080")  -> "FULL HD"
-            formatNote.contains("1280x720") -> "HD"
-            formatNote.contains("720x1280") -> "HD"
-            formatNote.contains("720x480") -> "SD"
-            formatNote.contains("480x720") -> "SD"
-            formatNote.contains("720x576") -> "SD"
-            formatNote.contains("576x720") -> "SD"
-            formatNote.contains("854x480") -> "MHD"
-            formatNote.contains("480x854") -> "MHD"
-            else -> "MHD"
+        val parts = formatNote.split("x")
+        var width = 0
+        var height = 0
+        if (parts.size == 2) {
+             width = parts[0].toIntOrNull() ?: 0
+             height = parts[1].toIntOrNull() ?: 0
+            val quality = getVideoQualityLabel(width, height)
+            Log.d("Quality", "Resolution: ${width}x${height} → $quality")
+        } else {
+            if (formatNote.isEmpty()) formatNote = context.getString(R.string.defaultValue)
+            else if (formatNote == "best") formatNote = context.getString(R.string.best_quality)
+            else if (formatNote == "worst") formatNote = context.getString(R.string.worst_quality)
         }
+
+
         var container = chosenFormat.container
         if (container == "Default" || container.isBlank()) container = context.getString(R.string.defaultValue)
 
@@ -224,6 +224,18 @@ object UiUtil {
             return 0
         }
 
+    }
+
+    fun getVideoQualityLabel(width: Int, height: Int): String {
+        val maxDimension = maxOf(width, height)
+        return when {
+            maxDimension >= 3840 -> "4K UHD"
+            maxDimension >= 2560 -> "2K QHD"
+            maxDimension >= 1920 -> "Full HD"
+            maxDimension >= 1280 -> "HD"
+            maxDimension >= 960 -> "mHD"
+            else -> "SD"
+        }
     }
 
     fun populateCommandCard(card: MaterialCardView, item: CommandTemplate){
@@ -989,6 +1001,7 @@ object UiUtil {
         val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.tag = item.id
         openFile.setOnClickListener{
+            Toast.makeText(context, context.resources.getString(R.string.please_wait), Toast.LENGTH_SHORT).show()
             if (item.downloadPath.size == 1) {
                 println("fragmentedURL: ${item.format.url} and ${fragmentedURL.any{ item.format.url.contains(it, true)}}")
                 context.startActivity(Intent(context, PlayerActivity::class.java).apply {

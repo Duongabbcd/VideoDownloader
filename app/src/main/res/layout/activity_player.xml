@@ -23,7 +23,10 @@
         android:id="@+id/loadingText"
         android:visibility="gone"
         style="@style/CustomTextStyleSemiBold16sp"
-        android:textColor="@color/cool_blue"
+        android:textColor="@color/black"
+        android:background="@drawable/background_radius_10_gray"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:paddingVertical="@dimen/_4sdp"
         android:text="@string/please_wait"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,6 +48,7 @@
             android:id="@+id/iconHome"
             android:src="@drawable/ic_back_white"
             android:padding="@dimen/_5sdp"
+            android:background="@color/black_0_1"
             android:layout_marginStart="@dimen/_10sdp"
             android:contentDescription="@string/imageView"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,13 +59,14 @@
         <TextView
             android:id="@+id/videoName"
             style="@style/CustomTextStyleSemiBold16sp"
+            android:textSize="17sp"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:ellipsize="marquee"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textColor="@color/dark_blue"
+            android:background="@color/black_0_1"
             app:layout_constraintStart_toEndOf="@+id/iconHome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iconHome"
@@ -71,6 +76,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomLayout"
+        android:background="@color/black_0_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
@@ -79,26 +85,26 @@
         <ImageView
             android:id="@+id/iconRotation"
             android:src="@drawable/icon_rotation"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:contentDescription="@string/imageView"
-            app:layout_constraintBottom_toTopOf="@+id/playerControls"
+            app:layout_constraintBottom_toBottomOf="@+id/playerButtons"
+            app:layout_constraintTop_toTopOf="@id/playerButtons"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp" />
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp" />
 
         <ImageView
             android:id="@+id/iconVolume"
-            android:src="@drawable/icon_volume_on"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/icon_lock_screen"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:contentDescription="@string/imageView"
-            app:layout_constraintBottom_toTopOf="@+id/playerControls"
+            app:layout_constraintBottom_toBottomOf="@+id/playerButtons"
+            app:layout_constraintTop_toTopOf="@id/playerButtons"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp" />
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp" />
 
 
         <!-- Control buttons -->
@@ -107,12 +113,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/playerControls"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iconVolume"
             app:layout_constraintEnd_toStartOf="@+id/iconRotation"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_8sdp">
+            android:layout_marginBottom="@dimen/_10sdp">
 
             <ImageButton
                 android:id="@+id/rewind10"
@@ -120,19 +125,17 @@
                 android:src="@drawable/icon_rewind_10"
                 android:contentDescription="@string/imageView"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"/>
 
             <ImageButton
                 android:id="@+id/playPause"
                 android:layout_weight="2"
-                android:src="@drawable/ic_play"
+                android:src="@drawable/ic_pause"
                 android:contentDescription="@string/imageView"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:layout_width="@dimen/_48sdp"
-                android:layout_height="@dimen/_48sdp"/>
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"/>
 
             <ImageButton
                 android:id="@+id/forward10"
@@ -140,44 +143,59 @@
                 android:src="@drawable/icon_forward_10"
                 android:contentDescription="@string/imageView"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"/>
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/playerControls"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/playerButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
+
+            <TextView
+                android:id="@+id/currentTime"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:gravity="center"
+                style="@style/CustomTextStyleMedium"
+                android:layout_height="@dimen/_30sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/seekbarContainer"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"/>
+
+            <TextView
+                android:id="@+id/totalTime"
+                android:text="00:00"
+                android:textColor="@color/white"
+                style="@style/CustomTextStyleMedium"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/seekbarContainer"
+                android:layout_marginEnd="@dimen/_16sdp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/seekbarContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/currentTime"
-                    android:text="00:00"
-                    android:textColor="@color/cool_pink"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_4sdp"/>
 
                 <View
                     android:id="@+id/firstFloor"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_marginEnd="@dimen/_14sdp"
                     app:layout_constraintTop_toTopOf="@id/playingSeekbar"
                     app:layout_constraintBottom_toBottomOf="@id/playingSeekbar"
-                    app:layout_constraintStart_toEndOf="@id/currentTime"
-                    app:layout_constraintEnd_toStartOf="@id/totalTime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:background="@drawable/background_gray_corner_round"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_5sdp"/>
@@ -195,42 +213,29 @@
                     android:progress="0"
                     android:minHeight="@dimen/_5sdp"
                     android:maxHeight="@dimen/_5sdp"
-                    android:thumbTint="@color/progressBar"
-                    app:layout_constraintBottom_toBottomOf="@+id/currentTime"
-                    app:layout_constraintTop_toTopOf="@+id/currentTime"
-                    app:layout_constraintStart_toEndOf="@id/currentTime"
-                    app:layout_constraintEnd_toStartOf="@id/totalTime"
+                    android:thumbTint="@color/tab_select"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/secondFloor"
+                    app:layout_constraintEnd_toEndOf="@id/firstFloor"
                     android:progressDrawable="@drawable/background_seekbar_track"
-                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_4sdp"
                     android:paddingEnd="@dimen/_8sdp"/>
 
                 <View
                     android:id="@+id/secondFloor"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/currentTime"
-                    app:layout_constraintTop_toTopOf="@+id/currentTime"
-                    app:layout_constraintStart_toEndOf="@id/currentTime"
+                    app:layout_constraintBottom_toBottomOf="@+id/playingSeekbar"
+                    app:layout_constraintTop_toTopOf="@+id/playingSeekbar"
+                    app:layout_constraintStart_toStartOf="@id/firstFloor"
                     android:background="@drawable/corner_left_bg"
-                    android:backgroundTint="@color/progressBar"
+                    android:backgroundTint="@color/tab_select"
                     android:layout_width="@dimen/_5sdp"
                     android:layout_height="@dimen/_5sdp"/>
 
-
-                <TextView
-                    android:id="@+id/totalTime"
-                    android:text="00:00"
-                    android:textColor="@color/cool_pink"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="@dimen/_4sdp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

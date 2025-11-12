@@ -120,81 +120,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allBookmarks"
+            android:layout_marginTop="@dimen/_4sdp"
             app:layout_constraintTop_toBottomOf="@+id/guidanceBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:scrollbars="none" />
 
-        <TextView
-            android:id="@+id/bookmarkDisplay"
-            android:text="@string/next_option"
-            android:visibility="gone"
-            android:textColor="@color/cool_blue"
-            style="@style/CustomTextStyleMedium14sp"
-            android:contentDescription="@string/imageView"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/allBookmarks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/recentlySearch"
-            android:visibility="gone"
-            android:text="@string/recently_search"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:paddingStart="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@id/allBookmarks"
-            android:layout_below="@id/allBookmarks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewHome"
-            app:layout_constraintTop_toBottomOf="@id/recentlySearch"
-            android:layout_below="@+id/recentlySearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_results_framelayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/recyclerViewHome"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
-
-
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,7 +140,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/_40sdp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -387,10 +320,9 @@
     <LinearLayout
         android:id="@+id/home_fabs"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_55sdp"
+        android:layout_height="@dimen/_60sdp"
         android:layout_gravity="bottom|end"
         android:gravity="end"
-        android:paddingTop="@dimen/_4sdp"
         android:orientation="horizontal">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

@@ -1,7 +1,6 @@
 package com.ezt.priv.shortvideodownloader.ui.player
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.media.MediaCodec
@@ -23,29 +22,20 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Timeline
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
-import androidx.media3.ui.PlayerView
-import com.bumptech.glide.Glide
 import com.ezt.priv.shortvideodownloader.R
 import com.ezt.priv.shortvideodownloader.databinding.ActivityPlayerBinding
 import com.ezt.priv.shortvideodownloader.ui.BaseActivity2
 import com.ezt.priv.shortvideodownloader.util.Common.gone
-import com.ezt.priv.shortvideodownloader.util.Common.visible
 import com.ezt.priv.shortvideodownloader.work.CryptoConstants
-import com.googlecode.mp4parser.FileDataSourceImpl
-import com.googlecode.mp4parser.authoring.builder.FragmentedMp4Builder
-import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 import java.nio.ByteBuffer
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBinding::inflate) {
     private val videoUrl by lazy {
@@ -85,6 +75,8 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
 
     private var startPositionValue: Long = 0L
     private var playWhenReadyState: Boolean = true
+
+    private var isLocked = false
 
     @SuppressLint("ClickableViewAccessibility")
     @OptIn(UnstableApi::class)
@@ -153,10 +145,12 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
                         isUserSeeking = true
                     }
+
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {
                         val duration = player.duration
                         if (duration != C.TIME_UNSET) {
-                            val seekTo = (seekBar?.progress ?: 0).coerceIn(0, duration.toInt()).toLong()
+                            val seekTo =
+                                (seekBar?.progress ?: 0).coerceIn(0, duration.toInt()).toLong()
                             player.seekTo(seekTo)
                         }
                         isUserSeeking = false
@@ -184,29 +178,35 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                 }
 
                 iconVolume.setOnClickListener {
-                    toggleMute()
+                    changeLockScreenOrientation()
                 }
 
                 binding.iconRotation.setOnClickListener {
+                    if(isLocked) {
+                        return@setOnClickListener
+                    }
                     binding.root.post {
                         val currentOrientation = resources.configuration.orientation
                         when (currentOrientation) {
                             Configuration.ORIENTATION_PORTRAIT -> {
                                 // Rotate to landscape
-                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                                requestedOrientation =
+                                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                                 // Fit with black bars (don’t stretch)
                                 playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                             }
 
                             Configuration.ORIENTATION_LANDSCAPE -> {
                                 // Rotate back to portrait
-                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                                requestedOrientation =
+                                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
                                 // Fit again (good default)
                                 playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                             }
 
                             else -> {
-                                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                                requestedOrientation =
+                                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                                 playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
                             }
                         }
@@ -226,6 +226,7 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                             binding.bottomLayout.visibility = View.VISIBLE
                             binding.bottomLayout.alpha = 1f
                         }
+
                         MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                             // Start fade after finger lifted
                             fadeRunnableTop = binding.topLayout.fadeInAndOut(3000L)
@@ -243,11 +244,12 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
                 binding.iconHome.stopFadeOnTouch()
                 binding.videoName.stopFadeOnTouch()
                 binding.playingSeekbar.setOnTouchListener { _, event ->
-                    when(event.action) {
+                    when (event.action) {
                         MotionEvent.ACTION_DOWN -> {
                             fadeRunnableTop?.let { binding.topLayout.removeCallbacks(it) }
                             fadeRunnableBottom?.let { binding.bottomLayout.removeCallbacks(it) }
                         }
+
                         MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                             fadeRunnableTop = binding.topLayout.fadeInAndOut(3000L)
                             fadeRunnableBottom = binding.bottomLayout.fadeInAndOut(3000L)
@@ -259,15 +261,22 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
         }
     }
 
-    private fun toggleMute() {
-        player?.let {
-            val isMuted = it.volume == 0f
-            it.volume = if (isMuted) 1f else 0f
-
-            // Optionally change the icon depending on the state
-            binding.iconVolume.setImageResource(
-                if (isMuted) R.drawable.icon_volume_on else R.drawable.icon_volume_off
-            )
+    private fun changeLockScreenOrientation() {
+        if (!isLocked) {
+            val currentOrientation = resources.configuration.orientation
+            requestedOrientation = when (currentOrientation) {
+                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else -> ActivityInfo.SCREEN_ORIENTATION_LOCKED
+            }
+            isLocked = true
+            binding.iconVolume.setImageResource(R.drawable.icon_locked)
+//            Toast.makeText(this, "Screen locked", Toast.LENGTH_SHORT).show()
+        } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+            isLocked = false
+            binding.iconVolume.setImageResource(R.drawable.icon_lock_screen)
+//            Toast.makeText(this, "Screen unlocked", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -283,79 +292,72 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
         fadeRunnableBottom = binding.bottomLayout.fadeInAndOut(3000L)
     }
 
-
+    @OptIn(UnstableApi::class)
     private fun initializePlayer(encryptedFilePath: String) {
-
         hasInitialized = true
         val isEncrypted = CryptoConstants.isFileEncryptedByUs(File(encryptedFilePath))
         println("initializePlayer: $encryptedFilePath and $isEncrypted")
         println("isFragmented: $isFragmented")
 
         try {
-            // Step 0: Decrypt file if needed
+            // Step 0: Decrypt if needed
             decryptedFile = if (!isWhatsApp)
                 CryptoConstants.decryptMediaHeader(File(encryptedFilePath), this)
             else
                 File(encryptedFilePath)
 
-            lifecycleScope.launch {
-                // Step 1: Decide file to play based on `isFragmented`
-                val fileToPlay: File = if (isFragmented) {
-                    // Show "please wait" if needed
-                    binding.loadingText.visibility = View.VISIBLE
+            val fragmentFiles = listOf(decryptedFile!!)
 
-                    // Remux on IO thread and wait until done
-                    val remuxedFile = File(filesDir, "remuxed_${decryptedFile!!.name}")
-                    withContext(Dispatchers.IO) {
-                        remuxWithMediaMuxer(decryptedFile!!, remuxedFile)
-                    }
+            binding.loadingText.visibility = View.VISIBLE
 
-                    binding.loadingText.visibility = View.GONE
-                    remuxedFile
-                } else {
-                    decryptedFile!!
+            lifecycleScope.launch(Dispatchers.IO) {
+                // Step 1: Prepare MediaItems for all fragments
+                val mediaItems = fragmentFiles.map { fragmentFile ->
+                    MediaItem.fromUri(Uri.fromFile(fragmentFile))
                 }
 
-                // Step 2: Initialize ExoPlayer
-                binding.apply {
-                    playerView.visibility = PlayerView.VISIBLE
+                withContext(Dispatchers.Main) {
+                    // Step 2: Initialize ExoPlayer
+                    val renderersFactory = DefaultRenderersFactory(this@PlayerActivity)
+                        .setEnableDecoderFallback(true)
+                        .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
 
-                    player = ExoPlayer.Builder(this@PlayerActivity).build().also { exoPlayer ->
-                        playerView.player = exoPlayer
-                        exoPlayer.volume = 1f
-                        iconVolume.setImageResource(R.drawable.icon_volume_on)
+                    binding.apply {
+                        player = ExoPlayer.Builder(this@PlayerActivity, renderersFactory).build().also { exoPlayer ->
+                            playerView.player = exoPlayer
+                            exoPlayer.volume = 1f
+//                            iconVolume.setImageResource(R.drawable.icon_volume_on)
 
-                        val mediaItem = MediaItem.fromUri(Uri.fromFile(fileToPlay))
-                        exoPlayer.setMediaItem(mediaItem)
-                        exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+                            // Step 3: Add all fragments as MediaItems
+                            exoPlayer.setMediaItems(mediaItems)
+                            exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
 
-                        exoPlayer.addListener(object : Player.Listener {
-                            override fun onPlaybackStateChanged(playbackState: Int) {
-                                if (playbackState == Player.STATE_READY && player.duration != C.TIME_UNSET) {
-                                    playingSeekbar.max = player.duration.toInt()
-                                    totalTime.text = formatTime(player.duration)
+                            // Step 4: Listeners for UI updates
+                            exoPlayer.addListener(object : Player.Listener {
+                                override fun onPlaybackStateChanged(playbackState: Int) {
+                                    if (playbackState == Player.STATE_READY && exoPlayer.duration != C.TIME_UNSET) {
+                                        playingSeekbar.max = exoPlayer.duration.toInt()
+                                        totalTime.text = formatTime(exoPlayer.duration)
+                                    }
                                 }
-                            }
 
-                            override fun onPlayerError(error: PlaybackException) {
-                                Toast.makeText(
-                                    this@PlayerActivity,
-                                    "Playback error: ${error.message}",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
+                                override fun onPlayerError(error: PlaybackException) {
+                                    Log.d(TAG, "Playback error: ${error.message}")
+                                }
 
-                            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                                playPause.setImageResource(
-                                    if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
-                                )
-                            }
-                        })
+                                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                                    playPause.setImageResource(
+                                        if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
+                                    )
+                                }
+                            })
 
-                        exoPlayer.prepare()
-                        exoPlayer.seekTo(startPositionValue)
-                        exoPlayer.playWhenReady = playWhenReadyState
-                        handler.post(updateSeekBarRunnable)
+                            exoPlayer.prepare()
+                            exoPlayer.seekTo(startPositionValue)
+                            exoPlayer.playWhenReady = playWhenReadyState
+                            handler.post(updateSeekBarRunnable)
+                            binding.loadingText.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -368,48 +370,52 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
 
 
 
-    /** Remux fragmented MP4 into a normal MP4 using MediaMuxer */
-    private fun remuxWithMediaMuxer(inputFile: File, outputFile: File) {
-        val extractor = MediaExtractor()
-        extractor.setDataSource(inputFile.absolutePath)
-
+    /** Remux fragments sequentially with audio/video sync */
+    private fun remuxFragmentsSequential(fragmentFiles: List<File>, outputFile: File) {
         val muxer = MediaMuxer(outputFile.absolutePath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
         val trackMap = mutableMapOf<Int, Int>()
 
-        for (i in 0 until extractor.trackCount) {
-            val format = extractor.getTrackFormat(i)
-            val mime = format.getString(MediaFormat.KEY_MIME) ?: continue
-            if (mime.startsWith("video/") || mime.startsWith("audio/")) {
+        fragmentFiles.forEach { file ->
+            val extractor = MediaExtractor()
+            extractor.setDataSource(file.absolutePath)
+
+            // Add tracks if not already added
+            for (i in 0 until extractor.trackCount) {
+                val format = extractor.getTrackFormat(i)
+                val mime = format.getString(MediaFormat.KEY_MIME) ?: continue
+                if (!trackMap.containsKey(i)) {
+                    trackMap[i] = muxer.addTrack(format)
+                }
                 extractor.selectTrack(i)
-                val newTrackIndex = muxer.addTrack(format)
-                trackMap[i] = newTrackIndex
             }
-        }
 
-        muxer.start()
+            muxer.start()
 
-        val buffer = ByteBuffer.allocate(1_024 * 1_024)
-        val bufferInfo = MediaCodec.BufferInfo()
+            val buffer = ByteBuffer.allocate(256 * 1024) // 256 KB buffer
+            val bufferInfo = MediaCodec.BufferInfo()
 
-        while (true) {
-            val sampleTrackIndex = extractor.sampleTrackIndex
-            if (sampleTrackIndex < 0) break
+            while (true) {
+                val sampleTrackIndex = extractor.sampleTrackIndex
+                if (sampleTrackIndex < 0) break
+                val trackIndex = trackMap[sampleTrackIndex] ?: break
 
-            val trackIndex = trackMap[sampleTrackIndex] ?: break
-            bufferInfo.offset = 0
-            bufferInfo.size = extractor.readSampleData(buffer, 0)
-            if (bufferInfo.size < 0) break
+                bufferInfo.offset = 0
+                bufferInfo.size = extractor.readSampleData(buffer, 0)
+                if (bufferInfo.size < 0) break
 
-            bufferInfo.presentationTimeUs = extractor.sampleTime
-            bufferInfo.flags = extractor.sampleFlags
-            muxer.writeSampleData(trackIndex, buffer, bufferInfo)
-            extractor.advance()
+                bufferInfo.presentationTimeUs = extractor.sampleTime
+                bufferInfo.flags = extractor.sampleFlags
+                muxer.writeSampleData(trackIndex, buffer, bufferInfo)
+                extractor.advance()
+            }
+
+            extractor.release()
         }
 
         muxer.stop()
         muxer.release()
-        extractor.release()
     }
+
 
 
     override fun onStop() {
@@ -455,11 +461,12 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
 
     fun View.stopFadeOnTouch() {
         setOnTouchListener { v, event ->
-            when(event.action) {
+            when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     fadeRunnableTop?.let { binding.topLayout.removeCallbacks(it) }
                     fadeRunnableBottom?.let { binding.bottomLayout.removeCallbacks(it) }
                 }
+
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     fadeRunnableTop = binding.topLayout.fadeInAndOut(3000L)
                     fadeRunnableBottom = binding.bottomLayout.fadeInAndOut(3000L)
@@ -491,6 +498,11 @@ class PlayerActivity : BaseActivity2<ActivityPlayerBinding>(ActivityPlayerBindin
         }
 
 
-
     }
 }
+
+data class SampleData(
+    val trackIndex: Int,
+    val buffer: ByteBuffer,
+    val info: MediaCodec.BufferInfo
+)

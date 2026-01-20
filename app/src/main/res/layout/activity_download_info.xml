@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="@dimen/_32sdp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+ <androidx.constraintlayout.widget.ConstraintLayout
+     android:id="@+id/origin"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+
+     <androidx.constraintlayout.widget.ConstraintLayout
+         app:layout_constraintTop_toTopOf="parent"
+         android:id="@+id/home_appbarlayout"
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/_40sdp"
+         android:background="@null">
+
+         <com.google.android.material.appbar.MaterialToolbar
+             android:id="@+id/home_toolbar"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             app:layout_scrollFlags="scroll|enterAlways">
+
+             <ImageView
+                 android:id="@+id/backIcon"
+                 android:layout_width="@dimen/_24sdp"
+                 android:layout_height="@dimen/_24sdp"
+                 android:layout_gravity="start"
+                 android:layout_marginStart="@dimen/_16sdp"
+                 android:contentDescription="@string/imageView"
+                 android:padding="@dimen/_2sdp"
+                 android:src="@drawable/ic_back" />
+
+             <!-- Add an ImageView here -->
+             <ImageView
+                 android:id="@+id/appIcon"
+                 android:visibility="gone"
+                 android:layout_width="@dimen/_24sdp"
+                 android:layout_height="@dimen/_24sdp"
+                 android:layout_gravity="end"
+                 android:layout_marginEnd="@dimen/_16sdp"
+                 android:contentDescription="@string/imageView"
+                 android:padding="@dimen/_2sdp"
+                 android:src="@drawable/ic_settings" />
+
+         </com.google.android.material.appbar.MaterialToolbar>
+
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
+             app:layout_scrollFlags="scroll|enterAlways">
+
+             <com.facebook.shimmer.ShimmerFrameLayout
+                 android:id="@+id/progress"
+                 android:layout_width="0dp"
+                 android:layout_height="0dp"
+                 android:translationZ="@dimen/_250sdp"
+                 android:visibility="gone"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:shimmer_auto_start="true">
+
+                 <com.google.android.material.card.MaterialCardView
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     app:cardCornerRadius="@dimen/_30sdp">
+
+                 </com.google.android.material.card.MaterialCardView>
+
+
+             </com.facebook.shimmer.ShimmerFrameLayout>
+
+         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+     </androidx.constraintlayout.widget.ConstraintLayout>
+
+     <ScrollView
+         app:layout_constraintTop_toBottomOf="@id/home_appbarlayout"
+         app:layout_constraintBottom_toTopOf="@+id/view"
+         android:layout_width="match_parent"
+         android:layout_height="0dp" >
+
+         <LinearLayout
+             app:layout_constraintTop_toBottomOf="@id/home_appbarlayout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+             <androidx.constraintlayout.widget.ConstraintLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginHorizontal="@dimen/_20sdp"
+                 android:orientation="horizontal">
+
+                 <com.facebook.shimmer.ShimmerFrameLayout
+                     android:visibility="gone"
+                     android:layout_width="0dp"
+                     android:layout_marginTop="4dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginEnd="@dimen/_20sdp"
+                     app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                     app:layout_constraintHorizontal_bias="0.0"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent"
+                     android:id="@+id/shimmer_loading_title"
+                     android:orientation="vertical">
+
+                     <TextView
+                         android:id="@+id/bottom_sheet_loading_title"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:maxLines="2"
+                         android:singleLine="false"
+                         android:text="@string/loading"
+                         android:textSize="25sp" />
+
+                 </com.facebook.shimmer.ShimmerFrameLayout>
+
+                 <TextView
+                     android:id="@+id/bottom_sheet_title"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="4dp"
+                     android:maxLines="2"
+                     android:layout_marginEnd="@dimen/_20sdp"
+                     android:singleLine="false"
+                     android:text="@string/download"
+                     android:textSize="20sp"
+                     app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                     app:layout_constraintHorizontal_bias="0.0"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+                 <com.facebook.shimmer.ShimmerFrameLayout
+                     android:visibility="gone"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     app:layout_constraintHorizontal_bias="0.0"
+                     android:layout_marginEnd="@dimen/_20sdp"
+                     app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@+id/shimmer_loading_title"
+                     android:id="@+id/shimmer_loading_subtitle"
+                     android:orientation="vertical">
+
+                     <TextView
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:maxLines="2"
+                         android:singleLine="false"
+                         android:text="@string/please_wait"
+                         android:textSize="12sp" />
+
+                 </com.facebook.shimmer.ShimmerFrameLayout>
+
+                 <TextView
+                     android:id="@+id/bottom_sheet_subtitle"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:maxLines="2"
+                     android:layout_marginEnd="@dimen/_20sdp"
+                     android:singleLine="false"
+                     android:text="@string/media_format"
+                     android:textSize="12sp"
+                     app:layout_constraintHorizontal_bias="0.0"
+                     app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title" />
+
+                 <Button
+                     android:id="@+id/bottomsheet_schedule_button"
+                     style="@style/Widget.Material3.Button.IconButton.Filled"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginEnd="@dimen/_10sdp"
+                     android:contentDescription="@string/schedule"
+                     android:outlineProvider="none"
+                     app:icon="@drawable/ic_clock"
+                     android:visibility="gone"
+                     app:layout_constraintBottom_toBottomOf="@id/bottomsheet_download_button"
+                     app:layout_constraintEnd_toStartOf="@+id/bottomsheet_download_button"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+                 <Button
+                     android:id="@+id/bottomsheet_download_button"
+                     android:backgroundTint="@color/tab_select_0_6"
+                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                     android:textColor="@color/white"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:autoLink="all"
+                     android:text="@string/download"
+                     android:outlineProvider="none"
+                     android:stateListAnimator="@null"
+                     app:icon="@drawable/ic_down"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+
+             </androidx.constraintlayout.widget.ConstraintLayout>
+
+             <com.google.android.material.tabs.TabLayout
+                 android:id="@+id/download_tablayout"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="@dimen/_10sdp"
+                 android:backgroundTint="@android:color/transparent"
+                 app:tabGravity="start"
+                 app:tabMinWidth="0dp"
+                 app:tabMode="scrollable">
+
+                 <com.google.android.material.tabs.TabItem
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
+                     android:text="@string/audio" />
+
+                 <com.google.android.material.tabs.TabItem
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
+                     android:text="@string/video" />
+
+                 <!--            <com.google.android.material.tabs.TabItem-->
+                 <!--                android:layout_width="wrap_content"-->
+                 <!--                android:layout_height="match_parent"-->
+                 <!--                android:text="@string/command" />-->
+
+
+             </com.google.android.material.tabs.TabLayout>
+
+             <androidx.viewpager2.widget.ViewPager2
+                 android:id="@+id/download_viewpager"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content" />
+
+             <androidx.constraintlayout.widget.ConstraintLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+
+                 <Button
+                     android:id="@+id/bottom_sheet_link"
+                     style="@style/Widget.Material3.Button.TextButton.Icon"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_margin="@dimen/_10sdp"
+                     android:singleLine="true"
+                     android:text="@string/app_name"
+                     android:textAlignment="textStart"
+                     android:textSize="15sp"
+                     app:icon="@drawable/ic_link"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toStartOf="@+id/bottomsheet_incognito"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+                 <Button
+                     android:id="@+id/bottomsheet_incognito"
+                     style="@style/Widget.Material3.Button.IconButton.Filled"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_margin="@dimen/_10sdp"
+                     android:outlineProvider="none"
+                     android:contentDescription="@string/incognito"
+                     app:icon="@drawable/ic_nightly"
+                     android:alpha="0.3"
+                     android:visibility="gone"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:gravity="end"
+                 android:visibility="gone"
+                 android:paddingBottom="@dimen/_10sdp"
+                 android:layout_marginHorizontal="@dimen/_15sdp"
+                 android:layout_height="wrap_content">
+
+                 <Button
+                     android:id="@+id/update_item"
+                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:autoLink="all"
+                     android:outlineProvider="none"
+                     android:text="@string/update"
+                     app:icon="@drawable/ic_update"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+             </LinearLayout>
+
+         </LinearLayout>
+     </ScrollView>
+
+     <View
+         android:id="@+id/view"
+         android:layout_width="match_parent"
+         android:layout_height="1dp"
+         android:background="@color/transparent"
+         app:layout_constraintBottom_toTopOf="@id/frBanner" />
+
+     <include
+         android:id="@+id/frBanner"
+         layout="@layout/ads_banner"
+         android:visibility="visible"
+         app:layout_constraintBottom_toBottomOf="parent"/>
+
+ </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/noInternet"
+        layout="@layout/no_internet_connection"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_20sdp">
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/download_button_type"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/bottom_sheet_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/bottom_sheet_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/download_button_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:clickable="false"
+                android:elevation="0dp"
+                app:borderWidth="0dp"
+                app:cornerRadius="@dimen/_10sdp"
+                app:elevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/share" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/downloads_card_view"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="@dimen/_140sdp"
+                app:cardCornerRadius="@dimen/_20sdp"
+                app:cardElevation="0dp"
+                app:checkedIcon="@null"
+                app:cardMaxElevation="@dimen/_12sdp"
+                android:checkable="true"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                app:strokeWidth="0dp"
+                app:cardPreventCornerOverlap="true">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/thumbnailImage"
+                    android:contentDescription="@string/imageView"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/noImage"
+                    android:visibility="gone"
+                    android:src="@drawable/icon_no_image"
+                    android:contentDescription="@string/imageView"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"/>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Native Ad Frame -->
+            <RelativeLayout
+                android:id="@+id/rlNative"
+                android:visibility="gone"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_140sdp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <include
+                    android:id="@+id/m_loading_view"
+                    layout="@layout/native_small_screen" />
+
+                <FrameLayout
+                    android:id="@+id/frNative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/url">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/time"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:chipIcon="@drawable/ic_clock"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:focusable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/thumbnail"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="@dimen/_30sdp"
+                    app:chipIcon="@drawable/ic_image"
+                    app:cornerRadius="@dimen/_10sdp"
+                    android:text="@string/thumbnail"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/format_note"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:visibility="gone"
+                    android:minWidth="@dimen/_30sdp"
+                    app:chipIcon="@drawable/ic_format"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/container_chip"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/codec"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:chipIcon="@drawable/ic_code"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/file_size"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/command"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    android:text="@string/command"
+                    android:visibility="gone"
+                    app:chipIcon="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/location"
+                    android:visibility="gone"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="@dimen/_30sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    android:text="@string/location"
+                    app:chipIcon="@drawable/baseline_folder_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
+
+        <Button
+            android:id="@+id/bottom_sheet_link"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:text="@string/app_name"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            app:icon="@drawable/ic_link" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center_horizontal"
+            android:layout_margin="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <Button
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:id="@+id/bottomsheet_remove_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:icon="@drawable/ic_baseline_delete_outline_24"
+                android:text="@string/Remove" />
+
+            <Button
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:id="@+id/bottomsheet_open_file_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Open_File"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:icon="@drawable/ic_open_file"
+                />
+
+            <Button
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:id="@+id/bottomsheet_redownload_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/redownload"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:icon="@drawable/ic_refresh"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

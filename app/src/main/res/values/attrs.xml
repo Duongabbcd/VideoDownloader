@@ -1,0 +1,17 @@
+<resources>
+    <integer name="grid_size">1</integer>
+    <integer name="multiple_grid_size">4</integer>
+    <bool name="isTablet">false</bool>
+    <bool name="is_right_to_left">false</bool>
+    <bool name="uses_side_nav">false</bool>
+
+
+    <declare-styleable name="CustomRatingBar">
+        <attr name="maxRating" format="integer" />
+        <attr name="emptyStarDrawable" format="reference" />
+        <attr name="filledStarDrawable" format="reference" />
+        <attr name="emptyLastStarDrawable" format="reference" />
+        <attr name="filledLastStarDrawable" format="reference" />
+        <attr name="starSpacing" format="dimension" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/_6sdp"
+    android:padding="@dimen/_6sdp"
+    android:background="@drawable/background_radius_10_gray"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/tabIcon"
+        android:contentDescription="@string/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/_4sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/icon_tab"/>
+
+    <TextView
+        android:id="@+id/tabURL"
+        app:layout_constraintStart_toEndOf="@id/tabIcon"
+        app:layout_constraintEnd_toStartOf="@id/closeBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/CustomTextStyleSemiBold16sp"
+        android:text="Home"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tabWeb"
+        app:layout_constraintStart_toEndOf="@id/tabIcon"
+        app:layout_constraintEnd_toStartOf="@id/closeBtn"
+        app:layout_constraintTop_toBottomOf="@id/tabURL"
+        style="@style/CustomTextStyleMedium12sp"
+        android:textColor="@color/customGray"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/closeBtn"
+        android:contentDescription="@string/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/_4sdp"
+        android:src="@drawable/baseline_close_24"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

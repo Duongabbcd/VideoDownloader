@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.home.browser.homeTab.BrowserHomeFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.ezt.priv.shortvideodownloader.R" />
+
+        <variable
+            name="viewModel"
+            type="com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.WebTabViewModel" />
+
+        <variable
+            name="videoTabVModel"
+            type="com.ezt.priv.shortvideodownloader.ui.browse.detector.IVideoDetector" />
+
+        <variable
+            name="browserMenuListener"
+            type="com.ezt.priv.shortvideodownloader.ui.browse.BrowserListener" />
+
+        <variable
+            name="settingsViewModel"
+            type="com.ezt.priv.shortvideodownloader.ui.browse.viewmodel.SettingViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/customView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/containerBrowser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_horizontal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/buttons_block"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivCloseTab"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="@dimen/_36sdp"
+                                android:layout_height="@dimen/_36sdp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="@string/home"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:onClick="@{() -> browserMenuListener.onTabCloseClicked()}"
+                                android:padding="@dimen/_8sdp"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/icon_home"
+                                tools:ignore="VectorDrawableCompat" />
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/iv_go_back"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="@string/home"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:onClick="@{() -> browserMenuListener.onBrowserBackClicked()}"
+                                android:padding="@dimen/_8sdp"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_back"
+                                tools:ignore="VectorDrawableCompat" />
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/iv_go_forward"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="@string/home"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:onClick="@{() -> browserMenuListener.onBrowserForwardClicked()}"
+                                android:padding="@dimen/_8sdp"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_forward"
+                                tools:ignore="VectorDrawableCompat" />
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/et_search"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:focusable="@{viewModel.isTabInputFocused}"
+                            android:focusableInTouchMode="@{viewModel.isTabInputFocused}"
+                            android:hint="@string/search_hint"
+                            android:maxWidth="480dp"
+                            android:onClick="@{() -> viewModel.changeTabFocus(true)}"
+                            android:paddingStart="@dimen/_8sdp"
+                            android:paddingEnd="@dimen/_4sdp"
+                            android:singleLine="true"
+                            android:text="@{viewModel.getTabTextInput()}"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_close_refresh"
+                            app:layout_constraintStart_toEndOf="@+id/buttons_block"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_close_refresh"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:adjustViewBounds="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:onClick="@{() -> viewModel.isShowProgress() ? browserMenuListener.onBrowserStopClicked() : browserMenuListener.onBrowserReloadClicked()}"
+                            android:padding="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.466"
+                            android:src="@drawable/ic_refresh"
+                            tools:ignore="VectorDrawableCompat" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/browser_menu_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:elevation="0dp"
+                            android:shadowColor="@android:color/transparent"
+                            app:cardBackgroundColor="@android:color/transparent"
+                            app:cardCornerRadius="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            app:strokeColor="@android:color/transparent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/browser_menu_button"
+                                android:layout_width="49dp"
+                                android:visibility="gone"
+                                android:layout_height="49dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:contentDescription="@string/imageView"
+                                android:onClick="@{() -> browserMenuListener.onBrowserMenuClicked()}"
+                                android:padding="@dimen/_8sdp"
+                                app:srcCompat="@drawable/ic_more"
+                                tools:ignore="VectorDrawableCompat" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:id="@+id/webview_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:orientation="horizontal" />
+
+                <FrameLayout
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="match_parent"
+                    android:visibility="@{(videoTabVModel.hasCheckLoadingsM3u8() || videoTabVModel.hasCheckLoadingsRegular()) ? View.VISIBLE : View.GONE }"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:indeterminate="true"
+                        android:indeterminateDrawable="@drawable/progress_load_data"
+                        android:rotation="90" />
+                </FrameLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/fullscreen_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@android:color/transparent"
+                    android:progress="@{viewModel.progress}"
+                    android:progressDrawable="@drawable/progress_load_data"
+                    android:visibility="@{viewModel.isShowProgress ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.ezt.priv.shortvideodownloader.ui.browse.widget.MovableContainer
+                android:id="@+id/floating_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/_4sdp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusedByDefault="false"
+                android:foregroundGravity="center"
+                android:translationZ="20dp"
+                android:visibility="gone"
+                app:layout_anchorGravity="center">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:backgroundTint="@color/tab_select"
+                    android:contentDescription="@string/imageView"
+                    android:onClick="@{() -> videoTabVModel.showVideoInfo()}"
+                    android:src="@{videoTabVModel.getDownloadBtnIcon()}"
+                    app:borderWidth="0dp"
+                    app:tint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/loadingWavy"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/background_radius_16_gray"
+                    android:backgroundTint="@android:color/transparent"
+                    android:contentDescription="@string/imageView"
+                    android:focusable="false"
+                    android:translationZ="@dimen/_8sdp"
+                    android:visibility="@{videoTabVModel.getDownloadBtnIcon() == R.drawable.invisible_24px ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/fab"
+                    app:layout_constraintEnd_toEndOf="@+id/fab"
+                    app:layout_constraintStart_toStartOf="@+id/fab"
+                    app:layout_constraintTop_toTopOf="@+id/fab" />
+            </com.ezt.priv.shortvideodownloader.ui.browse.widget.MovableContainer>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
+
+</layout>

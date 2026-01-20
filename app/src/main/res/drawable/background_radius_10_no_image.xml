@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners android:radius="@dimen/_10sdp" />
+
+    <gradient
+        android:startColor="@color/tab_select_0_2"
+        android:centerColor="@color/tab_select_0_6"
+        android:endColor="@color/tab_select"
+        android:angle="360" />
+</shape>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingHorizontal="@dimen/_16sdp"
+    android:fitsSystemWindows="true"
+    android:layoutDirection="ltr"
+    android:textDirection="locale">
+
+    <ImageView
+        android:id="@+id/guidancePic"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:contentDescription="@string/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:src="@drawable/guide3"
+        android:layout_height="@dimen/_270sdp" />
+
+    <TextView
+        android:id="@+id/guidanceTitle"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintTop_toBottomOf="@id/guidancePic"
+        style="@style/CustomTextStyleSemiBold18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/disclaimer"
+        android:visibility="gone"
+        style="@style/CustomTextStyleSemiBold24sp"
+        android:textColor="@color/tab_select"
+        android:text="@string/intro_4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/disclaimer1"
+        android:visibility="gone"
+        style="@style/CustomTextStyle14sp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:paddingHorizontal="@dimen/_16sdp"
+        android:text="@string/disclaimer_1"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/disclaimer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/disclaimer2"
+        android:visibility="gone"
+        style="@style/CustomTextStyle14sp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:text="@string/disclaimer_2"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/disclaimer1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+    <ImageView
+        android:id="@+id/introStep"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/icon_intro1_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/imageView"
+        app:layout_constraintBottom_toTopOf="@id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/_36sdp"
+        android:layout_height="@dimen/_6sdp" />
+    <TextView
+        android:id="@+id/nextBtn"
+        android:paddingVertical="@dimen/_4sdp"
+        android:text="@string/next"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_24sdp"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        style="@style/CustomTextStyleSemiBold18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/tab_select"
+        android:background="@drawable/background_radius_12_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

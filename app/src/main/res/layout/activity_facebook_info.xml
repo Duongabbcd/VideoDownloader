@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/origin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.search.SearchView
+            android:id="@+id/search_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/search_hint"
+            app:layout_anchor="@id/search_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/providers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:chipSpacingVertical="-10dp"
+                        app:singleLine="true"
+                        app:singleSelection="true" />
+
+                </HorizontalScrollView>
+
+                <View
+                    android:id="@+id/chipGroupDivider"
+                    style="@style/Divider.Vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/queries_constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/queries"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        app:chipSpacingVertical="-10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/init_search_query"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:singleLine="false" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/init_search_query"
+                        style="?attr/materialIconButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        app:cornerRadius="@dimen/_10sdp"
+                        app:icon="@drawable/ic_search"
+                        app:iconSize="@dimen/_20sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_suggestions_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </com.google.android.material.search.SearchView>
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/home_appbarlayout"
+            android:paddingTop="@dimen/_32sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/home_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <ImageView
+                    android:id="@+id/backIcon"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:contentDescription="@string/imageView"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_back" />
+
+                <!-- Add an ImageView here -->
+                <ImageView
+                    android:id="@+id/appIcon"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:contentDescription="@string/imageView"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/icon_facebook" />
+
+                <TextView
+                    android:id="@+id/currentAppName"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    style="@style/CustomTextStyleSemiBold20sp"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_15sdp"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/progress"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:translationZ="@dimen/_250sdp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/search_bar"
+                    app:layout_constraintStart_toStartOf="@+id/search_bar"
+                    app:layout_constraintTop_toTopOf="@+id/search_bar"
+                    app:shimmer_auto_start="true">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardCornerRadius="@dimen/_30sdp">
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+                <TextView
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    style="@style/CustomTextStyleMedium14sp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/background_radius_12"
+                    android:backgroundTint="@color/gray_0_1"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_36sdp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:focusableInTouchMode="false"
+                    android:duplicateParentState="true"
+                    android:longClickable="false"
+                    android:importantForAccessibility="no"
+                    android:enabled="false"
+                    android:hint="@string/link_video" />
+
+                <ImageView
+                    android:id="@+id/mainMenu"
+                    android:visibility="gone"
+                    android:contentDescription="@string/imageView"
+                    android:src="@drawable/baseline_close_24"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:layout_constraintTop_toTopOf="@id/search_bar"
+                    app:layout_constraintBottom_toBottomOf="@id/search_bar"
+                    app:layout_constraintEnd_toEndOf="@id/search_bar"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp" />
+
+                <LinearLayout
+                    android:id="@+id/allButtons"
+                    app:layout_constraintTop_toBottomOf="@id/search_bar"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/pasteBtn"
+                        android:text="@string/paste"
+                        android:textAllCaps="true"
+                        style="@style/CustomTextStyleSemiBold14sp"
+                        android:background="@drawable/background_radius_10_gray"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/downloadBtn"
+                        android:text="@string/download"
+                        android:textAllCaps="true"
+                        style="@style/CustomTextStyleSemiBold14sp"
+                        android:background="@drawable/background_radius_10_gray"
+                        android:backgroundTint="@color/cool_blue"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/igGuidance"
+                    app:layout_constraintTop_toBottomOf="@id/allButtons"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/background_radius_16_gray"
+                    android:backgroundTint="@color/white"
+                    android:paddingBottom="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/stories"
+                        android:layout_marginStart="@dimen/_16sdp"
+                        android:contentDescription="@string/imageView"
+                        app:layout_constraintTop_toTopOf="@id/igDescription"
+                        app:layout_constraintBottom_toBottomOf="@id/igDescription"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:src="@drawable/icon_stories"
+                        android:layout_width="@dimen/_110sdp"
+                        android:layout_height="@dimen/_60sdp" />
+
+                    <TextView
+                        android:id="@+id/igDescription"
+                        app:layout_constraintTop_toBottomOf="@id/topLock"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        style="@style/CustomTextStyleSemiBold"
+                        android:textSize="13sp"
+                        android:layout_marginEnd="@dimen/_16sdp"
+                        app:layout_constraintStart_toEndOf="@id/stories"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/instagram_stories"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/openInstagram"
+                        android:paddingVertical="@dimen/_12sdp"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@id/stories"
+                        android:textColor="@color/white"
+                        android:textAllCaps="true"
+                        style="@style/CustomTextStyleSemiBold"
+                        android:textSize="15sp"
+                        android:layout_marginHorizontal="@dimen/_32sdp"
+                        android:text="@string/open_instagram"
+                        android:background="@drawable/background_gradient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/topLock"
+                        android:src="@drawable/icon_top_lock"
+                        android:padding="@dimen/_8sdp"
+                        android:contentDescription="@string/imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/icon_lock"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toTopOf="@id/frBanner" />
+
+        <include
+            android:id="@+id/frBanner"
+            layout="@layout/ads_banner"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/loading"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/black_0_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:indeterminateTint="@color/dark_blue"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"/>
+
+            <TextView
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:backgroundTint="@color/dark_blue"
+                android:background="@drawable/background_radius_12_white"
+                android:text="@string/please_wait"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <include
+        android:id="@+id/noInternet"
+        layout="@layout/no_internet_connection"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

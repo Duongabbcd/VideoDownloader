@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">الإعدادات</string>
+    <string name="search">بحث</string>
+    <string name="remove_all">إزالة الكل</string>
+    <string name="remove_results">مسح النتائج</string>
+    <string name="download_all">تنزيل الكل</string>
+    <string name="home">الرئيسية</string>
+    <string name="directories">المجلدات</string>
+    <string name="music_directory">مجلد الصوتيات</string>
+    <string name="video_directory">مجلد الفيديوهات</string>
+    <string name="updating">التحديثات</string>
+    <string name="ytdl_update_hint">نصيحة مفيدة أثناء تنزيل التحديثات</string>
+    <string name="update_ytdl">حدِّث yt-dl إلى الإصدار الجديد</string>
+    <string name="source_code">الرمز المصدري</string>
+    <string name="search_hint">بحث أو إدخال رابط</string>
+    <string name="failed_download">تعذّر تنزيل الملف</string>
+    <string name="download_notification_channel_description">إشعار يُظهر مستوى التقدم في تنزيل ملفات الصوت والفيديو</string>
+    <string name="download_notification_channel_name">تنزيلات الملفات</string>
+    <string name="ok">تم</string>
+    <string name="ytdl_already_updating">يتم تثبيت أحدث إصدار</string>
+    <string name="ytdl_updating_started">بحث/تحميل أحدث إصدار</string>
+    <string name="cancel">إلغاء</string>
+    <string name="Remove">إزالة</string>
+    <string name="confirm_delete_history_desc">الإزالة من سجل التنزيلات تمامًا.</string>
+    <string name="you_are_in_latest_version">لديك أحدث إصدار</string>
+    <string name="ytld_update_success">تم تثبيت أحدث إصدار yt-dlp</string>
+    <string name="confirm_delete_history">تأكيد</string>
+    <string name="search_history_hint">البحث في السجل</string>
+    <string name="no_results">لا نتائج</string>
+    <string name="more">المزيد</string>
+    <string name="version">الإصدار</string>
+    <string name="update_app">التحقق من وجود تحديثات</string>
+    <string name="command_directory">مجلد الأوامر المخصصة</string>
+    <string name="couldnt_find_apk">لم يتم العثور على APK صالح</string>
+    <string name="best_quality">أفضل جودة</string>
+    <string name="downloading">وضع التنزيل</string>
+    <string name="limit_rate">حد السرعة</string>
+    <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
+    <string name="add_chapters">فصول الفيديو</string>
+    <string name="worst_quality">أقل جودة</string>
+    <string name="embed_thumb">الصورة المصغرة غلافًا للصوت</string>
+    <string name="downloading_update">يتم تحميل أحدث إصدار</string>
+    <string name="audio">الصوت</string>
+    <string name="video">الفيديو</string>
+    <string name="concurrent_fragments">الأجزاء المتزامنة</string>
+    <string name="concurrent_fragments_summary">عدد أجزاء الفيديو الأصلي DASH/HLS التي سيتم تنزيلها في نفس الوقت</string>
+    <string name="limit_rate_summary">الحد الأقصى لسرعة التنزيل (بالبايت في الثانية)، مثلًا 50K أو 4.2M</string>
+    <string name="aria2_summary">التنزيل بأداة aria2c بدلًا من الإفتراضية</string>
+    <string name="processing">المعالجة</string>
+    <string name="embed_subs_summary">دمج الترجمات التي يوفرها الناشر مع ملف الفيديو</string>
+    <string name="about">حول</string>
+    <string name="link_copied_to_clipboard">تم نسخ الرابط إلى الحافظة</string>
+    <string name="request_permission_desc">يحتاج التطبيق إلى إذن \"التخزين\" لحفظ التنزيلات على الجهاز</string>
+    <string name="exit_app">الخروج من التطبيق</string>
+    <string name="warning">تنبيه</string>
+    <string name="sponsorblock_nonmusic">أجزاء غير موسيقية/خارج الموضوع</string>
+    <string name="sponsorblock_outro">الخاتمة</string>
+    <string name="sponsorblock_promos">الترويج الذاتي</string>
+    <string name="sponsorblock_previews">المعاينات</string>
+    <string name="new_template">قالب جديد</string>
+    <string name="adjust_templates">ضبط القوالب</string>
+    <string name="edit_selected">تحرير القالب المختار</string>
+    <string name="adjust_video">ضبط ملف الفيديو</string>
+    <string name="concurrent_downloads">التنزيلات المتزامنة</string>
+    <string name="concurrent_downloads_summary">عدد التنزيلات الممكن إجراؤها في نفس الوقت</string>
+    <string name="defaultValue">افتراضي</string>
+    <string name="template">قالب</string>
+    <string name="logs">السجلات</string>
+    <string name="date_added">تاريخ الإضافة</string>
+    <string name="update_ytdl_nightly">إصدارات yt-dlp التجريبية</string>
+    <string name="adjust_audio">تخصيص الصوت</string>
+    <string name="file_name_template">قالب العنوان</string>
+    <string name="language">اللغة</string>
+    <string name="command_templates">قوالب الأوامر</string>
+    <string name="terminal">سطر الأوامر</string>
+    <string name="format">التنسيق</string>
+    <string name="select_format">اختيار التنسيق</string>
+    <string name="please_wait">يرجى الانتظار</string>
+    <string name="remove_search_history">مسح سجل البحث</string>
+    <string name="enable_mtime">تمكين الطابع الزمني المعدّل</string>
+    <string name="enable_mtime_summary">ضبط تاريخ ووقت التعديل استنادًا للرابط</string>
+    <string name="update_formats">تحديث التنسيقات</string>
+    <string name="error_updating_formats">هنالك مشكلة في تحيين التنسيقات!</string>
+    <string name="log_downloads">تقارير التنزيل</string>
+    <string name="download_queue">قائمة التنزيلات</string>
+    <string name="running">الجارية</string>
+    <string name="command">الأوامر</string>
+    <string name="import_from_clipboard">استيراد من الحافظة</string>
+    <string name="shortcuts">الاختصارات</string>
+    <string name="create_template">إنشاء قالب</string>
+    <string name="export_from_clipboard">نسخ الى الحافظة</string>
+    <string name="edit">إنشاء</string>
+    <string name="cancelled">الملغاة</string>
+    <string name="errored">المتعطلة</string>
+    <string name="copy_log">نسخ السجل</string>
+    <string name="create_shortcut">إنشاء اختصار</string>
+    <string name="error_restarting_download">حدث خطأ أثناء محاولة استئناف التنزيل</string>
+    <string name="update_template">تحديث القالب</string>
+    <string name="create">تم</string>
+    <string name="update">إتمام</string>
+    <string name="preferred_download_type">نوع التنزيل المفضل</string>
+    <string name="file_size">حجم الملف</string>
+    <string name="clear_temporary_files">النقر لمسح الملفات المؤقتة</string>
+    <string name="clear_temporary_files_summary">مسح الملفات المؤقتة من التنزيلات المتعطلة/الملغاة</string>
+    <string name="cache_cleared">تم مسح الملفات المؤقتة</string>
+    <string name="freespace">التخزين المتاح</string>
+    <string name="link_you_copied">الرابط الذي نسخته</string>
+    <string name="restrict_filenames">تقييد العنوان</string>
+    <string name="save_thumb">حفظ الصورة المصغرة</string>
+    <string name="save_thumb_summary">حفظ الصورة المصغرة في مجلد التنزيل</string>
+    <string name="audio_format">صيغة الصوت</string>
+    <string name="video_format">صيغة الفيديو</string>
+    <string name="audio_quality">جودة الصوت</string>
+    <string name="audio_quality_summary">0(الأفضل) 10(الأدنى)</string>
+    <string name="cancel_task">إلغاء المهمة</string>
+    <string name="run_command">تشغيل الأمر</string>
+    <string name="command_download_notification_channel_name">تنزيلات الأوامر</string>
+    <string name="command_download_notification_channel_description">إشعار يُظهر مستوى التقدم في تنزيل ملفات الصوت والفيديو بإستخدام أوامر yt-dlp</string>
+    <string name="items_left">العناصر المتبقية</string>
+    <string name="history_is_empty">سجل التنزيلات فارغ</string>
+    <string name="you_are_going_to_delete">إزالة/حذف</string>
+    <string name="url">الرابط</string>
+    <string name="api_key">استخدام مفتاح API</string>
+    <string name="api_key_summary">توصيات الفيديو من API يوتيوب</string>
+    <string name="update_app_summary">الإعلام بإصدارات التطبيق الجديدة عند الفتح. يتم استخراج البيانات من مستودع GitHub الرسمي</string>
+    <string name="downloads">التنزيلات</string>
+    <string name="remove_deleted">إزالة المحذوفة</string>
+    <string name="remove_duplicates">إزالة المكررة</string>
+    <string name="sort_by">الفرز وفقًا لـ</string>
+    <string name="remove_downloading">إلغاء التنزيلات</string>
+    <string name="incognito_summary">البحث والتنزيل بدون سجلات</string>
+    <string name="configure_download">تخصيص التنزيل</string>
+    <string name="title">العنوان</string>
+    <string name="author">الناشر</string>
+    <string name="download">تنزيل</string>
+    <string name="video_quality">جودة الفيديو</string>
+    <string name="embed_subtitles">تضمين الترجمات</string>
+    <string name="add_chapter">إضافة فصول</string>
+    <string name="show_download_card">إظهار بطاقة التنزيل</string>
+    <string name="download_card_summary">امكانية تعديل إعدادات العنصر قبل التنزيل، يؤدي تعطيل هذا الخيار الى بدء التنزيل على الفور</string>
+    <string name="Open_File">فتح الملف</string>
+    <string name="delete_files_too">الحذف من وحدة التخزين أيضًا</string>
+    <string name="delete_file_too">الحذف من وحدة التخزين أيضًا</string>
+    <string name="you_are_going_to_delete_multiple_items">سيتم إزالة العناصر المحددة/المدرجة</string>
+    <string name="sponsorblock_sponsors">الرعاة</string>
+    <string name="sponsorblock_intro">المقدمة</string>
+    <string name="sponsorblock_fillers">الحشو/النكات</string>
+    <string name="sponsorblock_reminders">تذكيرات الاشتراك</string>
+    <string name="select_sponsorblock_filtering">اختيار تصفية حجب الإعلانات</string>
+    <string name="kill_app">إنهاء التطبيق</string>
+    <string name="confirm_terminate">سيتم إيقاف جميع التنزيلات النشطة وفرض إغلاق التطبيق</string>
+    <string name="dont_ask_again">لا تسألني بعد الآن</string>
+    <string name="end">النهاية</string>
+    <string name="start">البداية</string>
+    <string name="save_dir">الحفظ في المسار:</string>
+    <string name="preferred_download_type_summary">التبويب الذي ستُفتح عليه بطاقة التنزيل</string>
+    <string name="help_translate">المساعدة في الترجمة</string>
+    <string name="help_translate_summary">المساعدة بِاقتراح ترجمات محسنة على Weblate</string>
+    <string name="restart">إعادة التشغيل</string>
+    <string name="confirm_delete_logs_desc">إزالة السجلات بالكامل.</string>
+    <string name="select">اختيار</string>
+    <string name="selected">المحددة</string>
+    <string name="all_items_selected">تم تحديد كل العناصر</string>
+    <string name="access_all_directories">السماح بالوصول إلى كل المجلدات</string>
+    <string name="access_all_directories_summary">السماح بتنزيل التطبيق على المجلدات المقيدة إفتراضيًا</string>
+    <string name="redownload">إعادة التنزيل</string>
+    <string name="in_queue">المنتظِرة</string>
+    <string name="clear_cancelled">مسح الملغاة</string>
+    <string name="clear_errored">مسح المتعطلة</string>
+    <string name="split_by_chapters">تقسيم بالفصول</string>
+    <string name="items_imported">العناصر المستوردة</string>
+    <string name="download_rescheduled_to">تمت جدولة التنزيل الى:</string>
+    <string name="downloads_running_try_later">أداة التنزيل قيد التشغيل. حاول مرة اُخرى لاحقًا</string>
+    <string name="ytdl_version">إصدار الـ yt-dlp</string>
+    <string name="update_formats_summary">جلب التنسيقات بمجرد ظهور بطاقة التنزيل</string>
+    <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
+    <string name="log_downloads_summary">إنشاء ملف سجل للتنزيل المكتمل</string>
+    <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
+    <string name="restrict_filenames_summary">تقييد أسماء الملفات لتشمل أحرف ASCII فقط، وتجنب \"&amp;\" والمسافات في أسماء الملفات</string>
+    <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
+    <string name="container">الصيغة</string>
+    <string name="cut">قص</string>
+    <string name="new_cut">قصٌ جديد</string>
+    <string name="add_template_first">يجب إنشاء قالب يحتوي أمر واحد على الأقل!</string>
+    <string name="suggested">مقترحة</string>
+    <string name="select_all">تحديد الكل</string>
+    <string name="share">مشاركة</string>
+    <string name="cookies">ملفات تعريف الارتباط</string>
+    <string name="new_cookie">ملفات تعريف ارتباط جديدة</string>
+    <string name="get_cookies">الحصول على ملفات ارتباط</string>
+    <string name="delete_all_cookies">حذف كل ملفات تعريف الارتباط</string>
+    <string name="confirm_delete_cookies_desc">حذف كل ملفات تعريف الارتباط، تمامًا</string>
+    <string name="download_over_metered_networks">التنزيل باستخدام الشبكات المحدودة</string>
+    <string name="download_over_metered_networks_summary">التنزيل باستخدام أي نوع من الشبكات، وبخلاف ذلك سيتم إنتظار شبكة غير محدودة</string>
+    <string name="metered_network_download_start_info">سيبدأ التنزيل بمجرد الإتصال بشبكة غير محدودة</string>
+    <string name="invert_selected">عكس التحديد</string>
+    <string name="save_subs">حفظ الترجمات</string>
+    <string name="save_subs_desc">كتابة ملف الترجمة</string>
+    <string name="subtitle_languages">لغات الترجمة</string>
+    <string name="format_source">مصدر التنسيقات</string>
+    <string name="video_recommendations">توصيات الفيديو</string>
+    <string name="video_recommendations_summary">احصل على فيديوهات الموصى بها على الشاشة الرئيسية</string>
+    <string name="preferred_search_engine">محرك البحث المفضل</string>
+    <string name="preferred_search_engine_summary">المحرك المراد استخدامه بعمليات البحث من داخل التطبيق</string>
+    <string name="format_filtering_hint">يجب أن تكون كل العناصر من نفس النوع حتى تعمل هذا الميزة</string>
+    <string name="preferred_home_screen">الشاشة الرئيسة المفضلة</string>
+    <string name="undo">تراجع</string>
+    <string name="format_id">معرف التنسيق</string>
+    <string name="codec">الترميز</string>
+    <string name="audio_samplerate">معدل عيّنة الصوت</string>
+    <string name="copied_to_clipboard">نُسِخ إلى الحافظة</string>
+    <string name="Theme">السمة</string>
+    <string name="dark">داكنة</string>
+    <string name="light">فاتحة</string>
+    <string name="quality">الجودة</string>
+    <string name="remove_audio">إزالة الصوت</string>
+    <string name="preferred_format_id">معرف التنسيق المفضل</string>
+    <string name="download_now">التنزيل الآن</string>
+    <string name="download_already_exists">التنزيل موجود بالفعل</string>
+    <string name="quick_download">تنزيل سريع</string>
+    <string name="preferred_locale">المنطقة المفضلة</string>
+    <string name="quick_download_summary">عدم الجلب المسبق لبيانات التنزيل</string>
+    <string name="system">تبعًا للنظام</string>
+    <string name="accents">التلوين</string>
+    <string name="high_contrast">تباين عالي</string>
+    <string name="pure_theme_summary">سمة حالكة السواد/بيضاء</string>
+    <string name="material_you">متيريال يو</string>
+    <string name="blue">أزرق</string>
+    <string name="red">أحمر</string>
+    <string name="green">أخضر</string>
+    <string name="purple">ارجواني</string>
+    <string name="yellow">أصفر</string>
+    <string name="monochrome">أحادي اللون</string>
+    <string name="downloaded">"تم تنزيل: "</string>
+    <string name="finished_download_notification_channel_name">التنزيلات المكتملة</string>
+    <string name="finished_download_notification_channel_description">إشعارٌ بإنتهاء التنزيلات</string>
+    <string name="incognito">وضع الاستخدام المتخفي</string>
+    <string name="network_error">خطأ في الشبكة</string>
+    <string name="sponsorblock">حاجب شرائح الإعلانات</string>
+    <string name="keep_cache">الاحتفاظ بالأجزاء</string>
+    <string name="backup">عمل نسخة احتياطية</string>
+    <string name="pause">إيقاف</string>
+    <string name="resume">استئناف</string>
+    <string name="updating_download_data">يتم تحديث بيانات التنزيل</string>
+    <string name="keep_cache_summary">عدم حذف الملفات المؤقتة بعد اكتمال التنزيل</string>
+    <string name="search_history">سجل البحث</string>
+    <string name="appearance">المظهر</string>
+    <string name="backup_restore">النسخ الاحتياطي والاستعادة</string>
+    <string name="couldnt_parse_file">تعذرَ تحليل الملف</string>
+    <string name="restore">استعادة نسخة احتياطية</string>
+    <string name="restore_complete">اكتملت عملية الاستعادة، تمت استعادة العناصر التالية:</string>
+    <string name="backup_created_successfully">حُفظ ملف النسخة الاحتياطية بنجاح</string>
+    <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
+    <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
+    <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>
+    <string name="socks5_proxy">رابط بروكسي SOCKS5</string>
+    <string name="move_temporary_files">نقل الملفات المؤقتة</string>
+    <string name="move_temporary_files_summary">نقل الملفات المؤقتة إلى مجلد التنزيلات</string>
+    <string name="search_suggestions">اقتراحات البحث</string>
+    <string name="search_suggestions_summary">الحصول على اقتراحات بحث من جوجل</string>
+    <string name="misc">متنوع</string>
+    <string name="preferred_format_id_summary">ضبط التنسيق في بطاقة التنزيل على المعرف الذي يتم إدراجه هنا</string>
+    <string name="general">العامة</string>
+    <string name="swipe_gestures">إيماءات السحب</string>
+    <string name="swipe_gestures_summary">سحب العناصر يمينًا/يسارًا لـ التنزيل/الإزالة</string>
+    <string name="crop_thumb">قص الصورة المصغرة</string>
+    <string name="crop_thumb_summary">قص الصورة المصغرة على شكل مربع للتنزيلات الصوتية</string>
+    <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
+    <string name="piped_instance">مثيل Piped</string>
+    <string name="piped_instance_summary">إدخال خادم PIPED API يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
+    <string name="subtitle_format">صيغة الترجمة</string>
+    <string name="hide_thumbnails">إخفاء الصور المصغرة</string>
+    <string name="saved">المحتفَظة</string>
+    <string name="clear_saved">مسح المحفوظات</string>
+    <string name="save_for_later">حفظ للتنزيل لاحقا؟</string>
+    <string name="format_order">تسلسل التنسيقات</string>
+    <string name="retries">عدد محاولات إعادة التنزيل العام</string>
+    <string name="fragment_retries">عدد محاولات إعادة التنزيل للأجزاء</string>
+    <string name="force_keyframes">فرض الإطارات أثناء القص</string>
+    <string name="force_keyframes_summary">ستكون العملية بطيئة، مقابل قص أكثر دقة</string>
+    <string name="use_extra_commands">إلحاق أوامر إضافية</string>
+    <string name="use_extra_commands_summary">إضافة أوامر إضافية مع تكوين واجهة المستخدم الرسومية لتنزيلات الصوت / الفيديو</string>
+    <string name="current">الأوامر الحالية</string>
+    <string name="orange">برتقالي</string>
+    <string name="show_terminal">إظهار سطر الأوامر في قائمة المشاركة</string>
+    <string name="write_description">حفظ الوصف</string>
+    <string name="write_description_summary">كتابة ملف الوصف</string>
+    <string name="extra_command">أوامر إضافية</string>
+    <string name="use_cookies">استخدام ملفات تعريف الارتباط</string>
+    <string name="embed_metadata">تضمين البيانات الوصفية</string>
+    <string name="embed_metadata_summary">تحليل البيانات الوصفية وتضمينها في الملف الصوتي</string>
+    <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
+    <string name="use_sponsorblock">استخدام حاجب شرائح الإعلانات</string>
+    <string name="auto_update_ytdlp">تحديث تلقائي لـ yt-dlp</string>
+    <string name="cache_first_summary">تنزيل الملفات المؤقتة على وحدة التخزين الداخلية أولًا، ومن ثم يتم نقلها لمسارها النهائي، يُستخدم هذا الإجراء عند تعذر الكتابة على وحدة التخزين مباشرةً</string>
+    <string name="cache_first">الأولوية لتنزيل الملفات المؤقتة</string>
+    <string name="scheduling">الجدولة</string>
+    <string name="use_scheduler">التنزيل في فترة محددة</string>
+    <string name="update_app_beta_summary">الإعلام بتحديثات الإصدارات التجريبية كذلك، قد تحتوي على أخطاء.</string>
+    <string name="update_app_beta">الإصدارات التجريبية</string>
+    <string name="auto">تلقائي</string>
+    <string name="preferred_audio_codec">الترميز المفضل للصوت</string>
+    <string name="preferred_video_codec">الترميز المفضل للفيديو</string>
+    <string name="sponsorblock_api_url">رابط API SponsorBlock</string>
+    <string name="loading">تتم التعبئة</string>
+    <string name="user_agent_header">رأس وكيل المستخدم</string>
+    <string name="remember_download_type">تذكر نوع التنزيل</string>
+    <string name="remember_download_type_summary">تعيين نوع التنزيل اللاحق بناءً على آخر نوع تنزيل تم الوصول اليه</string>
+    <string name="schedule">توقيت</string>
+    <string name="search_command_hint">بحث في قوالب الأوامر</string>
+    <string name="ignore">تجاهل</string>
+    <string name="license">الترخيص</string>
+    <string name="download_already_exists_summary">المضي بالتنزيل على أي حال؟</string>
+    <string name="modify_download_card">تعديل بطاقة التنزيل</string>
+    <string name="security">سياسة الخصوصية والأمان</string>
+    <string name="length">الطول</string>
+    <string name="export_file">تصدير الملف</string>
+    <string name="update_ytdl_master">الإصدارات الرئيسة لـ yt-dlp</string>
+    <string name="errored_downloads">التنزيلات المتعطلة</string>
+    <string name="errored_download_notification_channel_description">إشعار بتعطل التنزيلات</string>
+    <string name="buffer_size_summary">حجم الذاكرة المؤقتة للتنزيل، على سبيل المثال، 1024 أو 16 كيلوبايت (الافتراضي هو 1024)</string>
+    <string name="ytdl_source">مصدر yt-dlp</string>
+    <string name="buffer_size">حجم الذاكرة المؤقتة</string>
+    <string name="preferred_audio_language">لغة الصوت المفضلة</string>
+    <string name="update_ytdl_stable">الإصدارات المستقرة لـ yt-dlp</string>
+    <string name="changelog">سجل التغييرات</string>
+    <string name="app">التطبيق</string>
+    <string name="source">المصادر</string>
+    <string name="cut_unavailable_please_update_item">تحتاج إلى تحديث بيانات العنصر حتى تتمكن من استخدام ميزة القص</string>
+    <string name="changed_path_for_everyone_to">تغيّر مسار تنزيل كل عنصر إلى:</string>
+    <string name="multiple_download_card">بطاقة التنزيل المتعدد</string>
+    <string name="dismiss">تجاهَل</string>
+    <string name="all">الكل</string>
+    <string name="generic">تقليدي</string>
+    <string name="format_filter">تصفية التنسيقات</string>
+    <string name="format_smallest">أصغر تنسيق (لكل جودة)</string>
+    <string name="observe_sources">مراقبة المصادر</string>
+    <string name="new_source">مصدر جديد</string>
+    <string name="delete_all_sources">حذف كل المصادر</string>
+    <string name="confirm_delete_sources_desc">حذف كل المصادر، تمامًا</string>
+    <string name="force_ipv4">فرض IPv4</string>
+    <string name="copy_urls">نسخ الروابط</string>
+    <string name="every">كل:</string>
+    <string name="set_time">ضبط الوقت</string>
+    <string name="starts">الابتداء</string>
+    <string name="ends">الانتهاء</string>
+    <string name="never">إطلاقًا</string>
+    <string name="after">بعد</string>
+    <string name="occurrences">تشغيلات</string>
+    <string name="day">يوم</string>
+    <string name="week">اسبوع</string>
+    <string name="month">شهر</string>
+    <string name="bitrate">معدّل البتات</string>
+    <string name="not_deleted">غير المحذوفة</string>
+    <string name="archive">أرشيف التنزيل [تنزيل ملف أرشيف التنزيل الخاص بـ yt-dlp لمنع التكرار بدلًا من الطريقة الافتراضية]</string>
+    <string name="on_time">في</string>
+    <string name="retry_missing_downloads">إعادة المحاولة للتنزيلات المفقودة</string>
+    <string name="save_auto_subs">حفظ الترجمات التلقائية</string>
+    <string name="force_ipv4_desc">إجراء جميع الاتصالات عبر IPv4</string>
+    <string name="swipe_gestures_download_card">إيماءات السحب في بطاقة التنزيل</string>
+    <string name="show_download_count">إظهار شارة العدد في جدول التنزيلات</string>
+    <string name="thumbnail_format">صيغة الصورة المصغرة</string>
+    <string name="get_new_uploads">احصل على التحميلات المستقبلية فقط (تجاهل العناصر الموجودة)</string>
+    <string name="also_download_audio">التنزيل كصوت أيضًا</string>
+    <string name="text_size">حجم النص</string>
+    <string name="add">إضافة</string>
+    <string name="reset_processed_links">إعادة تعيين الروابط المعالَجة</string>
+    <string name="back">رجوع</string>
+    <string name="all_queries_finished">تمت معالجة جميع الطلبات</string>
+    <string name="wrap_text">التفاف النص</string>
+    <string name="scroll_down">انتقال للأسفل</string>
+    <string name="select_between">تحديد عناصر النطاق المحدد</string>
+    <string name="no_download_fragments">عدم التنزيل كأجزاء</string>
+    <string name="no_download_fragments_summary">الكتابة مباشرًة في ملف الإخراج وعدم استخدام الملفات المؤقتة أثناء التنزيل</string>
+    <string name="hour">ساعة</string>
+    <string name="display_over_apps">عرض فوق التطبيقات</string>
+    <string name="my_filename_templates">قوالب عنواني</string>
+    <string name="prefer_smaller_formats">تفضيل التنسيقات الأصغر حجمًا</string>
+    <string name="display_over_apps_summary">السماح بإذن ظهور بطاقة التنزيل فوق التطبيقات الأخرى للتغلب على مشكلة الإغلاق التلقائي لبعض التطبيقات عند ظهور بطاقة التنزيل</string>
+    <string name="disabled">معطّل</string>
+    <string name="subtitles">الترجمات</string>
+    <string name="prevent_duplicate_downloads">منع تكرار التنزيلات</string>
+    <string name="prevent_duplicate_url_type">نوع الرابط والتنزيل</string>
+    <string name="prevent_duplicate_config">التكوين كاملًا</string>
+    <string name="copy_url">نسخ الرابط</string>
+    <string name="move_bottom">نقل للأسفل</string>
+    <string name="scheduled">الموَقتة</string>
+    <string name="clear_scheduled">مسح المجدولة</string>
+    <string name="move_top">نقل للأعلى</string>
+    <string name="format_importance_note">ضبط الأولوية لعناصر التنسيق. لن يتم استخدام هذا النهج إلا عندما يتم جلب واختيار التنسيقات بشكل تلقائي!</string>
+    <string name="minute">دقيقة</string>
+    <string name="second">ثانية</string>
+    <string name="milliseconds">ملّي ثانية</string>
+    <string name="format_importance">ترتيب الأولوية في التنسيق</string>
+    <string name="no_audio">فيديو بدون صوت</string>
+    <string name="download_archive_folder">مجلد أرشيف التنزيل</string>
+    <string name="location">المسار</string>
+    <string name="enable_alarm_permission">تحتاج إلى تمكين إذن SCHEDULE_EXACT_ALARM في إعدادات التطبيق.</string>
+    <string name="process_downloads_background">"التنزيلات لا تزال قيد المعالجة. هل تريد الاستمرار في معالجتها في الخلفية وبدء التنزيل؟ "</string>
+    <string name="navigation_bar">شريط التنقل</string>
+    <string name="sync_with_source">المزامنة مع المصدر</string>
+    <string name="always">دائمًا</string>
+    <string name="label_visibility">إظهار التسمية</string>
+    <string name="queue">جدول التنزيلات</string>
+    <string name="reset">إعادة تعيين</string>
+    <string name="restore_info">انقر على \"استعادة نسخة احتياطية\" لدمج بيانات النسخة الاحتياطية مع البيانات الحالية إن وجدت.
+\nأو انقر على \"اعادة تعيين\" لاستعادة بيانات النسخة الاحتياطية مع إزالة البيانات الحالية إن وجدت.</string>
+    <string name="use_alarm_manager">استخدام AlarmManager بدلًا من WorkManager للجدولة</string>
+    <string name="use_alarm_manager_summary">يتعين تمكين هذا الخيار عندما تكون أداة الـ WorkManager مقيدًة من قبل مُصنِّع الجهاز أو إذا كانت المهام المجدولة ليست دقيقة جدًا</string>
+    <string name="use_item_url_not_playlist">استخدام رابط العنصر بدلًا من رابط قائمة التشغيل</string>
+    <string name="use_item_url_not_playlist_summary">لن يتم تضمين البيانات الوصفية لقائمة التشغيل مع تمكين هذا الخيار</string>
+    <string name="recode_video">إعادة ترميز الفيديو</string>
+    <string name="recode_video_summary">يعيد ترميز ملف الفيديو إلى تنسيق الفيديو المحدد</string>
+    <string name="daily">يوميًا</string>
+    <string name="weekly">أسبوعيًا</string>
+    <string name="monthly">شهريًا</string>
+    <string name="cleanup_leftover_downloads">تنظيف التنزيلات المتبقية (الملغاة، المتعطلة)</string>
+    <string name="continue_anyway">متابعة على أي حال</string>
+    <string name="playlist_as_album">استخدام اسم قائمة التشغيل كمصدر للمعلومات الوصفية عن الألبوم</string>
+    <string name="playlist_as_album_summary">إذا كانت معلومات الألبوم غير موجودة، استخدم اسم قائمة التشغيل بدلاً من ذلك</string>
+    <string name="data_fetching_extractor_youtube">مستخرج جلب البيانات (يوتيوب)</string>
+    <string name="items">أغراض/غرض</string>
+    <string name="socket_timeout_description">وقت الانتظار قبل الاستسلام، في ثوانٍ</string>
+    <string name="advanced">متقدم</string>
+    <string name="thumbnail">الصورة المصغرة</string>
+    <string name="package_name">اسم الحزمة</string>
+    <string name="websites">مواقع الويب</string>
+    <string name="resume_all">استئناف الكل</string>
+    <string name="preferred_command_template">قالب الأوامر المفضل</string>
+    <string name="status">الحالة</string>
+    <string name="deleted">حُذف</string>
+    <string name="other_youtube_extractor_args">معطيات أخرى لمستخرج اليوتيوب</string>
+    <string name="socket_timeout">مهلة المقبس</string>
+    <string name="pause_all">إيقاف الكل مؤقتًا</string>
+    <string name="data_fetching_extra_command">أمر جلب البيانات الإضافي</string>
+    <string name="data_fetching_extra_command_summary">فعّل قوالب الأوامر لاستخدامها في جلب البيانات كأوامر إضافية</string>
+    <string name="disable_write_info_json">تعطيل كتابة معلومات Json</string>
+    <string name="disable_write_info_json_summary">في كل مرة تقوم فيها بإعادة تشغيل/استئناف التنزيل، سيقوم yt-dlp بإعادة تنزيل بيانات json من الخوادم (مكروه).</string>
+    <string name="ytdlp_watch_later">مشاهدة يوتيوب لاحقًا على yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_recommnedations">توصيات يوتيوب الخاصة بـyt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_liked">مقاطع الفيديو المعجب بها على يوتيوب yt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_watch_history">سجل مشاهدة اليوتيوب yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="no_check_certificates">قمع التحقق من صحة شهادة HTTPS</string>
+    <string name="live_from_start">مباشر من البداية</string>
+    <string name="wait_for_video">انتظر الفيديو</string>
+    <string name="live_stream">بث مباشر</string>
+    <string name="retry_every">أعد المحاولة كل</string>
+    <string name="minutes">دقائق</string>
+    <string name="prefer_container_over_codec_audio">تفضيل الحاوية على الترميز لتنزيلات الصوت</string>
+    <string name="prefer_container_over_codec_audio_summary">عند تمكين هذا، سيتم تجاهل تفضيلات ترميز الصوت المفضلة وسيتم تغيير الحاوية فقط</string>
+    <string name="use_app_language_for_metadata">استخدم لغة التطبيق للبيانات الوصفية</string>
+    <string name="layout">التخطيط</string>
+    <string name="grid">شبكة</string>
+    <string name="player_client">المشغل العميل</string>
+    <string name="list">قائمة</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="cache_directory">مجلد الذاكرة المؤقتة</string>
+    <string name="cache_directory_warning">قد يؤدي تغيير مجلد الذاكرة المؤقتة إلى حدوث مشكلات غير متوقعة. إذا لم يتمكن التطبيق من الكتابة إلى المسار المحدد، فسوف يلجأ إلى الدليل الافتراضي للذاكرة المؤقتة الداخلية</string>
+    <string name="use_only_po_token">استخدم رمز PO فقط (تجاهل المشغل العميل)</string>
+    <string name="retry_missing_downloads_desc">أعد تنزيل العناصر الغير موجودة في تاريخ التنزيل</string>
+    <string name="reset_processed_links_desc">أعد تنزيل جميع العناصر مرة أخرى</string>
+    <string name="sync_with_source_desc">احذف العناصر التي تم تنزيلها إذا كانت مفقودة في المصدر</string>
+    <string name="app_icon_change">قد تتغير الأيقونة وسيغلق التطبيق</string>
+    <string name="use_format_sorting">استخدم ترتيب أهمية التنسيق</string>
+    <string name="reset_preferences_in_screen">أعد ضبط جميع التفضيلات في هذه الشاشة</string>
+    <string name="write_subs_when_embed_subs">اكتب ترجمات عند التضمين</string>
+    <string name="backup_path">مسار النسخ الاحتياطي</string>
+    <string name="write_subs_when_embed_subs_summary">سيطبق هذا حفظ الترجمات وحفظ الترجمات التلقائية لتنزيل الملفات الفرعية ثم حذفها بعد التضمين</string>
+    <string name="use_code_highlighter">استخدم مظلل لوني للرمز</string>
+    <string name="automatic_backup">النسخ الاحتياطي التلقائي</string>
+    <string name="automatic_backup_summary">قم بعمل نسخة احتياطية لكل شيء تلقائيًا عند العثور على إصدار جديد</string>
+    <string name="generate_potokens">ولّد رموز PO</string>
+    <string name="regenerate">أعد التوليد</string>
+    <string name="generate_potokens_warning">من خلال تفعيل هذا تحتاج إلى تعطيل ملفات تعريف الارتباط</string>
+    <string name="custom">مخصّص</string>
+    <string name="cut_unsupported">القص غير متاح لهذا العنصر</string>
+    <string name="select_between_desc">حدد نطاق العناصر المراد تحديدها</string>
+    <string name="potoken">رمز PO</string>
+    <string name="web_client_po_token">رمز عيمل الويب PO</string>
+    <string name="reverse">اعكس</string>
+    <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
+    <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
+    <string name="video_compatible">فيديو متوافق</string>
+    <string name="video_compatible_summary">يعيد ترميز الفيديو لجعله متوافقًا مع التطبيقات الأخرى</string>
+    <string name="no_free_space_warning">لا توجد مساحة خالية لهذا التضبيط.</string>
+    <string name="preferred_format_size">حجم التنسيق المفضل</string>
+    <string name="smallest">الأصغر</string>
+    <string name="largest">الأكبر</string>
+    <string name="no_prefer_drc_audio">لا تفضل صوت DRC</string>
+    <string name="potoken_gvs">رمز PO (GVS)</string>
+    <string name="potoken_player">رمز PO (مشغّل)</string>
+    <string name="potoken_subs">رمز PO (الاشتراكات)</string>
+    <string name="visitor_data">بيانات الزوار</string>
+    <string name="get_data_sync_id">بيانات الزوار</string>
+    <string name="desktop">سطح المكتب</string>
+    <string name="url_regex">عنوان رابط Regex</string>
+    <string name="disable_flat_playlist">عطّل قائمة التشغيل المسطحة</string>
+    <string name="disable_flat_playlist_summary">لا تستخدم --flat-playlist. جلب بيانات أبطأ، ولكنه أكثر ثراءً بالبيانات</string>
+
+    <!-- Arabic -->
+    <string name="recently_search">البحث الأخير</string>
+    <string name="go_btn">زر اذهب</string>
+    <string name="refresh_btn">تحديث</string>
+
+    <string name="title_grant_Permission">منح الإذن</string>
+    <string name="message_grant_Permission">يرجى منح جميع الأذونات للوصول إلى المزيد من الوظائف.</string>
+    <string name="goto_setting">اذهب إلى الإعدادات</string>
+    <string name="permission_denied">تم رفض الإذن</string>
+    <string name="youtube_desc">لا يسمح بتنزيل فيديوهات يوتيوب، يرجى نسخ الروابط من مواقع أخرى.</string>
+    <string name="preparing">جاري التحضير لتشغيل الفيديو. يرجى الانتظار</string>
+    <string name="high_note">يمكن تشغيل الملفات التي تم تنزيلها فقط بواسطة هذا التطبيق</string>
+    <string name="media_format">جميع تنسيقات الوسائط</string>
+
+    <string name="english">الإنجليزية</string>
+    <string name="hindi">الهندية</string>
+    <string name="spanish">الإسبانية</string>
+    <string name="french">الفرنسية</string>
+    <string name="arabic">العربية</string>
+    <string name="bengali">البنغالية</string>
+    <string name="russian">الروسية</string>
+    <string name="portuguese">البرتغالية</string>
+    <string name="indonesian">الإندونيسية</string>
+    <string name="german">الألمانية</string>
+    <string name="italian">الإيطالية</string>
+    <string name="korean">الكورية</string>
+
+    <string name="done">تم</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="send">إرسال</string>
+
+    <string name="all_tabs">كل الألسنة</string>
+    <string name="blank_page">صفحة فارغة</string>
+    <string name="home_page">الصفحة الرئيسية</string>
+
+    <string name="images_status">الصور</string>
+    <string name="videos_status">الفيديوهات</string>
+    <string name="saved_status">محفوظ</string>
+
+    <string name="empty_description">افتح واتساب، تحقق من تحديثات أصدقائك، ثم عد! 🎈</string>
+    <string name="empty_description_bonus">ربما تخطيت منح الإذن سابقاً، يرجى الذهاب إلى الإعدادات -> البحث -> كتابة وصول التطبيق الخاص -> وصول الإشعارات -> اختر تطبيقك</string>
+    <string name="empty_notification">لا توجد حالات جديدة حتى الآن.</string>
+    <string name="open_whatsapp">افتح واتساب</string>
+    <string name="exit_dialog">خروج</string>
+    <string name="delete_desc">سيتم حذف هذا الملف من الجهاز، فكر جيداً قبل الضغط على تأكيد.</string>
+    <string name="download_successfully">تم تنزيل الملف بنجاح!</string>
+
+    <string name="intro_1">قم بتنزيل أي فيديو من تطبيقات متعددة</string>
+    <string name="highlight_1">تطبيقات متعددة</string>
+    <string name="intro_2">تنزيل سريع للفيديوهات من متصفحك</string>
+    <string name="highlight_2">تنزيل فيديوهات سريع</string>
+    <string name="intro_3">تحميل الفيديوهات للمشاهدة بدون اتصال</string>
+    <string name="highlight_3">تنزيل الفيديوهات</string>
+    <string name="intro_4">إخلاء المسؤولية</string>
+    <string name="highlight_4">إخلاء المسؤولية</string>
+
+    <string name="disclaimer_1">يرجى الحصول على الإذن من المالك قبل إعادة نشر مقاطع الفيديو أو الصور؛</string>
+    <string name="disclaimer_2">أي أفعال غير مصرح بها (إعادة تحميل أو تنزيل المحتوى) و/أو انتهاكات حقوق الملكية الفكرية تقع على عاتق المستخدم وحده.</string>
+    <string name="instagram_stories">عرض القصص وتنزيلها من حساب خاص</string>
+    <string name="open_instagram">افتح إنستغرام</string>
+
+    <string name="browser">تنظيف</string>
+    <string name="general_settings">الإعدادات العامة</string>
+    <string name="help">مساعدة</string>
+    <string name="clear_cache">مسح ذاكرة التخزين المؤقت</string>
+    <string name="clear_browser_history">مسح سجل المتصفح</string>
+    <string name="clear_cookies">مسح ملفات تعريف الارتباط</string>
+    <string name="download_with_wi_fi_only">التنزيل عبر Wi-Fi فقط</string>
+    <string name="how_to_download">كيفية التنزيل</string>
+    <string name="search_engine">محرك البحث</string>
+    <string name="feedback">ملاحظات</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="share_with_friends">شارك مع الأصدقاء</string>
+
+    <string name="got_it">فهمت</string>
+    <string name="next">التالي</string>
+
+    <string name="intro_1_1">1. اضغط على مشاركة أو نسخ الرابط</string>
+    <string name="intro_2_1">2. اضغط على أحد هذه الأزرار</string>
+    <string name="intro_3_1">3. اضغط على زر التنزيل في الشاشة الرئيسية (لتنزيل قصص إنستغرام)</string>
+    <string name="paste">لصق</string>
+
+    <string name="player_resolution">دقة الفيديو كما في المشغل</string>
+    <string name="download_started">تم بدء تنزيل الفيديو بنجاح!!!</string>
+    <string name="video_found">تم العثور على الفيديو</string>
+    <string name="whatshould">ماذا يجب أن نفعل؟</string>
+    <string name="view">عرض</string>
+    <string name="dontshow">لا تُظهر</string>
+    <string name="continue_str">متابعة</string>
+    <string name="no_internet_desc">يرجى الاتصال بشبكة Wi-Fi أو شبكة الجوال لعرض هذا المحتوى</string>
+    <string name="no_internet_title">لا يوجد اتصال</string>
+    <string name="try_again">حاول مرة أخرى</string>
+    <string name="no_connection">لا يوجد اتصال بالإنترنت حتى الآن. يجب عليك التحقق من ذلك في إعدادات الجهاز.</string>
+    <string name="can_not_download">لقد قمت بضبط التنزيل عبر Wi-Fi فقط، لذا تأكد من تشغيله للمتابعة</string>
+    <string name="cache_1">تم مسح ذاكرة التخزين المؤقت بنجاح</string>
+    <string name="cache_2">فشل في مسح ذاكرة التخزين المؤقت</string>
+    <string name="cache_3">تم مسح ملفات تعريف الارتباط بنجاح</string>
+    <string name="clear_all_browser">تم مسح سجل المتصفح</string>
+
+    <string name="welcome_back">مرحبا بكم من جديد!</string>
+    <string name="permission_requrired">الإذن مطلوب</string>
+    <string name="open_folder_desc">نظرًا لقيود النظام، نحتاج إلى إذنك للسماح لـ .Statuses بتنزيل الملفات.</string>
+    <string name="quality_options">خيارات الجودة</string>
+    <string name="do_you_want_to_exit_app">هل تريد الخروج من التطبيق؟</string>
+    <string name="next_option">المزيد من الخيارات</string>
+    <string name="prev_option">الخيارات السابقة</string>
+    <string name="rate_us">قيّمنا</string>
+    <string name="email_feedback_title">ملاحظات حول إصدار سمة الاتصال: %1$s</string>
+
+    <string name="not_allowed">نحن لا ندعم تنزيل المحتوى من هذا الموقع بعد.s</string>
+    <string name="added_history">تمت الإضافة إلى سجل البحث</string>
+    <string name="copy_paste">انسخ والصق الرابط هنا</string>
+    <string name="intro_3_2">3. انتظر حتى يحصل التطبيق على معلومات التنزيل</string>
+
+    <string name="link_empty">يرجى نسخ رابط الفيديو أولاً.</string>
+    <string name="link_invalid">يجب أن يكون هذا رابط فيديو من فيسبوك أو إنستغرام أو تيك توك.</string>
+    <string name="link_invalid_2">يجب أن يكون هذا رابط فيديو من إنستغرام</string>
+    <string name="link_video">يدعم فقط روابط فيديو إنستغرام</string>
+    <string name="link_story">تم نسخ رابط قصة إنستغرام…</string>
+    <string name="link_story_guide">لتنزيل قصة من إنستغرام، انسخ رابطها ثم عد إلى هنا</string>
+    <string name="installed_app_required">هذا التطبيق غير موجود على جهازك، يرجى تثبيته أولاً</string>
+    <string name="folder_selected">تم تحديد المجلد</string>
+    <string name="folder_not_selected">لم يتم تحديد المجلد</string>
+
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaultsMap>
+    <entry>
+        <key>REMOTE_SPLASH_070625</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>ADS_SPLASH_070625</key>
+        <value>0</value>
+    </entry>
+
+    <entry>
+        <key>AD_OPEN_APP</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>AD_RETURN_APP</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>ADS_DISABLE</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>AD_RETURN_SPACE</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>BANNER_ALL</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>INTER_ALL</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>INTER_SPACE</key>
+        <value>40</value>
+    </entry>
+    <entry>
+        <key>NATIVE_HOME</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>NATIVE_INTRO</key>
+        <value>125</value>
+    </entry>
+    <entry>
+        <key>NATIVE_INTRO_FULL</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>NATIVE_LANGUAGE</key>
+        <value>12</value>
+    </entry>
+    <entry>
+        <key>NATIVE_PREVIEW</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
+        <key>ALLOWED_LIST</key>
+        <value></value>
+    </entry>
+
+    <entry>
+        <key>isForcedToUpdate</key>
+        <value>1</value>
+    </entry>
+</defaultsMap>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_radius_16_top_corner"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/permissionRequired"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:padding="@dimen/_20sdp"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/CustomTextStyleSemiBold22sp"
+            android:text="@string/permission_requrired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/requiredPerDesc"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_16sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/CustomTextStyleMedium18sp"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:text="@string/open_folder_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        
+        
+        <LinearLayout
+            android:background="@drawable/background_radius_12_white"
+            android:backgroundTint="@color/defaultGray"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:orientation="vertical"
+            android:padding="@dimen/_16sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/CustomTextStyleSemiBold22sp"
+                android:text=".Statuses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:background="@drawable/background_radius_8"
+                android:backgroundTint="@color/cool_blue"
+                android:textColor="@color/white"
+                style="@style/CustomTextStyleSemiBold17sp"
+                android:padding="@dimen/_4sdp"
+                android:gravity="center"
+                android:text="Use this folder"
+                android:textAllCaps="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/continueBtn"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:layout_marginTop="@dimen/_16sdp"
+            style="@style/CustomTextStyleMedium18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/background_radius_16_gray"
+            android:backgroundTint="@color/tab_select"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/continue_str"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/closeBtn"
+        android:contentDescription="@string/imageView"
+        android:src="@drawable/baseline_close_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/_12sdp"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

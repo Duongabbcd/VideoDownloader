@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_16sdp"
+    android:background="@drawable/background_radius_16_gray"
+    android:backgroundTint="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/_18sdp"
+    android:paddingTop="@dimen/_30sdp"
+    android:paddingBottom="@dimen/_20sdp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_126sdp"
+        android:gravity="center"
+        android:src="@drawable/background_show_rate"
+        android:text="@string/imageView" />
+
+    <TextView
+        style="@style/CustomTextStyleSemiBold16sp"
+        android:layout_width="@dimen/_246sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:gravity="center"
+        android:text="Thank you for your support!" />
+
+    <TextView
+        style="@style/CustomTextStyle14sp"
+        android:layout_width="@dimen/_246sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:gravity="center"
+        android:text="We would be very grateful if you can rate us" />
+
+    <com.ezt.priv.shortvideodownloader.ui.more.settings.customview.CustomRatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:gravity="center"
+        app:emptyLastStarDrawable="@drawable/icon_disable_star"
+        app:emptyStarDrawable="@drawable/icon_disable_star"
+        app:filledLastStarDrawable="@drawable/icon_enable_star"
+        app:filledStarDrawable="@drawable/icon_enable_star"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxRating="5"
+        app:starSpacing="@dimen/_15sdp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/rateUsButton"
+            style="@style/CustomTextStyleSemiBold14sp"
+            android:layout_width="@dimen/_156sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/background_radius_12"
+            android:gravity="center"
+            android:paddingVertical="@dimen/_10sdp"
+            android:text="@string/rate_us"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -26,14 +26,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = rootProject.file("keystore/piano2.jks")
-            storePassword = "12345678"
-            keyAlias = "piano2025"
-            keyPassword = "12345678"
-        }
-    }
+//    signingConfigs {
+//        create("release") {
+//            storeFile = rootProject.file("keystore/piano2.jks")
+//            storePassword = "12345678"
+//            keyAlias = "piano2025"
+//            keyPassword = "12345678"
+//        }
+//    }
 
     buildTypes {
         release {
@@ -43,7 +43,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+//            signingConfig = signingConfigs.getByName("release")
         }
     }
 

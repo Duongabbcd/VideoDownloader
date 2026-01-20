@@ -182,8 +182,8 @@ class SplashActivity : BaseActivity3<ActivitySplashBinding>(ActivitySplashBindin
         }
 
         handler.postDelayed(runnable, 20000)
-
-        if (isNetworkConnected(this)) {
+        val x = 0
+        if (x > 1) {
             FireBaseConfig.initRemoteConfig(
                 R.xml.remote_config_default,
                 object : FireBaseConfig.CompleteListener {
